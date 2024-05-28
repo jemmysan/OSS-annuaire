@@ -1,0 +1,4 @@
+Installer
+Pour l'utiliser, il suffit de faire l'installation du composer.
+Définir la connexion à la base de données dans le fichier .env
+Faire la migration des tables  php artisan migrate:fresh --seed, notre semoir interactif s'occupera de tout.

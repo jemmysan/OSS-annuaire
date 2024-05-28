@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=annuairestartup-db-1
+      - DB_PORT=3306
+      - DB_DATABASE=annuaire_startup
+      - DB_USERNAME=jemmy
+      - DB_PASSWORD=jemmy_password
+
+  db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"  
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: annuaire_startup
+      MYSQL_USER: jemmy
+      MYSQL_PASSWORD: jemmy_password
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
