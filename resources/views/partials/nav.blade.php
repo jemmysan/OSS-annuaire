@@ -1,6 +1,6 @@
 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
 
-    @can('creer_utilisateur')
+    @can('voir_gestion_utilisateur')
         <li class="nav-item">
             <a href="#" class="nav-link active">
                 <i class="fas fa-cogs"></i>
@@ -36,6 +36,8 @@
                     </a>
                 </li>-->
 
+
+                @can('voir_journal')
                 <li class="nav-item">
                     <a href="{{url('/journal')}}" class="nav-link">
                         <i class="fa-fw nav-icon fas fa-file-alt"></i>
@@ -43,20 +45,21 @@
 
                     </a>
                 </li>
+                @endcan
             </ul>
         </li>
     @endcan
-    @can('creer_startup')
+    @can('voir_startup')
 
-                    <li class="nav-item">
-                        <a href="{{ route('startup.index') }}" class="nav-link">
-                            <i class="fas fa-rocket"></i>
-                            <p>Annuaire Startup</p>
-                        </a>
-                    </li>
+        <li class="nav-item">
+            <a href="{{ route('startup.index') }}" class="nav-link">
+                <i class="fas fa-rocket"></i>
+                <p>Annuaire Startup</p>
+            </a>
+        </li>
     @endcan
 
-    @can('creer_financiere')
+    @can('voir_financiere')
         <li class="nav-item">
             <a href="{{ route('financiere.index') }}" class="nav-link">
                 <i class="fas fa-landmark"></i>
@@ -66,7 +69,7 @@
         </li>
     @endcan
 
-    @can('creer_accompagnement')
+    @can('voir_accompagnement')
         <li class="nav-item">
             <a href="{{ route('accompagnement.index') }}" class="nav-link">
                 <i class="fas fa-sitemap"></i>
@@ -92,7 +95,20 @@
             <p>Recherche</p>
         </a>
     </li>
-        @endcan
+    @endcan
+
+    
+    @can('importer_startup')
+    <li class="nav-item">
+        <a href="{{ route('import-export') }}" class="nav-link">
+        <i class="fas fa-exchange-alt"></i>
+        <p> Import / Export </p>
+        </a>
+    </li>
+    @endcan
+
+
+
     <li class="nav-item">
         <a href="#" class="nav-link active">
             <i class="fas fa-users-cog"></i>

@@ -232,129 +232,77 @@
     </style>
 
 <div class="container">
-          <h1>Annuaire des Start-up</h1>
-                <div class="col-md-2" style="margin-left: 10px">
+       
+       @can('voir_infos_gen_startup')
+        <div>
+            <h1>Annuaire des Start-up</h1>
+            <div class="col-md-2" style="margin-left: 10px">
+                <div class="sticky-top mb-5">
+                    <div style="display: inline-block;">
+                        Nombre de tags : {{ $startup_count }}
+                    </div>
+                </div>
+            </div>
 
-
-                    <div class="sticky-top mb-5" >
-                        <div  style=" display: inline-block;">
-
-                            <?php
-                            use App\Models\Phase;
-                            use App\Models\Startup;
-                            use Illuminate\Support\Facades\DB;
-                            $con = mysqli_connect("localhost","root","","projet");
-                            $tag_query= "SELECT count(tags) FROM startups ";
-                            $tag_query_run=mysqli_query($con,$tag_query);
-
-
-                            ?>
-
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-rocket"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">TOTAL</span>
+                            <span class="info-box-number">
+                                {{ $total_startups }}
+                            </span>
                         </div>
                     </div>
                 </div>
-
-
-                    <div class="row">
-                        <div class="col-12 col-sm-6 col-md-3">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-info elevation-1"><i class="fas fa-rocket"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">TOTAL</span>
-                                    <span class="info-box-number">
-                                    <?php
-                                        $count = DB::table('startups')->count();
-                                        echo $count;
-                                        ?>
-                                 </span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-user-shield"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">En Contact</span>
+                            <span class="info-box-number">
+                                {{ $contact_count }}
+                            </span>
                         </div>
-                        <!-- /.col -->
-                        <div class="col-12 col-sm-6 col-md-3">
-                            <div class="info-box mb-3">
-                                <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-user-shield"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">En Contact</span>
-                                    <span class="info-box-number">
-                                    <?php
-                                        $count = Phase::select(DB::raw("count(phase)" ))
-                                            ->where('phase', 'contact')
-                                            ->count();
-                                        echo $count;
-                                        ?>
-                                </span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-
-                        <div class="col-12 col-sm-6 col-md-3">
-                            <div class="info-box mb-3">
-                                <span class="info-box-icon bg-success elevation-1"><i class="fas fa-house-user"></i></span>
-
-                                <div class="info-box-content" style="width:auto ">
-                                    <span class="info-box-text"> Discussion</span>
-                                    <span class="info-box-number">
-                                    <?php
-                                        $count = Phase::select(DB::raw("count(phase)" ))
-                                            ->where('phase', 'discussion')
-                                            ->count();
-                                        echo $count;
-                                        ?>
-                                </span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-12 col-sm-6 col-md-3">
-                            <div class="info-box mb-3">
-                                <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-user-tag"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Pilotage</span>
-                                    <span class="info-box-number">
-                                    <?php
-                                        $count = Phase::select(DB::raw("count(phase)" ))
-                                            ->where('phase', 'pilotage')
-                                            ->count();
-                                        echo $count;
-                                        ?>
-                                </span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-3">
-                            <div class="info-box mb-3">
-                                <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-user-tag"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Déploiement</span>
-                                    <span class="info-box-number">
-                                    <?php
-                                        $count = Phase::select(DB::raw("count(phase)" ))
-                                            ->where('phase', 'deploiement')
-                                            ->count();
-                                        echo $count;
-                                        ?>
-                                </span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
                     </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-house-user"></i></span>
+                        <div class="info-box-content" style="width:auto">
+                            <span class="info-box-text">Discussion</span>
+                            <span class="info-box-number">
+                                {{ $discussion_count }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-user-tag"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Pilotage</span>
+                            <span class="info-box-number">
+                                {{ $pilotage_count }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-3">
+                    <div class="info-box mb-3">
+                        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-user-tag"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Déploiement</span>
+                            <span class="info-box-number">
+                                {{ $deploiement_count }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endcan
 
     <form action="{{ route('startup.index') }}" method="GET" role="search" style="float: right">
 
@@ -380,10 +328,12 @@
 
                         <a  @popper( Créer une nouvelle startup!) href="{{ route('startup.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></a>
                     @endcan
+
+                    @can('importer_startup')
                         <a @popper( Importer \ Export un fichier CSV!) href="{{url('/import-export')}}" class="btn btn-sm btn-info ">
                             <i class="fas fa-file-import expo"></i> / <i class="fas fa-file-export"></i>
                         </a>
-
+                    @endcan
                 </div>
 
                 <div class="album py-5 bg-light">
@@ -439,7 +389,7 @@
                                                 </div>
                                                 <br>
                                                 <div class="line" style=" border-top: 1px solid black;
-">
+
                                                                                                     @foreach ($startup->tag as $singleTag)
                                                         <span class="badge badge-info">#{{ $singleTag->name }}</span> <br>
                                                     @endforeach

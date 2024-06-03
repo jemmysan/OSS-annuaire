@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 
 
-use App\Exports\StartupsExport;
-use App\Imports\StartupsImport;
 use App\Models\Phase;
 use App\Models\Startup;
+use App\Models\Commentaire;
+use App\Models\Financement;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Excel;
+use App\Exports\StartupsExport;
+use App\Imports\StartupsImport;
+use Illuminate\Support\Facades\DB;
+use PDO;
+use Illuminate\Support\Facades\Auth;
 
 class StartupController extends Controller
 {
@@ -23,8 +26,6 @@ class StartupController extends Controller
      */
     public function index( Request $request)
     {
-
-
             $startups = Startup::where([
                 ['nom_startup','!=', Null],
                 [ function($query) use ($request){
@@ -40,10 +41,45 @@ class StartupController extends Controller
 
             return view('startup.index',compact('startups'))
                 ->with('i',(request()->input('page',1)-1)*10);
-
-
     }
 
+
+    public function infosGenStartUps()
+    {
+        $host = 'annuairestartup-db-1';
+                $db = 'annuaire_startup';
+                $user = 'jemmy';
+                $pass = 'jemmy_password';
+                $charset = 'utf8mb4';
+        
+                $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+                $options = [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                ];
+        
+                try {
+                    $pdo = new PDO($dsn, $user, $pass, $options);
+                } catch (\PDOException $e) {
+                    throw new \PDOException($e->getMessage(), (int)$e->getCode());
+                }
+        
+                $tag_query = "SELECT COUNT(nom_startup) as startup_count FROM startups";
+                $stmt = $pdo->query($tag_query);
+                $startup_count = $stmt->fetchColumn();
+        
+                $total_startups = Startup::count();
+                $contact_count = Phase::where('phase', 'contact')->count();
+                $discussion_count = Phase::where('phase', 'discussion')->count();
+                $pilotage_count = Phase::where('phase', 'pilotage')->count();
+                $deploiement_count = Phase::where('phase', 'deploiement')->count();
+        
+                $startups = Startup::with('phase', 'secteur', 'commentaires')->get();
+        
+                return view('startup.index', compact('startup_count', 'total_startups', 'contact_count', 'discussion_count', 'pilotage_count', 'deploiement_count', 'startups'));
+         
+    }
     /**
      * @return \Illuminate\Http\Response
      */
@@ -86,14 +122,11 @@ class StartupController extends Controller
 
         ]);
 
-
         $logoNom = time().'.'.$request->logo->getClientOriginalExtension();
         $request->logo->move(public_path('img'),  $logoNom);
 
-         $fileNom = 'fichier_'.time().'.'.$request->filename->getClientOriginalExtension();
+        $fileNom = 'fichier_'.time().'.'.$request->filename->getClientOriginalExtension();
         $request->filename->move(public_path('fichier'),  $fileNom);
-
-
 
 
         $startup = Startup::create(
@@ -143,7 +176,7 @@ class StartupController extends Controller
      * @param \App\Models\Startup $startup
      * @return \Illuminate\Http\Response
      */
-    public function edit(  $id)
+    public function edit($id)
     {
          $tags = \App\Models\Tag::pluck('name', 'id');
          $secteurs = \App\Models\Secteur::pluck('secteur', 'id');
@@ -229,13 +262,27 @@ class StartupController extends Controller
      * @param  \App\Models\Startup  $startup
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Startup $startup)
+    public function destroy(Startup $startup, $id)
     {
-       // $startup = Startup::findOrFail($id);
-        $startup->delete();
-        return redirect()->route('startup.index')
-            ->with('success','Start-up supprimé avec succés');
+        $startup = Startup::findOrFail($id);
+        try {
+           
+            Commentaire::where('startup_id', $id)->delete();
+            Financement::where('startup_id',$id)->delete();
+           
+            $startup->secteur()->detach();
+            $startup->tag()->detach();
+
+
+            $startup->delete();
+           
+            return redirect()->back()->with('success', 'Start-up supprimée avec succès');
+        } catch (\Exception $e) {
+            return back()->withError('Une erreur est survenue lors de la suppression de la start-up : ' . $e->getMessage());
+        }
     }
+
+
 
 
     //enregistrer  phase
@@ -260,9 +307,4 @@ class StartupController extends Controller
         return back()->with('success','Merci');
 
     }
-
-
-
-
-
 }

@@ -392,9 +392,11 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="pills-video-tab" data-toggle="pill" href="#pills-video" role="tab" aria-selected="false">Vidéo</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-phase-tab" data-toggle="pill" href="#pills-phase" role="tab" aria-selected="false">Statut</a>
-                            </li>
+                            @can('edit-statut-startup')
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-phase-tab" data-toggle="pill" href="#pills-phase" role="tab" aria-selected="false">Statut</a>
+                                </li>
+                            @endcan
                             <li class="nav-item">
                                 <a class="nav-link" id="pills-phase-tab" data-toggle="pill" href="#pills-financement" role="tab" aria-selected="false">Financement</a>
                             </li>
@@ -510,6 +512,8 @@
                                     </iframe>
                                 </div>
                             </div>
+
+                            
                             <div class="tab-pane fade" id="pills-phase" role="tabpanel" aria-labelledby="pills-phase-tab">
                                            <div class="col-auto">
 
@@ -518,14 +522,18 @@
                                            </div>
 
                             </div>
+
+
                             <div class="tab-pane fade" id="pills-financement" role="tabpanel" aria-labelledby="pills-financement-tab">
 
                                 <h2>
                                     <b>Registre des Partenariats
-                                        <a type="button" onclick="Open();"  data-toggle="tooltip" data-original-title="Ajouter">
-                                            <i class="fas fa-plus-circle">
-                                            </i>
-                                        </a>
+                                        @can('ajout_partenariat')  
+                                            <a type="button" onclick="Open();"  data-toggle="tooltip" data-original-title="Ajouter">
+                                                <i class="fas fa-plus-circle">
+                                                </i>
+                                            </a>
+                                        @endcan
                                     </b>
                                 </h2>
 

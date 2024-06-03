@@ -32,11 +32,17 @@ class Startup extends Model implements Likeable
         'user_id',
         'referent',
         'autre_part',
-
+        'statut',
 
 
     ];
 
+    protected $hidden = [
+        'id',
+        'created_at',
+        'updated_at',
+        'user_id'  
+    ];
 
     public  function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

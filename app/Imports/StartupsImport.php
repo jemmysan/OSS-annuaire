@@ -1,39 +1,82 @@
 <?php
 
+
 namespace App\Imports;
 
 use App\Models\Startup;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class StartupsImport implements ToModel
+
+class StartupsImport implements ToModel, WithHeadingRow
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
-        return new Startup([
-            'nom_startup' => $row['0'],
-            'description' => $row['1'],
-            'partenariat_orange' => $row['2'],
-            'date_creation' => $row['3'],
-            'ceo_co_fondateur' => $row['4'],
-            'logo' => $row['5'],
-            'adresses' => $row['6'],
-            'site_web' => $row['7'],
-            'filename' => $row['8'],
-            'video' => $row['9'],
-            'email' => $row['10'],
-            'leve_fond' => $row['11'],
-            'montant_fonds' => $row['12'],
-            'date_leve_fond' => $row['13'],
-            'coordonnee' => $row['14'],
-            'user_id' => $row['15'],
-            'referent' => $row['16'],
-            'autre_part' => $row['17'],
+       
+        $userId = Auth::id();
+        
+        $leveFond = !empty($row['leve_fond']) ? $row['leve_fond'] : 'non';
+        $montantFonds = !empty($row['montant_fonds']) ? $row['montant_fonds'] : 0;
+        $dateLeveFond = !empty($row['date_leve_fond']) ? $row['date_leve_fond'] : null;
 
+
+        $existingStartup = Startup::where('nom_startup', $row['nom_startup'])->first();
+
+
+        if ($existingStartup) {
+            $existingStartup->update([
+                'description' => $row['description'],
+                'partenariat_orange' => $row['partenariat_orange'],
+                'date_creation' => $row['date_creation'],
+                'ceo_co_fondateur' => $row['ceo_co_fondateur'],
+                'logo' => $row['logo'],
+                'adresses' => $row['adresses'],
+                'site_web' => $row['site_web'],
+                'filename' => $row['filename'],
+                'video' => $row['video'],
+                'email' => $row['email'],
+                'leve_fond' => $leveFond,
+                'montant_fonds' => $montantFonds,
+                'date_leve_fond' => $dateLeveFond,
+                'coordonnee' => $row['coordonnee'],
+                'user_id' => $userId,
+                'referent' => $row['referent'],
+                'autre_part' => $row['autre_part'],
+            ]);
+
+
+            return $existingStartup;
+        }
+
+
+        return new Startup([
+            'nom_startup' => $row['nom_startup'],
+            'description' => $row['description'],
+            'partenariat_orange' => $row['partenariat_orange'],
+            'date_creation' => $row['date_creation'],
+            'ceo_co_fondateur' => $row['ceo_co_fondateur'],
+            'logo' => $row['logo'],
+            'adresses' => $row['adresses'],
+            'site_web' => $row['site_web'],
+            'filename' => $row['filename'],
+            'video' => $row['video'],
+            'email' => $row['email'],
+            'leve_fond' => $leveFond,
+            'montant_fonds' => $montantFonds,
+            'date_leve_fond' => $dateLeveFond,
+            'coordonnee' => $row['coordonnee'],
+            'user_id' => $userId,
+            'referent' => $row['referent'],
+            'autre_part' => $row['autre_part'],
         ]);
     }
 }
+
+
+
