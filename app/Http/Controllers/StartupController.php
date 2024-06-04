@@ -15,6 +15,7 @@ use App\Imports\StartupsImport;
 use Illuminate\Support\Facades\DB;
 use PDO;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
 
 class StartupController extends Controller
 {
@@ -26,60 +27,85 @@ class StartupController extends Controller
      */
     public function index( Request $request)
     {
-            $startups = Startup::where([
-                ['nom_startup','!=', Null],
-                [ function($query) use ($request){
-                    if(($nom = $request->nom)){
-                        $query->orWhere('nom_startup','LIKE','%'.$nom.'%')->get();
-                    }
+        $userId = Auth::id();
+        $host = 'annuairestartup-db-1';
+        $db = 'annuaire_startup';
+        $user = 'jemmy';
+        $pass = 'jemmy_password';
+        $charset = 'utf8mb4';
+        
+        $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+        $options = [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+        ];
+        
+        try {
+            $pdo = new PDO($dsn, $user, $pass, $options);
+        } catch (\PDOException $e) {
+            throw new \PDOException($e->getMessage(), (int)$e->getCode());
+        }
 
-                }]
-            ])
+        $sql = "SELECT role_id FROM model_has_roles WHERE role_id = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(1, $userId, PDO::PARAM_INT); 
+        $stmt->execute();
 
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $roleId = $result['role_id'];
+        $role = Role::find($roleId)->name;
+
+        if ($role == 'Porteur-projet') {
+            $startups = Startup::whereHas('user', function ($query) use ($userId) {
+                $query->where('user_id', $userId); 
+            })
+                ->where('nom_startup', '!=', null) 
+                ->orderBy('id', 'desc')
+                ->paginate(6);
+    
+            
+            // if (!$startups->count()) {
+            //     return view('startup.index', compact('startups'))
+            //         ->with('message', 'Pas de startup ajouté');
+            // }
+    
+            return view('startup.index', compact('startups'))
+                ->with('i', (request()->input('page', 1) - 1) * 10);
+        }
+    
+        
+
+        
+        $tag_query = "SELECT COUNT(nom_startup) as startup_count FROM startups";
+        $stmt = $pdo->query($tag_query);
+        $startup_count = $stmt->fetchColumn();
+        
+        $total_startups = Startup::count();
+        $contact_count = Phase::where('phase', 'contact')->count();
+        $discussion_count = Phase::where('phase', 'discussion')->count();
+        $pilotage_count = Phase::where('phase', 'pilotage')->count();
+        $deploiement_count = Phase::where('phase', 'deploiement')->count();
+        
+        $startups = Startup::with('phase', 'secteur', 'commentaires')->get();
+        
+        $startups = Startup::where([
+            ['nom_startup','!=', Null],
+            [ function($query) use ($request){
+            if(($nom = $request->nom)){
+                $query->orWhere('nom_startup','LIKE','%'.$nom.'%')->get();
+                }
+            }]
+                ])
                 ->orderBy("id","desc")
                 ->paginate(6);
 
-            return view('startup.index',compact('startups'))
-                ->with('i',(request()->input('page',1)-1)*10);
+            return view('startup.index', compact('startups','startup_count', 'total_startups', 'contact_count', 'discussion_count', 'pilotage_count', 'deploiement_count', 'startups'))
+                    ->with('i',(request()->input('page',1)-1)*10);
     }
 
 
-    public function infosGenStartUps()
-    {
-        $host = 'annuairestartup-db-1';
-                $db = 'annuaire_startup';
-                $user = 'jemmy';
-                $pass = 'jemmy_password';
-                $charset = 'utf8mb4';
-        
-                $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-                $options = [
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    PDO::ATTR_EMULATE_PREPARES => false,
-                ];
-        
-                try {
-                    $pdo = new PDO($dsn, $user, $pass, $options);
-                } catch (\PDOException $e) {
-                    throw new \PDOException($e->getMessage(), (int)$e->getCode());
-                }
-        
-                $tag_query = "SELECT COUNT(nom_startup) as startup_count FROM startups";
-                $stmt = $pdo->query($tag_query);
-                $startup_count = $stmt->fetchColumn();
-        
-                $total_startups = Startup::count();
-                $contact_count = Phase::where('phase', 'contact')->count();
-                $discussion_count = Phase::where('phase', 'discussion')->count();
-                $pilotage_count = Phase::where('phase', 'pilotage')->count();
-                $deploiement_count = Phase::where('phase', 'deploiement')->count();
-        
-                $startups = Startup::with('phase', 'secteur', 'commentaires')->get();
-        
-                return view('startup.index', compact('startup_count', 'total_startups', 'contact_count', 'discussion_count', 'pilotage_count', 'deploiement_count', 'startups'));
-         
-    }
+   
     /**
      * @return \Illuminate\Http\Response
      */

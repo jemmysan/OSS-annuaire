@@ -233,7 +233,7 @@
 
 <div class="container">
        
-       @can('voir_infos_gen_startup')
+    @can('voir_infos_gen_startup')
         <div>
             <h1>Annuaire des Start-up</h1>
             <div class="col-md-2" style="margin-left: 10px">
@@ -302,41 +302,44 @@
                 </div>
             </div>
         </div>
-        @endcan
+    @endcan
 
     <form action="{{ route('startup.index') }}" method="GET" role="search" style="float: right">
 
-        <div class="input-group">
+        <div class="input-group bg-color-red">
             <div id="custom-search-input">
                 <div class="col-sm-12">
                     <input type="text" class="form-control"   name="nom" placeholder="Nom Start-Up" id="nom">
                 </div>
             </div>
-
-            <a href="{{ route('startup.index') }}" class=" mt-1">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-danger" type="button" title="Refraichir">
-                                        <span class="fas fa-sync-alt"></span>
-                                    </button>
-                                </span>
-            </a>
+            <div>
+                
+                <a href="{{ route('startup.index') }}" class=" mt-1">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-danger" type="button" title="Refraichir">
+                                            <span class="fas fa-sync-alt"></span>
+                                        </button>
+                                    </span>
+                </a>
+            </div>
+            <br>
         </div>
     </form>
+    
 
-                <div class="card-tools">
-                    @can('creer_startup')
+    <div class="card-tools">
+        @can('creer_startup')
+            <a  @popper( Créer une nouvelle startup!) href="{{ route('startup.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></a>
+        @endcan
 
-                        <a  @popper( Créer une nouvelle startup!) href="{{ route('startup.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></a>
-                    @endcan
+        @can('importer_startup')
+            <a @popper( Importer \ Export un fichier CSV!) href="{{url('/import-export')}}" class="btn btn-sm btn-info ">
+                <i class="fas fa-file-import expo"></i> / <i class="fas fa-file-export"></i>
+            </a>
+        @endcan
+    </div>
 
-                    @can('importer_startup')
-                        <a @popper( Importer \ Export un fichier CSV!) href="{{url('/import-export')}}" class="btn btn-sm btn-info ">
-                            <i class="fas fa-file-import expo"></i> / <i class="fas fa-file-export"></i>
-                        </a>
-                    @endcan
-                </div>
-
-                <div class="album py-5 bg-light">
+        <div class="album py-5 bg-light">
                     <div class="container">
                         <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 g-4">
 
@@ -389,14 +392,17 @@
                                                 </div>
                                                 <br>
                                                 <div class="line" style=" border-top: 1px solid black;
-
+">
                                                                                                     @foreach ($startup->tag as $singleTag)
                                                         <span class="badge badge-info">#{{ $singleTag->name }}</span> <br>
                                                     @endforeach
                                                 </div>
+                                                <br>
+
 
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center">
+                                                <small class="text-muted">{{ $startup->date_creation }}</small>
                                                 <div class="btn-group">
                                                     <a  type="button" href="{{ route('startup.show', $startup->id  ) }}" class="btn btn-sm btn-primary"> <i class="fas fa-eye"></i></a>
 
@@ -409,7 +415,6 @@
 
                                                     @endcan
                                                 </div>
-                                                <small class="text-muted">{{ $startup->date_creation }}</small>
                                             </div>
                                         </div>
                                     </div>
