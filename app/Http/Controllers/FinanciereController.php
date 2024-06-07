@@ -160,8 +160,9 @@ class FinanciereController extends Controller
      * @param  \App\Financiere  $financiere
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Financiere $financiere)
+    public function destroy($id)
     {
+        $financiere = Financiere::findOrFail($id);
         $financiere->delete();
 
         return redirect()->route('financiere.index')

@@ -10,7 +10,7 @@
 
 
     <div class="card">
-        <h2>Gestion des structure financieres</h2>
+        <h2>Gestion des structure financieres </h2>
 <br>
         <div class="row">
             <div class="col-12 col-sm-6 col-md-3">
@@ -97,7 +97,7 @@
 
                                 @can('supprimer_financiere')
 
-                                    <a class="btn btn-sm  btn-danger" href="delete/{{$financiere->id }}" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
+                                    <a class="btn btn-sm  btn-danger" href="{{ route('delete-financement', $financiere->id ) }}" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
 
                                 @endcan
                             </div>

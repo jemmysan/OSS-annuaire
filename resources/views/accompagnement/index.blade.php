@@ -72,10 +72,9 @@ Liste
                                             @endcan
 
                                             @can('supprimer_accompagnement')
-                                                     <a class="btn btn-sm  btn-danger" href="delete/{{$accompagnement->id }}" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
-
-
-                                                     </form>
+                                                     <a class="btn btn-sm  btn-danger" href="{{ route('delete-accompagnement',$accompagnement->id ) }}" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> 
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
                                             @endcan
                                              </div>
                                      </td>

@@ -150,8 +150,9 @@ class AccompagnementController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function destroy( Accompagnement $accompagnement)
+    public function destroy($id)
     {
+        $accompagnement = Accompagnement::findOrFail($id);
         $accompagnement->delete();
         return redirect()->route('accompagnement.index')
             ->with('success','Structure supprimée avec succés');

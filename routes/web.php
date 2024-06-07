@@ -1,21 +1,24 @@
 <?php
 
 
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ImportExportController;
-use App\Http\Controllers\PermissionController;
-
-
-use App\Http\Controllers\ShareController;
-use App\Http\Controllers\StartRegistreController;
-use App\Http\Controllers\StartStatController;
-use App\Http\Controllers\StartupController;
-use App\Http\Controllers\StatistiqueController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+
+
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ShareController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\StartupController;
+use App\Http\Controllers\StartStatController;
+use App\Http\Controllers\FinanciereController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\FinancementController;
+use App\Http\Controllers\StatistiqueController;
+use App\Http\Controllers\ImportExportController;
+use App\Http\Controllers\StartRegistreController;
+use App\Http\Controllers\AccompagnementController;
 
 
 
@@ -62,15 +65,17 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('startup/{id}', [StartupController::class,'save_phase']);
     Route::get('delete/{id}',[StartupController::class,'destroy'])->name('delete-startup');
     Route::resource('accompagnement', 'AccompagnementController');
+    Route::get('delete/{id}',[AccompagnementController::class,'destroy'])->name('delete-accompagnement');
     Route::resource('financiere', 'FinanciereController');
-    Route::delete('financieres/{{id}}','FinanciereController@destroy' );
+    Route::get('financieres/{id}',[FinanciereController::class,'destroy'])->name('delete-financement');
     Route::resource('tasks', 'TasksController');
     Route::resource('comments', 'CommentsController');
     Route::get('/startup/index',[StartupController::class,'search']);
     Route::get('/owner', function(){
         return "Owner of current team.";
-       
-})->middleware('auth', 'teamowner');
+    }
+
+)->middleware('auth', 'teamowner');
 
 
 
