@@ -53,5 +53,11 @@ class AuthServiceProvider extends ServiceProvider
 
             return Response::allow();
         });
+
+        Gate::define('porteur-projet', function (User $user) {
+            return $user->hasRole('Porteur-projet') 
+                ? Response::allow() 
+                : Response::deny('You must be a "Porteur-projet".');
+        });
     }
 }

@@ -55,7 +55,11 @@ class User extends Authenticatable
      * @var mixed
      */
 
-
+    //  public function hasRole($role)
+    //  {
+    //      return $this->roles()->where('name', $role)->exists();
+    //  }
+     
     public function accompagnement(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Accompagnement::class);
