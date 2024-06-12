@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ShareController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\StartupController;
+use App\Http\Controllers\EvolutionController;
 use App\Http\Controllers\StartStatController;
 use App\Http\Controllers\FinanciereController;
 use App\Http\Controllers\PermissionController;
@@ -65,13 +66,25 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('startup/strore', [StartupController::class,'store'])->name('store-startup');
     Route::post('startup/{id}', [StartupController::class,'save_phase']);
     Route::get('startup/delete/{id}',[StartupController::class,'destroy'])->name('delete-startup');
+    Route::get('/startup/index',[StartupController::class,'search']);
+    
     Route::resource('accompagnement', 'AccompagnementController');
     Route::get('delete/{id}',[AccompagnementController::class,'destroy'])->name('delete-accompagnement');
+    
     Route::resource('financiere', 'FinanciereController');
     Route::get('financieres/{id}',[FinanciereController::class,'destroy'])->name('delete-financement');
+    
     Route::resource('tasks', 'TasksController');
+    
     Route::resource('comments', 'CommentsController');
-    Route::get('/startup/index',[StartupController::class,'search']);
+    
+
+    Route::prefix('evolution')->group(function (){
+        Route::get('/index',[EvolutionController::class,'index'])->name('evolution');
+        Route::get('/create',[EvolutionController::class,'create'])->name('ajout-evolution');
+        Route::post('/store',[EvolutionController::class,'store'])->name('create-evolution');
+    });
+    
     Route::get('/owner', function(){
         return "Owner of current team.";
     }

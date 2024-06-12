@@ -107,30 +107,56 @@
     </li>
     @endcan
 
-
-
+    <!---- Reférentiels --------->
     <li class="nav-item">
-        <a href="#" class="nav-link active">
-            <i class="fas fa-users-cog"></i>
+            <a href="#" class="nav-link active">
+                <i class="bi bi-journal"></i>
+                <p>
+                    Référentiels
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a  class="nav-link">
+                        <i class="bi bi-calendar4-range"></i>
+                        <p>Phase</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('evolution') }}" class="nav-link">
+                        <i class="bi bi-graph-up"></i>
+                        <p>Evolution</p>
+                    </a>
+                </li>
+                
+            </ul>
+        </li>
 
-            <p>
-                Gestion du profil
-                <i class="right fas fa-angle-left"></i>
-            </p>
-        </a>
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="{{ route('user.profil') }}" class="nav-link">
-                    <i class="fas fa-users nav-icon"></i>
-                    <p>Profil</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{route('userGetPassword')}}" class="nav-link">
-                    <i class="fas fa-lock nav-icon"></i>
-                    <p>Changer Password</p>
-                </a>
-            </li>
-        </ul>
-    </li>
+
+
+        <li class="nav-item">
+            <a href="#" class="nav-link active">
+                <i class="fas fa-users-cog"></i>
+
+                <p>
+                    Gestion du profil
+                    <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('user.profil') }}" class="nav-link">
+                        <i class="fas fa-users nav-icon"></i>
+                        <p>Profil</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('userGetPassword')}}" class="nav-link">
+                        <i class="fas fa-lock nav-icon"></i>
+                        <p>Changer Password</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
 </ul>
