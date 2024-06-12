@@ -147,7 +147,7 @@
                                                         {{csrf_field()}}
                                                         <input name="_method" type="hidden" value="DELETE">
                                         <button type="submit" title="delete"  class="btn  bg-danger">
-                                                        <i class="fas fa-trash "></i>
+                                                        <i class="fas fa-trash " onclick="return confirm('Etes-vous sur de vouloir supprimer l\'utilisateur ?')"> </i>
 
                                         </button>
                                  </form>

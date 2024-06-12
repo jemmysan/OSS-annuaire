@@ -61,9 +61,10 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 
-
+    
+    Route::post('startup/strore', [StartupController::class,'store'])->name('store-startup');
     Route::post('startup/{id}', [StartupController::class,'save_phase']);
-    Route::get('delete/{id}',[StartupController::class,'destroy'])->name('delete-startup');
+    Route::get('startup/delete/{id}',[StartupController::class,'destroy'])->name('delete-startup');
     Route::resource('accompagnement', 'AccompagnementController');
     Route::get('delete/{id}',[AccompagnementController::class,'destroy'])->name('delete-accompagnement');
     Route::resource('financiere', 'FinanciereController');

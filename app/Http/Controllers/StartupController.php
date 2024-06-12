@@ -172,8 +172,8 @@ class StartupController extends Controller
      */
     public function edit($id)
     {
-         $tags = \App\Models\Tag::pluck('name', 'id');
-         $secteurs = \App\Models\Secteur::pluck('secteur', 'id');
+        $tags = \App\Models\Tag::pluck('name', 'id');
+        $secteurs = \App\Models\Secteur::pluck('secteur', 'id');
         $startup = Startup::findOrFail($id);
 
         return view('startup.edit',compact('tags','secteurs','startup')) ;
@@ -189,7 +189,6 @@ class StartupController extends Controller
     public function update(Request $request, Startup $startup)
     {
         request()->validate([
-
             'nom_startup'=> 'required',
             'description'=> 'required',
             'partenariat_orange'=> 'required',
@@ -208,7 +207,6 @@ class StartupController extends Controller
             'coordonnee'=> 'required',
             'statut'=> 'required',
             'autre_part'=> 'required',
-
         ]);
          $newlogoNom = time().'.'.$request->logo->getClientOriginalExtension();
         $request->logo->move(public_path('img'),  $newlogoNom);
@@ -226,8 +224,8 @@ class StartupController extends Controller
                     'ceo_co_fondateur'=> $request->input('ceo_co_fondateur'),
                     'adresses'=> $request->input('adresses'),
                     'filename'=> $newfileNom,
-                     'logo'=> $newlogoNom,
-                     'video'=> $request->input('video'),
+                    'logo'=> $newlogoNom,
+                    'video'=> $request->input('video'),
                     'site_web'=> $request->input('site_web'),
                     'email'=> $request->input('email'),
                     'coordonnee'=> $request->input('coordonnee'),
@@ -238,7 +236,6 @@ class StartupController extends Controller
                     'referent'=> $request->input('referent'),
                     'user_id'=>auth()->user()->id,
                     'autre_part'=> $request->input('autre_part')
-
 
                 ]);
 
@@ -256,27 +253,25 @@ class StartupController extends Controller
      * @param  \App\Models\Startup  $startup
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Startup $startup, $id)
+    public function destroy($id)
     {
         $startup = Startup::findOrFail($id);
         try {
-           
+        
             Commentaire::where('startup_id', $id)->delete();
-            Financement::where('startup_id',$id)->delete();
-           
+            Financement::where('startup_id', $id)->delete();
+            Phase::where('startup_id', $id)->delete(); // Add this line to delete related phases
+
             $startup->secteur()->detach();
             $startup->tag()->detach();
 
-
             $startup->delete();
-           
+
             return redirect()->back()->with('success', 'Start-up supprimée avec succès');
         } catch (\Exception $e) {
             return back()->withError('Une erreur est survenue lors de la suppression de la start-up : ' . $e->getMessage());
         }
     }
-
-
 
 
     //enregistrer  phase
@@ -291,6 +286,7 @@ class StartupController extends Controller
 
         return redirect('startup/'.$id)->with('success','Mise à jour effectuée');
     }
+
 
     public function like(Request $request)
     {

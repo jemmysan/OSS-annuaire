@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Cache;
-use Spatie\Permission\Models\Role;
-use Hash;
 use DB;
+use Hash;
+use Cache;
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Startup;
+use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -141,10 +142,15 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        $authId = auth()->user()->id;
+        $startups = Startup::where('user_id',$id)->get();
+        foreach($startups as $startup){
+            $startup->user_id = $authId;
+            $startup->save();
+        }
         User::find($id)->delete();
         return redirect()->route('user.index')
             ->with('success','User supprimé avec succés');
-
     }
 
     public function profil(){

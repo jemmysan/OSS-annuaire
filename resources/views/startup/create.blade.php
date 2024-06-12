@@ -25,7 +25,7 @@
             <h3 class="card-title"> Nouvelle Start-Up</h3>
         </div>
 
-        <form method="POST" action="{{ route('startup.store') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('store-startup') }}" enctype="multipart/form-data">
             @csrf
 
             <div class="row">

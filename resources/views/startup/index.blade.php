@@ -239,7 +239,7 @@
             <div class="col-md-2" style="margin-left: 10px">
                 <div class="sticky-top mb-5">
                     <div style="display: inline-block;">
-                        Nombre de tags : {{ $startup_count }}
+                        &nbsp;
                     </div>
                 </div>
             </div>
@@ -411,7 +411,7 @@
                                                     @endcan
 
                                                     @can('supprimer_startup')
-                                                        <a class="btn btn-sm  btn-danger" href="delete/{{$startup->id }}" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
+                                                        <a class="btn btn-sm  btn-danger" href="{{ route('delete-startup', $startup->id ) }}"  onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
 
                                                     @endcan
                                                 </div>
