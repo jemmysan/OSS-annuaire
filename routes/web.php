@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PhaseController;
 use App\Http\Controllers\ShareController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\StartupController;
@@ -83,6 +84,13 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/index',[EvolutionController::class,'index'])->name('evolution');
         Route::get('/create',[EvolutionController::class,'create'])->name('ajout-evolution');
         Route::post('/store',[EvolutionController::class,'store'])->name('create-evolution');
+        Route::get('/edit/{id}',[EvolutionController::class,'edit'])->name('edit-evolution');
+        Route::put('/update/{id}',[EvolutionController::class,'update'])->name('update-evolution');
+        Route::get('/delete/{id}',[EvolutionController::class,'destroy'])->name('delete-evolution');
+    });
+    
+    Route::prefix('phase')->group(function (){
+        Route::get('/index',[PhaseController::class,'index'])->name('phase');
     });
     
     Route::get('/owner', function(){

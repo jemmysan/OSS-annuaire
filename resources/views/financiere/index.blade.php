@@ -23,9 +23,10 @@
                         <span class="info-box-text">TOTAL</span>
                         <span class="info-box-number">
                                 <?php
-                            use Illuminate\Support\Facades\DB;$count = DB::table('financieres')->count();
-                            echo $count;
-                            ?>
+                                    use Illuminate\Support\Facades\DB;
+                                    $count = DB::table('financieres')->count();
+                                    echo $count;
+                                ?>
                              </span>
                     </div>
                     <!-- /.info-box-content -->
@@ -89,16 +90,16 @@
                         </td>
                         <td >
                             <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                                <a  type="button" href="{{ route('financiere.show', $financiere->id  ) }}" class="btn btn-sm btn-primary"> <i class="fas fa-eye"></i></a>
+                                @can('voir_financiere')
+                                    <a  type="button" href="{{ route('financiere.show', $financiere->id  ) }}" class="btn btn-sm btn-primary"> <i class="fas fa-eye"></i></a>  
+                                @endcan
 
                                 @can('modifier_financiere')
                                     <a href="{{ route('financiere.edit', $financiere->id  ) }}" class="btn btn-sm bg-teal"> <i class="fas fa-edit"></i></a>
                                 @endcan
 
                                 @can('supprimer_financiere')
-
                                     <a class="btn btn-sm  btn-danger" href="{{ route('delete-financement', $financiere->id ) }}" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
-
                                 @endcan
                             </div>
                         </td>

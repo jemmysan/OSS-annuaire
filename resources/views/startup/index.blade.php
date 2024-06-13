@@ -404,7 +404,9 @@
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <small class="text-muted">{{ $startup->date_creation }}</small>
                                                 <div class="btn-group">
-                                                    <a  type="button" href="{{ route('startup.show', $startup->id  ) }}" class="btn btn-sm btn-primary"> <i class="fas fa-eye"></i></a>
+                                                    @can('voir_startup')
+                                                        <a  type="button" href="{{ route('startup.show', $startup->id  ) }}" class="btn btn-sm btn-primary"> <i class="fas fa-eye"></i></a>
+                                                    @endcan
 
                                                     @can('editer_startup')
                                                         <a href="{{ route('startup.edit', $startup->id  ) }}" class="btn btn-sm bg-teal"> <i class="fas fa-edit"></i></a>

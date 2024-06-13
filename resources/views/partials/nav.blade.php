@@ -117,12 +117,12 @@
                 </p>
             </a>
             <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a  class="nav-link">
+                <!-- <li class="nav-item">
+                    <a href="{{ route('phase') }}" class="nav-link">
                         <i class="bi bi-calendar4-range"></i>
                         <p>Phase</p>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a href="{{ route('evolution') }}" class="nav-link">
                         <i class="bi bi-graph-up"></i>
