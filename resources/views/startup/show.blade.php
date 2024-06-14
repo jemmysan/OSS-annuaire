@@ -15,6 +15,8 @@
 
     <style type="text/css">
 
+
+
         #msform {
             text-align: center;
             position: relative;
@@ -251,7 +253,9 @@
             -ms-filter: alpha(opacity=60);
             filter: alpha(opacity=60);
         }
-    </style>
+
+          
+</style>
 
 
       <!-- Default box -->
@@ -374,6 +378,7 @@
 
 
             </div>
+
             <div class="col-lg-9">
 
                 <div class="card right-profile-card">
@@ -401,12 +406,15 @@
                                 <a class="nav-link" id="pills-phase-tab" data-toggle="pill" href="#pills-financement" role="tab" aria-selected="false">Financement</a>
                             </li>
 
-
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-phase-tab" data-toggle="pill" href="#pills-evolution" role="tab" aria-selected="false">Evolution</a>
+                            </li>
 
                         </ul>
                     </div>
                     <div class="card-body">
                         <div class="tab-content" id="pills-tabContent">
+                            <!-------- details ---------->
                             <div class="tab-pane fade show active" id="pills-details" role="tabpanel" aria-labelledby="pills-details-tab">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -470,12 +478,16 @@
                                     </table>
                                 </div>
                             </div>
+                            
+                            <!-------- description ---------->
                             <div class="tab-pane fade" id="pills-description" role="tabpanel">
                                 <div class="work-container">
                                     {{$startup->description}}
                                      </div>
 
                             </div>
+
+                            <!-------- commentaire ---------->
                             <div class="tab-pane fade" id="pills-commentaire" role="tabpanel">
 
 
@@ -506,6 +518,8 @@
                                     </div>
 
                             </div>
+
+                            <!-------- video ---------->
                             <div class="tab-pane fade" id="pills-video" role="tabpanel" aria-labelledby="pills-video-tab">
                                 <div class="embed-responsive embed-responsive-16by9 z-depth-1">
                                     <iframe width="356" height="200" src="{{$startup->video}}" frameborder="0" allowfullscreen>
@@ -513,7 +527,7 @@
                                 </div>
                             </div>
 
-                            
+                            <!-------- details ---------->
                             <div class="tab-pane fade" id="pills-phase" role="tabpanel" aria-labelledby="pills-phase-tab">
                                            <div class="col-auto">
 
@@ -523,7 +537,7 @@
 
                             </div>
 
-
+                            <!-------- financement ---------->
                             <div class="tab-pane fade" id="pills-financement" role="tabpanel" aria-labelledby="pills-financement-tab">
 
                                 <h2>
@@ -605,8 +619,134 @@
                                     </div>
 
                             </div>
+                            
+
+                            <!----- pills evolution links --->
+                            <div class="tab-pane fade" id="pills-evolution" role="tabpanel" aria-labelledby="pills-evolution-tab">
+                                <div class="d-flex justify-content-between align-items-center ">
+                                    
+                                    <div class="d-fex  justify-content-center align-items-start">
+                                        <h3 class="pt-3">
+                                            Phases d'évolution
+                                        </h3>
+                                    </div>
+
+                                    <a class="btn btn-sm btn-primary " >
+                                        <i class="fas fa-plus-circle"></i>
+                                        Ajouter
+                                    </a>
+                                </div>
+                                <hr>
+                               <!------------ reglage -------->
+                                <div class=" px-4 ">
+                                    <ul class="bg-success  pt-1 position-relative  nav nav-pills position-relative my-4" id="pills-tab" role="tablist">
+                                    <div class="progress" style="height: 1px;">
+                                        <div class="bg-success progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+
+                                        
+                                            <li class="bg-light nav-item position-absolute top-0 start-0 translate-middle rounded-pill" style="width: 2rem; height:2rem; ">
+                                                <a class="" id="pills-details1-tab" data-toggle="pill" href="#pills-details1" role="tab" aria-selected="true">
+                                                    1
+                                                </a>
+                                            </li>
+                                            <li class="bg-secondary nav-item position-absolute top-0 start-50 translate-middle rounded-pill" style="width: 2rem; height:2rem;">
+
+                                                <a class="nav-link" id="pills-description1-tab" data-toggle="pill" href="#pills-description1" role="tab" aria-selected="false">2</a>
+                                            </li>
+                                            
+                                           
+                                            
+
+                                            
+
+                                        
+                                    </ul>
+                                    
+                                    <!-- <div class="card-body">
+                                        <div class="tab-content" id="pills-tabContent">
+                                           
+                                            <div class="tab-pane fade show active" id="pills-details1" role="tabpanel" aria-labelledby="pills-details-tab">
+                                                <div class="table-responsive">
+                                                    <table class="table">
+
+                                                        <tbody>
+
+                                                            <tr>
+                                                                <th style="width:50% ">Statut juridique:</th>
+                                                                <td> {{$startup->statut}} </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th> Ceo/co Fondateur: </th>
+                                                                <td>{{$startup->ceo_co_fondateur}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th> <i class="fas fa-link"></i> Site Web: </th>
+                                                                <td> <a href="https://{{$startup->site_web}}" target="_blank">
+                                                                        {{$startup->site_web}}
+                                                                    </a> </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th> <i class="fas fa-handshake"></i> Partenariat avec: </th>
+                                                                <td>
+                                                                    <div>
+                                                                        <ul>
+                                                                            @if($startup->partenariat_orange == "oui" )
+
+                                                                                <li>Orange</li>
+
+                                                                            @endif
+                                                                            @foreach($startup->financements as $finance)
+                                                                            <li>{{$finance->nom}}</li>
+                                                                            @endforeach
+                                                                        </ul>
+                                                                    </div>
+                                                                </td>
+
+                                                            </tr>
+                                                            <tr>
+                                                                <th> <i class="fas fa-calendar"></i> Date de création: </th>
+                                                                <td> {{$startup->date_creation}} </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <th style="width:50% " >Référents:  </th>
+                                                                <td> {{$startup->referent}} -</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <th style="width:50% " > <i class="fas fa-paperclip"></i>Piece Jointe:  </th>
+                                                                <td >
+
+                                                                    <a href="{{asset('fichier/'.$startup->filename)}}" class="btn-link text-secondary" target="_self"><i class="far fa-fw fa-file"></i> {{$startup->filename}}</a>
+
+                                                                </td>
+                                                            </tr>
+
+
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            
+                                            
+                                            <div class="tab-pane fade" id="pills-description1" role="tabpanel">
+                                                <div class="work-container">
+                                                    {{$startup->description}}
+                                                    </div>
+
+                                            </div>  
+                                        </div>
+                                    </div> -->
+                  
+                                </div>
+
+                                
+                            </div>
                         </div>
                     </div>
+                  
                 </div>
             </div>
         </div>
