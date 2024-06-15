@@ -295,7 +295,7 @@
                                             </button>
                                         </div>
 
-{{--                                       <form action="{{ route('share',$startup->id) }}" method="POST">--}}
+                    {{--       <form action="{{ route('share',$startup->id) }}" method="POST">--}}
                                        <form action="#" method="POST">
                                             @csrf
                                             <div class="modal-body">
@@ -631,7 +631,7 @@
                                         </h3>
                                     </div>
 
-                                    <a class="btn btn-sm btn-primary " >
+                                    <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addEvolutionForStartup" >
                                         <i class="fas fa-plus-circle"></i>
                                         Ajouter
                                     </a>
@@ -639,106 +639,34 @@
                                 <hr>
                                <!------------ reglage -------->
                                 <div class=" px-4 ">
-                                    <ul class="bg-success  pt-1 position-relative  nav nav-pills position-relative my-4" id="pills-tab" role="tablist">
+                                <div class="position-relative m-4 nav nav-pills position-relative my-4 bg-primary" id="pills-tab" role="tablist">
                                     <div class="progress" style="height: 1px;">
-                                        <div class="bg-success progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-
-                                        
-                                            <li class="bg-light nav-item position-absolute top-0 start-0 translate-middle rounded-pill" style="width: 2rem; height:2rem; ">
-                                                <a class="" id="pills-details1-tab" data-toggle="pill" href="#pills-details1" role="tab" aria-selected="true">
-                                                    1
-                                                </a>
-                                            </li>
-                                            <li class="bg-secondary nav-item position-absolute top-0 start-50 translate-middle rounded-pill" style="width: 2rem; height:2rem;">
-
-                                                <a class="nav-link" id="pills-description1-tab" data-toggle="pill" href="#pills-description1" role="tab" aria-selected="false">2</a>
-                                            </li>
-                                            
-                                           
-                                            
-
-                                            
-
-                                        
-                                    </ul>
+                                        <button type="button" class="position-absolute top-0 start-0 translate-middle btn btn-sm btn-primary rounded-pill" style="width: 2rem; height:2rem;" id="pills-details1-tab" data-toggle="pill" href="#pills-details1" role="tab" aria-selected="true">1</button>
+                                        <button type="button" class="position-absolute top-0 start-50 translate-middle btn btn-sm btn-primary rounded-pill" style="width: 2rem; height:2rem;" id="pills-description1-tab" data-toggle="pill" href="#pills-description1" role="tab" aria-selected="false">2</button>
+                                        <button type="button" class="position-absolute top-0 start-100 translate-middle btn btn-sm btn-secondary rounded-pill" style="width: 2rem; height:2rem;">3</button>
+                                    </div>
+                                   
                                     
-                                    <!-- <div class="card-body">
+                                    <div class="card-body">
                                         <div class="tab-content" id="pills-tabContent">
                                            
                                             <div class="tab-pane fade show active" id="pills-details1" role="tabpanel" aria-labelledby="pills-details-tab">
-                                                <div class="table-responsive">
-                                                    <table class="table">
-
-                                                        <tbody>
-
-                                                            <tr>
-                                                                <th style="width:50% ">Statut juridique:</th>
-                                                                <td> {{$startup->statut}} </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th> Ceo/co Fondateur: </th>
-                                                                <td>{{$startup->ceo_co_fondateur}}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th> <i class="fas fa-link"></i> Site Web: </th>
-                                                                <td> <a href="https://{{$startup->site_web}}" target="_blank">
-                                                                        {{$startup->site_web}}
-                                                                    </a> </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th> <i class="fas fa-handshake"></i> Partenariat avec: </th>
-                                                                <td>
-                                                                    <div>
-                                                                        <ul>
-                                                                            @if($startup->partenariat_orange == "oui" )
-
-                                                                                <li>Orange</li>
-
-                                                                            @endif
-                                                                            @foreach($startup->financements as $finance)
-                                                                            <li>{{$finance->nom}}</li>
-                                                                            @endforeach
-                                                                        </ul>
-                                                                    </div>
-                                                                </td>
-
-                                                            </tr>
-                                                            <tr>
-                                                                <th> <i class="fas fa-calendar"></i> Date de création: </th>
-                                                                <td> {{$startup->date_creation}} </td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <th style="width:50% " >Référents:  </th>
-                                                                <td> {{$startup->referent}} -</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <th style="width:50% " > <i class="fas fa-paperclip"></i>Piece Jointe:  </th>
-                                                                <td >
-
-                                                                    <a href="{{asset('fichier/'.$startup->filename)}}" class="btn-link text-secondary" target="_self"><i class="far fa-fw fa-file"></i> {{$startup->filename}}</a>
-
-                                                                </td>
-                                                            </tr>
-
-
-
-                                                        </tbody>
-                                                    </table>
+                                                <div class="work-container">
+                                                    phase 1
                                                 </div>
                                             </div>
                                             
                                             
                                             <div class="tab-pane fade" id="pills-description1" role="tabpanel">
                                                 <div class="work-container">
-                                                    {{$startup->description}}
-                                                    </div>
+                                                    phase 2
+                                                </div>
 
                                             </div>  
                                         </div>
-                                    </div> -->
+                                    </div>
                   
                                 </div>
 
@@ -753,7 +681,78 @@
 
     </div>
 
+    
+
+        <!-- Modal add evolution for startup -->
+    <div class="modal fade" id="addEvolutionForStartup" tabindex="-1" role="dialog" aria-labelledby="addEvolutionForStartup" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content max-h-full">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Ajout évolution</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <form method="POST" action=" {{ route('create-evolution') }} ">
+                        @csrf
+                            <div class="modal-body">
+                                <label for="leve_fond">Libelle <span class="text-danger">*</span></label>
+                                
+                                <select class="form-control custom-select @error('libelle') is-invalid @enderror" id="libelle" name="libelle">
+                                    <option selected>Choose...</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                                @error('libelle')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                        
+                    </div>
+
+                                                <div class="modal-body">
+                                                    <label for="ordre">Ordre</label>
+                                                    <input type="number"  name="ordre" id="ordre" class="form-control @error('ordre') is-invalid @enderror" >
+
+                                                    @error('ordre')
+                                                    <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $message }}</strong>
+                                                            </span>
+                                                    @enderror
+                                                </div>
+                                                
+
+                                                <div class="modal-body">
+                                                    <label for="description"> Description</label>
+                                                    <textarea id="description" name="description"  class="form-control @error('description') is-invalid @enderror" rows="4"> </textarea>                                
+                                                    @error('description')
+                                                        <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                                    @enderror
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <button  class="btn btn-warning" data-dismiss="modal"> 
+                                                        <i class="fa fa-ban" aria-hidden="true"></i>
+                                                    </button>
+                                                    <button type="submit" class="btn btn-success float-right "><i class="fas fa-save"></i> </button>
+                                                </div>
+                                            </div>
+                                        
+                                        </form>                    
+                                        
+                                    </div>
+                                </div>                   
+                            </div>
+                </div>
+            </div>
+    </div>
+
 </div>
+
     <!-- SweetAlert2 -->
     <script src="{{asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
     <!-- Toastr -->

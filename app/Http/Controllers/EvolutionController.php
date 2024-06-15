@@ -68,4 +68,8 @@ class EvolutionController extends Controller
        return redirect()->route('evolution')
                         ->with('success','evolution supprimer avec success');
     }
+
+    public function addEvoToStartUp($id){
+
+    }
 }
