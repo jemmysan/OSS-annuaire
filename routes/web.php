@@ -68,6 +68,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('startup/{id}', [StartupController::class,'save_phase']);
     Route::get('startup/delete/{id}',[StartupController::class,'destroy'])->name('delete-startup');
     Route::get('/startup/index',[StartupController::class,'search']);
+    Route::post('/startup/add-evolution/{id}',[StartupController::class,'evolutionToStartup'])->name('addnewevolution');
     
     Route::resource('accompagnement', 'AccompagnementController');
     Route::get('delete/{id}',[AccompagnementController::class,'destroy'])->name('delete-accompagnement');

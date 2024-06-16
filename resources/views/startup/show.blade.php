@@ -693,60 +693,65 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                     </div>
-                    <form method="POST" action=" {{ route('create-evolution') }} ">
+                    <form method="POST" action="{{ route('addnewevolution', $startup->id ) }}">
                         @csrf
-                            <div class="modal-body">
-                                <label for="leve_fond">Libelle <span class="text-danger">*</span></label>
-                                
-                                <select class="form-control custom-select @error('libelle') is-invalid @enderror" id="libelle" name="libelle">
-                                    <option selected>Choose...</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                                @error('libelle')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                        
-                    </div>
+                        <div class="modal-body">
+                            <label for="leve_fond">Libelle <span class="text-danger">*</span></label>
+                            <?php
+                                use Illuminate\Support\Facades\DB;
+                                $associatedIds = DB::table('evolution_startups')
+                                    ->where('startup_id', $startup->id)
+                                    ->pluck('evolution_id');
+                                $evolutions = DB::table('evolutions')
+                                    ->whereNotIn('id', $associatedIds)
+                                    ->get();
+                            ?>
+                            <select class="form-control custom-select @error('libelle') is-invalid @enderror" id="libelle" name="libelle" onchange="updateFields()">
+                                <option value="" selected disabled>Choose...</option>
+                                @foreach($evolutions as $evolutionOption)
+                                    <option value="{{ $evolutionOption->id }}" 
+                                            data-ordre="{{ $evolutionOption->ordre }}" 
+                                            data-description="{{ $evolutionOption->description }}">
+                                        {{ $evolutionOption->libelle }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('libelle')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
 
-                                                <div class="modal-body">
-                                                    <label for="ordre">Ordre</label>
-                                                    <input type="number"  name="ordre" id="ordre" class="form-control @error('ordre') is-invalid @enderror" >
+                        <div class="modal-body">
+                            <label for="ordre">Ordre</label>
+                            <input type="number" name="ordre" id="ordre" class="form-control @error('ordre') is-invalid @enderror" value="{{ old('ordre') }}" readOnly>
+                            @error('ordre')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
 
-                                                    @error('ordre')
-                                                    <span class="invalid-feedback" role="alert">
-                                                                <strong>{{ $message }}</strong>
-                                                            </span>
-                                                    @enderror
-                                                </div>
-                                                
+                        <div class="modal-body">
+                            <label for="description">Description</label>
+                            <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" rows="4" readOnly>{{ old('description') }}</textarea>
+                            @error('description')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
 
-                                                <div class="modal-body">
-                                                    <label for="description"> Description</label>
-                                                    <textarea id="description" name="description"  class="form-control @error('description') is-invalid @enderror" rows="4"> </textarea>                                
-                                                    @error('description')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-
-                                                <div class="modal-body">
-                                                    <button  class="btn btn-warning" data-dismiss="modal"> 
-                                                        <i class="fa fa-ban" aria-hidden="true"></i>
-                                                    </button>
-                                                    <button type="submit" class="btn btn-success float-right "><i class="fas fa-save"></i> </button>
-                                                </div>
-                                            </div>
-                                        
-                                        </form>                    
-                                        
-                                    </div>
-                                </div>                   
-                            </div>
+                        <div class="modal-body">
+                            <button class="btn btn-warning" data-dismiss="modal">
+                                <i class="fa fa-ban" aria-hidden="true"></i>
+                            </button>
+                            <button type="submit" class="btn btn-success float-right">
+                                <i class="fas fa-save"></i>
+                            </button>
+                        </div>
+                    </form> 
                 </div>
             </div>
     </div>
@@ -773,4 +778,16 @@
 
     <script src="jquery-bar-rating-master/dist/jquery.barrating.min.js" type="text/javascript"></script>
 
+        <!-------- Remplir champs formulaire ------>
+    <script>
+    function updateFields() {
+        var select = document.getElementById('libelle');
+        var selectedOption = select.options[select.selectedIndex];
+        var ordre = selectedOption.getAttribute('data-ordre');
+        var description = selectedOption.getAttribute('data-description');
+
+        document.getElementById('ordre').value = ordre;
+        document.getElementById('description').value = description;
+    }
+</script>
 @endsection

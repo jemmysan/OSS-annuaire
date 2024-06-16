@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Excel;
 use App\Exports\StartupsExport;
 use App\Imports\StartupsImport;
+use App\Models\EvolutionStartup;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
@@ -296,5 +297,13 @@ class StartupController extends Controller
         $startup->save();
         return back()->with('success','Merci');
 
+    }
+
+    public function evolutionToStartup(Request $request,$id){
+        $evolutionId = $request->input('libelle');
+        EvolutionStartup::create([
+            'evolution_id' => $evolutionId,
+            'startup_id'=>$id
+        ]);
     }
 }

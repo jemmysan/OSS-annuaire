@@ -4,8 +4,10 @@ namespace App\Models;
 
 use App\Contrats\Likeable;
 use App\Models\Concerns\Likes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\EvolutionStartup;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 
 class Startup extends Model implements Likeable
@@ -49,12 +51,12 @@ class Startup extends Model implements Likeable
         return $this->belongsTo(User::class);
     }
 
-    public function commentaires(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function commentaires(): HasMany
     {
         return $this->hasMany(Commentaire::class);
     }
 
-    public function financements(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function financements(): HasMany
     {
         return $this->hasMany(Financement::class);
     }
@@ -71,6 +73,10 @@ class Startup extends Model implements Likeable
     public function tag()
     {
         return $this->belongsToMany(Tag::class, 'startup_tag');
+    }
+
+    public function evolutionStartup(){
+        return $this->hasMany(EvolutionStartup::class);
     }
 
 

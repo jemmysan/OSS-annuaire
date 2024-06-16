@@ -69,7 +69,5 @@ class EvolutionController extends Controller
                         ->with('success','evolution supprimer avec success');
     }
 
-    public function addEvoToStartUp($id){
-
-    }
+    
 }
