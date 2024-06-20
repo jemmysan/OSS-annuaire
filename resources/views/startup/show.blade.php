@@ -688,7 +688,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content max-h-full">
                     <div class="modal-header">
-                        <h5 class="modal-title">Ajout évolution</h5>
+                        <h5 class="modal-title">Ajout évolution startup</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -744,11 +744,24 @@
                         </div>
 
                         <div class="modal-body">
+                            <label for="filename"> Fiche descriptif présentation <span class="text-danger">*</span></label>
+                                <input type="file"  name="filename"  id="filename" class=" @error('filename') is-invalid @enderror">
+
+                                @error('filename')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                        </div>
+
+                        <div class="modal-body">
                             <button class="btn btn-warning" data-dismiss="modal">
                                 <i class="fa fa-ban" aria-hidden="true"></i>
+                                Annuler
                             </button>
                             <button type="submit" class="btn btn-success float-right">
                                 <i class="fas fa-save"></i>
+                                Ajouter
                             </button>
                         </div>
                     </form> 

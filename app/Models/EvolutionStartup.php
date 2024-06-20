@@ -14,7 +14,8 @@ class EvolutionStartup extends Model
 
     protected $fillable=[
         'evolution_id',
-        'startup_id'
+        'startup_id',
+        'file',
     ];
 
     protected $hidden = [

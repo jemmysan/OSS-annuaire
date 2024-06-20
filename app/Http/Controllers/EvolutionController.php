@@ -64,7 +64,11 @@ class EvolutionController extends Controller
     }
 
     public function destroy($id){
-       Evolution::findOrFail($id)->delete();
+       $evolution = Evolution::findOrFail($id);
+       $evolution->evolutionStartup()->each(function ($evolutionStartup){
+            $evolutionStartup->delete();
+       });
+       $evolution->delete();
        return redirect()->route('evolution')
                         ->with('success','evolution supprimer avec success');
     }
