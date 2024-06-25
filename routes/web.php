@@ -91,6 +91,8 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/delete/{id}',[EvolutionController::class,'destroy'])->name('delete-evolution');
         Route::get('/evolution-startup/{id}',[EvolutionStartupController::class,'index'])->name('view-evo-startup');
         Route::post('/evolution-startup',[EvolutionStartupController::class,'store'])->name('add-evo-startup');
+        Route::put('/evolution/{id}', [EvolutionController::class, 'update'])->name('evolution.update');
+
     });
     
     Route::prefix('phase')->group(function (){

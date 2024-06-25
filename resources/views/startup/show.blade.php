@@ -674,35 +674,50 @@
         <div class="tab-content" id="pills-tabContent">
            
 
-            @foreach($evolutions as $index => $evolution)
-            <div class="tab-pane fade show {{ $index === 0 ? 'active' : '' }}" id="pills-details{{ $index + 1 }}" role="tabpanel" aria-labelledby="pills-details{{ $index + 1 }}-tab">
-                <div class="work-container">
-                        @php
-                            $associatedEvo = DB::table('evolution_startups')
-                                            ->where('evolution_id',$evolution->id)
-                                            ->where('startup_id',$startup->id)->get()
-                        @endphp
-                        <div class="d-flex justify-content-end">
-                            <a class="btn btn-sm bg-warning mx-1" data-toggle="modal" data-target="#editEvolution{{ $evolution->id }}"> <i class="fas fa-edit"></i></a>
-                        </div>                       
-                            <div class="modal-body">
-                                <label for="libelle">Description phase de la startup</label>
-                                <div class="shadow-none p-3 bg-light rounded">{{$associatedEvo[0]->description}}</div>
-                            </div>
-                            <div class="modal-body">
-                                <label for="ordre">Fichier de description</label>
-                                <div class="shadow-none p-3 bg-light rounded">{{$associatedEvo[0]->filename}}</div>
-                            </div>
-                            
-                      
-                 
-                    
+        @foreach($evolutions as $index => $evolution)
+    <div class="tab-pane fade show {{ $index === 0 ? 'active' : '' }}" id="pills-details{{ $index + 1 }}" role="tabpanel" aria-labelledby="pills-details{{ $index + 1 }}-tab">
+        <div class="work-container">
+            @php
+                $associatedEvo = DB::table('evolution_startups')
+                                ->where('evolution_id', $evolution->id)
+                                ->where('startup_id', $startup->id)
+                                ->first();
+            @endphp
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-sm bg-warning mx-1 edit-btn" data-index="{{ $index }}">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>                         
+            <form method="POST" action="{{ route('evolution.update', $associatedEvo->id) }}" enctype="multipart/form-data" class="evolution-form">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <label for="description-{{ $index }}">Description phase de la startup</label>
+                    <textarea id="description-{{ $index }}" name="description" class="form-control" readonly>{{ $associatedEvo->description }}</textarea>
                 </div>
-            </div>
-            @endforeach
+                <div class="modal-body">
+                    <label for="filename-{{ $index }}">Fichier de description</label>
+                    <input type="file" id="filename-{{ $index }}" name="filename" class="form-control-file" disabled>
+                    <a href="{{ url('fichier/' . $associatedEvo->filename) }}">{{ $associatedEvo->filename }}</a>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-warning cancel-btn" style="display: none;">
+                        <i class="fa fa-ban"></i> Annuler
+                    </button>
+                    <button type="submit" class="btn btn-success save-btn" style="display: none;">
+                        <i class="fas fa-save"></i> Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+@endforeach
+
+
 
         </div>
     </div>
+    
 </div>
 
         </div>
@@ -845,5 +860,56 @@
         const label = input.nextElementSibling;
         label.textContent = fileName;
     }
+
+/*********** Modifier evolution startups *******/
+
+document.addEventListener('DOMContentLoaded', function() {
+    var editButtons = document.querySelectorAll('.edit-btn');
+    var cancelButtons = document.querySelectorAll('.cancel-btn');
+    var saveButtons = document.querySelectorAll('.save-btn');
+
+    editButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var index = this.getAttribute('data-index');
+            var form = document.querySelector(`#pills-details${parseInt(index) + 1} .evolution-form`);
+            var descriptionField = form.querySelector(`#description-${index}`);
+            var fileField = form.querySelector(`#filename-${index}`);
+            var cancelButton = form.querySelector('.cancel-btn');
+            var saveButton = form.querySelector('.save-btn');
+
+            // Show the fields and buttons for editing
+            form.style.display = 'block';
+            descriptionField.removeAttribute('readonly');
+            fileField.removeAttribute('disabled');
+            cancelButton.style.display = 'inline-block';
+            saveButton.style.display = 'inline-block';
+
+            // Hide the edit button
+            this.style.display = 'none';
+        });
+    });
+
+    cancelButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var form = this.closest('form');
+            var descriptionField = form.querySelector('textarea');
+            var fileField = form.querySelector('input[type="file"]');
+            var editButton = form.closest('.work-container').querySelector('.edit-btn');
+            var saveButton = form.querySelector('.save-btn');
+
+            // Hide the fields and buttons for editing
+            form.style.display = 'block';
+            descriptionField.setAttribute('readonly', 'readonly');
+            fileField.setAttribute('disabled', 'disabled');
+            this.style.display = 'none';
+            saveButton.style.display = 'none';
+
+            // Show the edit button
+            editButton.style.display = 'inline-block';
+        });
+    });
+});
+
+
    </script>
 @endsection

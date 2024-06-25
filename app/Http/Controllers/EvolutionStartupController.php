@@ -37,5 +37,33 @@ class EvolutionStartupController extends Controller
     
         return redirect()->back()->with('success', 'Evolution ajoutée avec succès');
     }
+
+  
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'description' => 'required',
+            'filename' => 'file|mimes:ppt,pptx,doc,docx,pdf,xls,xlsx|max:204800',
+        ]);
+        return $request;
+        $evolutionStartup = EvolutionStartup::find($id);
+
+        if (!$evolutionStartup) {
+            return redirect()->back()->with('error', 'Evolution not found.');
+        }
+
+        $evolutionStartup->description = $request->input('description');
+
+        if ($request->hasFile('filename')) {
+            $fileNom = 'fichier_' . time() . '.' . $request->filename->getClientOriginalExtension();
+            $request->filename->move(public_path('fichier'), $fileNom);
+            $evolutionStartup->filename = $fileNom;
+        }
+
+        $evolutionStartup->save();
+
+        return redirect()->back()->with('success', 'Evolution updated successfully.');
+    }
+
     
 }
