@@ -623,6 +623,9 @@
 
                             <!----- pills evolution links --->
                             <div class="tab-pane fade" id="pills-evolution" role="tabpanel" aria-labelledby="pills-evolution-tab">
+                                <?php
+                                    use Illuminate\Support\Facades\DB;
+                                ?>
                                 <div class="d-flex justify-content-between align-items-center ">
                                     
                                     <div class="d-fex  justify-content-center align-items-start">
@@ -631,52 +634,77 @@
                                         </h3>
                                     </div>
 
-                                    <a class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addEvolutionForStartup" >
+                                    <a class="btn btn-sm btn-primary" href="{{ route('view-evo-startup', $startup->id) }}" >
                                         <i class="fas fa-plus-circle"></i>
                                         Ajouter
                                     </a>
                                 </div>
                                 <hr>
                                <!------------ reglage -------->
-                                <div class=" px-4 ">
-                                <div class="position-relative m-4 nav nav-pills position-relative my-4 bg-primary" id="pills-tab" role="tablist">
-                                    <div class="progress" style="height: 1px;">
-                                        <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                        <button type="button" class="position-absolute top-0 start-0 translate-middle btn btn-sm btn-primary rounded-pill" style="width: 2rem; height:2rem;" id="pills-details1-tab" data-toggle="pill" href="#pills-details1" role="tab" aria-selected="true">1</button>
-                                        <button type="button" class="position-absolute top-0 start-50 translate-middle btn btn-sm btn-primary rounded-pill" style="width: 2rem; height:2rem;" id="pills-description1-tab" data-toggle="pill" href="#pills-description1" role="tab" aria-selected="false">2</button>
-                                        <button type="button" class="position-absolute top-0 start-100 translate-middle btn btn-sm btn-secondary rounded-pill" style="width: 2rem; height:2rem;">3</button>
-                                    </div>
-                                   
-                                    
-                                    <div class="card-body">
-                                        <div class="tab-content" id="pills-tabContent">
-                                           
-                                            <div class="tab-pane fade show active" id="pills-details1" role="tabpanel" aria-labelledby="pills-details-tab">
-                                                <div class="work-container">
-                                                    phase 1
-                                                </div>
-                                            </div>
-                                            
-                                            
-                                            <div class="tab-pane fade" id="pills-description1" role="tabpanel">
-                                                <div class="work-container">
-                                                    phase 2
-                                                </div>
+                               <div class="px-4">
+                                    @php
+                                        $associatedIds = DB::table('evolution_startups')
+                                            ->where('startup_id', $startup->id)
+                                            ->pluck('evolution_id');
+                                            $evolutions = DB::table('evolutions')
+                                            ->select('id', 'ordre', 'libelle', 'description')
+                                            ->whereIn('id', $associatedIds)
+                                            ->get();
 
-                                            </div>  
+                                    @endphp
+
+                                    <div class="position-relative m-4 nav nav-pills position-relative my-4 bg-primary" id="pills-tab" role="tablist">
+                                        <div class="progress" style="height: 1px;">
+                                            <div class="progress-bar" role="progressbar" style="width: {{ count($evolutions) > 0 ? 100 / count($evolutions) : 0 }}%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
+                                        @foreach($evolutions as $index => $evolution)
+                                            @php
+                                                $leftPercentage = ($index / count($evolutions)) * 75;
+                                            @endphp
+                                            <button type="button" class=" position-absolute top-0 translate-middle btn btn-sm btn-primary rounded-pill circle-btn" style="left: {{ $leftPercentage }}%;" id="pills-details{{ $index + 1 }}-tab" data-toggle="pill" href="#pills-details{{ $index + 1 }}" role="tab" aria-selected="{{ $index === 0 ? 'true' : 'false' }}">{{ $evolution->ordre }}</button>
+                                        @endforeach
                                     </div>
-                  
+
                                 </div>
 
-                                
+
+    <div class="card-body">
+        
+
+        <div class="tab-content" id="pills-tabContent">
+           
+
+            @foreach($evolutions as $index => $evolution)
+            <div class="tab-pane fade show {{ $index === 0 ? 'active' : '' }}" id="pills-details{{ $index + 1 }}" role="tabpanel" aria-labelledby="pills-details{{ $index + 1 }}-tab">
+                <div class="work-container">
+                        @php
+                            $associatedEvo = DB::table('evolution_startups')
+                                            ->where('evolution_id',$evolution->id)
+                                            ->where('startup_id',$startup->id)->get()
+                        @endphp
+                        <div class="d-flex justify-content-end">
+                            <a class="btn btn-sm bg-warning mx-1" data-toggle="modal" data-target="#editEvolution{{ $evolution->id }}"> <i class="fas fa-edit"></i></a>
+                        </div>                       
+                            <div class="modal-body">
+                                <label for="libelle">Description phase de la startup</label>
+                                <div class="shadow-none p-3 bg-light rounded">{{$associatedEvo[0]->description}}</div>
                             </div>
-                        </div>
-                    </div>
-                  
+                            <div class="modal-body">
+                                <label for="ordre">Fichier de description</label>
+                                <div class="shadow-none p-3 bg-light rounded">{{$associatedEvo[0]->filename}}</div>
+                            </div>
+                            
+                      
+                 
+                    
                 </div>
             </div>
+            @endforeach
+
+        </div>
+    </div>
+</div>
+
         </div>
 
     </div>
@@ -684,90 +712,81 @@
     
 
         <!-- Modal add evolution for startup -->
-    <div class="modal fade" id="addEvolutionForStartup" tabindex="-1" role="dialog" aria-labelledby="addEvolutionForStartup" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content max-h-full">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Ajout évolution startup</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                    </div>
-                    <form method="POST" action="{{ route('addnewevolution', $startup->id ) }}">
-                        @csrf
-                        <div class="modal-body">
-                            <label for="leve_fond">Libelle <span class="text-danger">*</span></label>
-                            <?php
-                                use Illuminate\Support\Facades\DB;
-                                $associatedIds = DB::table('evolution_startups')
-                                    ->where('startup_id', $startup->id)
-                                    ->pluck('evolution_id');
-                                $evolutions = DB::table('evolutions')
-                                    ->whereNotIn('id', $associatedIds)
-                                    ->get();
-                            ?>
-                            <select class="form-control custom-select @error('libelle') is-invalid @enderror" id="libelle" name="libelle" onchange="updateFields()">
-                                <option value="" selected disabled>Choose...</option>
-                                @foreach($evolutions as $evolutionOption)
-                                    <option value="{{ $evolutionOption->id }}" 
-                                            data-ordre="{{ $evolutionOption->ordre }}" 
-                                            data-description="{{ $evolutionOption->description }}">
-                                        {{ $evolutionOption->libelle }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('libelle')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+        <!-- <div class="modal fade" id="addEvolutionForStartup" tabindex="-1" role="dialog" aria-labelledby="addEvolutionForStartup" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content max-h-full">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Ajout évolution startup</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                         </div>
-
-                        <div class="modal-body">
-                            <label for="ordre">Ordre</label>
-                            <input type="number" name="ordre" id="ordre" class="form-control @error('ordre') is-invalid @enderror" value="{{ old('ordre') }}" readOnly>
-                            @error('ordre')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="modal-body">
-                            <label for="description">Description</label>
-                            <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" rows="4" readOnly>{{ old('description') }}</textarea>
-                            @error('description')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="modal-body">
-                            <label for="filename"> Fiche descriptif présentation <span class="text-danger">*</span></label>
-                                <input type="file"  name="filename"  id="filename" class=" @error('filename') is-invalid @enderror">
-
-                                @error('filename')
+                        <form method="POST" action="{{ route('add-evo-startup', $startup->id ) }}"  enctype="multipart/form-data">
+                            @csrf
+                            <div class="modal-body">
+                                <label for="leve_fond">Libelle <span class="text-danger">*</span></label>
+                                <?php
+                                    $associatedIds = DB::table('evolution_startups')
+                                        ->where('startup_id', $startup->id)
+                                        ->pluck('evolution_id');
+                                    $evolutions = DB::table('evolutions')
+                                        ->whereNotIn('id', $associatedIds)
+                                        ->get();
+                                ?>
+                                
+                                <select class="form-control custom-select @error('libelle') is-invalid @enderror" id="libelle" name="libelle" onchange="updateFields()">
+                                    <option value="" selected disabled>Choose...</option>
+                                    @foreach($evolutions as $evolutionOption)
+                                        <option value="{{ $evolutionOption->id }}" 
+                                                data-ordre="{{ $evolutionOption->ordre }}" 
+                                                data-description="{{ $evolutionOption->description }}">
+                                            {{ $evolutionOption->libelle }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('libelle')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                        </div>
+                            </div>
 
-                        <div class="modal-body">
-                            <button class="btn btn-warning" data-dismiss="modal">
-                                <i class="fa fa-ban" aria-hidden="true"></i>
-                                Annuler
-                            </button>
-                            <button type="submit" class="btn btn-success float-right">
-                                <i class="fas fa-save"></i>
-                                Ajouter
-                            </button>
-                        </div>
-                    </form> 
+                            <div class="modal-body">
+                                <label for="ordre">Ordre</label>
+                                <input type="number" name="ordre" id="ordre" class="form-control @error('ordre') is-invalid @enderror" value="{{ old('ordre') }}" readOnly>
+                                @error('ordre')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="modal-body">
+                                <label for="description">Description</label>
+                                <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" rows="4" readOnly>{{ old('description') }}</textarea>
+                                @error('description')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                        
+
+                            <div class="modal-body">
+                                <button class="btn btn-warning" data-dismiss="modal">
+                                    <i class="fa fa-ban" aria-hidden="true"></i>
+                                    Annuler
+                                </button>
+                                <button type="submit" class="btn btn-success float-right">
+                                    <i class="fas fa-save"></i>
+                                    Ajouter
+                                </button>
+                            </div>
+                        </form> 
+                    </div>
                 </div>
-            </div>
-    </div>
+        </div> -->
 
 </div>
 
@@ -793,14 +812,38 @@
 
         <!-------- Remplir champs formulaire ------>
     <script>
-    function updateFields() {
-        var select = document.getElementById('libelle');
-        var selectedOption = select.options[select.selectedIndex];
-        var ordre = selectedOption.getAttribute('data-ordre');
-        var description = selectedOption.getAttribute('data-description');
+        function updateFields()
+        {
+            var libelle = document.getElementById('libelle');
+            var ordre = document.getElementById('ordre');
+            var description = document.getElementById('description');
+            var fileInputContainer = document.getElementById('file-input-container');
 
-        document.getElementById('ordre').value = ordre;
-        document.getElementById('description').value = description;
+            var selectedOption = libelle.options[libelle.selectedIndex];
+        
+            if (selectedOption.value) {
+                ordre.value = selectedOption.getAttribute('data-ordre');
+                description.value = selectedOption.getAttribute('data-description');
+                ordre.readOnly = true;
+                description.readOnly = true;
+                fileInputContainer.style.display = 'block'; // Show file input
+            } else {
+                ordre.value = '';
+                description.value = '';
+                ordre.readOnly = false;
+                description.readOnly = false;
+                fileInputContainer.style.display = 'none'; // Hide file input
+            }
+        }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('file-input-container').style.display = 'none'; // Initially hide the file input
+    });
+
+    function updateFileName(input) {
+        const fileName = input.files[0].name;
+        const label = input.nextElementSibling;
+        label.textContent = fileName;
     }
-</script>
+   </script>
 @endsection

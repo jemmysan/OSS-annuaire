@@ -21,6 +21,7 @@ use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\ImportExportController;
 use App\Http\Controllers\StartRegistreController;
 use App\Http\Controllers\AccompagnementController;
+use App\Http\Controllers\EvolutionStartupController;
 
 
 
@@ -88,6 +89,8 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/edit/{id}',[EvolutionController::class,'edit'])->name('edit-evolution');
         Route::put('/update/{id}',[EvolutionController::class,'update'])->name('update-evolution');
         Route::get('/delete/{id}',[EvolutionController::class,'destroy'])->name('delete-evolution');
+        Route::get('/evolution-startup/{id}',[EvolutionStartupController::class,'index'])->name('view-evo-startup');
+        Route::post('/evolution-startup',[EvolutionStartupController::class,'store'])->name('add-evo-startup');
     });
     
     Route::prefix('phase')->group(function (){

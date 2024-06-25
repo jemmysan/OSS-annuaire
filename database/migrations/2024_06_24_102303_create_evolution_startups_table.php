@@ -25,6 +25,8 @@ class CreateEvolutionStartupsTable extends Migration
                 ->references('id')
                 ->on('startups')
                 ->OnDelete('cascade');
+            $table->string('filename')->nullable();
+            $table->text('description');
             $table->timestamps();
         });
     }
