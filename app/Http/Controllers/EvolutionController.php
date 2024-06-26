@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class EvolutionController extends Controller
 {
     public function index(){
-        $evolutions = Evolution::get();
+        $evolutions = Evolution::orderBy('ordre')->get();
         return view('evolution.index', compact('evolutions'))
                 ->with('i',(request()->input('page',1)-1)*10);
     }
@@ -24,14 +24,23 @@ class EvolutionController extends Controller
             'libelle' => 'required|unique:evolutions',
             'ordre' => 'required',
         ]);
-       
-        $evolution = Evolution::create([
+
+        $ordre  = $request->input('ordre');
+
+        Evolution::where('ordre','>=',$ordre)
+                    ->increment('ordre',1);
+
+        Evolution::create([
             'libelle' => $request->input('libelle'),
-            'ordre'=>$request->input('ordre'),
+            'ordre'=>$ordre,
             'description'=> $request->input('description'),  
             'user_id'=>auth()->user()->id
         ]);
 
+        $reupdateEvolutions = Evolution::orderBy('ordre')->get();
+        foreach ($reupdateEvolutions as $index => $evolution) {
+            $evolution->update(['ordre' => $index + 1]);
+        }
         return redirect()->route('evolution')
             ->with('success','Evolution créée avec succès');
     }
@@ -51,6 +60,11 @@ class EvolutionController extends Controller
             'description' => 'required',
         ]);
 
+        $ordre  = $request->input('ordre');
+        
+        Evolution::where('ordre','>=',$ordre)
+                    ->increment('ordre',1);
+
         Evolution::where('id',$id)
                 ->update([
                     'libelle' => $request->input('libelle'),
@@ -58,6 +72,11 @@ class EvolutionController extends Controller
                     'description'=> $request->input('description'),
                     'user_id'=>auth()->user()->id
                 ]);
+
+                $reupdateEvolutions = Evolution::orderBy('ordre')->get();
+                foreach ($reupdateEvolutions as $index => $evolution) {
+                    $evolution->update(['ordre' => $index + 1]);
+                }
 
         return redirect()->route('evolution')
             ->with('success','evolution mis à jour avec succés');
@@ -69,6 +88,11 @@ class EvolutionController extends Controller
             $evolutionStartup->delete();
        });
        $evolution->delete();
+
+       $reupdateEvolutions = Evolution::orderBy('ordre')->get();
+        foreach ($reupdateEvolutions as $index => $evolution) {
+            $evolution->update(['ordre' => $index + 1]);
+        }
        return redirect()->route('evolution')
                         ->with('success','evolution supprimer avec success');
     }
