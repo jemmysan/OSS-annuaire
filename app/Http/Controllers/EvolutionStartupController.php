@@ -41,13 +41,14 @@ class EvolutionStartupController extends Controller
   
     public function update(Request $request, $id)
     {
+        // return EvolutionStartup::find($id);
         $request->validate([
             'description' => 'required',
             'filename' => 'file|mimes:ppt,pptx,doc,docx,pdf,xls,xlsx|max:204800',
         ]);
-        return $request;
+        
         $evolutionStartup = EvolutionStartup::find($id);
-
+       
         if (!$evolutionStartup) {
             return redirect()->back()->with('error', 'Evolution not found.');
         }

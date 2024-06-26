@@ -10,7 +10,7 @@ class EvolutionController extends Controller
     public function index(){
         $evolutions = Evolution::get();
         return view('evolution.index', compact('evolutions'))
-                ->with('i',(request()->input('page',1)-1)*10);;
+                ->with('i',(request()->input('page',1)-1)*10);
     }
 
     public function create(){

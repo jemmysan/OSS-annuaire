@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('pageName')
-    <a href="{{ route('evolution') }}">  Evolution</a>
+    <a href="{{ route('rubrique.index') }}">  rubrique</a>
 @endsection
 @section('title')
     Liste
@@ -8,7 +8,7 @@
 @section('content')
 
 <div class="card p-4">
-    <h2>Gestion des évolutions </h2>
+    <h2>Gestion des rubriques </h2>
     <br>
     <div class="row">
         <div class="col-12 col-sm-6 col-md-3">
@@ -21,7 +21,7 @@
                     <span class="info-box-number">
                         <?php
                             use Illuminate\Support\Facades\DB;
-                            $count = DB::table('evolutions')->count();
+                            $count = DB::table('rubriques')->count();
                             echo $count;
                         ?>
                     </span>
@@ -30,10 +30,12 @@
         </div>
     </div>
     <div class="card-header">
-        <a class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#createEvolution">
+
+            <a class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#createrubrique">
                 <i class="fas fa-plus-circle"></i>
                 Ajouter
             </a>
+       
         <form action="" method="GET" style="float: right" role="search">
             <div class="input-group">
                 <div id="custom-search-input">
@@ -51,7 +53,7 @@
             </div>
         </form>
     </div>
-  
+    
     <div class="card-body table-responsive p-0">
         <table class="table table-hover">
             <thead>
@@ -64,22 +66,22 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($evolutions as $key => $evolution)
+                @forelse ($rubriques as $key => $rubrique)
                 <tr>
                     <td>
-                        <h4>{{ $evolution->ordre }}</h4>
+                        <h4>{{ $rubrique->ordre }}</h4>
                     </td>
                     <td>
-                        {{ $evolution->libelle }}
+                        {{ $rubrique->libelle }}
                     </td>
                     <td>
-                        {{ substr($evolution->description, 0, 50) }} ....
+                        {{ substr($rubrique->description, 0, 50) }} ....
                     </td>
                     <td>
                         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                            <a class="btn btn-sm bg-primary mx-1" data-toggle="modal" data-target="#viewEvolution{{ $evolution->id }}"> <i class="fas fa-eye"></i></a>
-                            <a class="btn btn-sm bg-teal mx-1" data-toggle="modal" data-target="#editEvolution{{ $evolution->id }}"> <i class="fas fa-edit"></i></a>
-                            <a class="btn btn-sm btn-danger mx-1" href="{{ route('delete-evolution', $evolution->id) }}" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
+                            <a class="btn btn-sm bg-primary mx-1" data-toggle="modal" data-target="#viewrubrique{{ $rubrique->id }}"> <i class="fas fa-eye"></i></a>
+                            <a class="btn btn-sm bg-teal mx-1" data-toggle="modal" data-target="#editrubrique{{ $rubrique->id }}"> <i class="fas fa-edit"></i></a>
+                            <a class="btn btn-sm btn-danger mx-1" href="{{ route('rubrique.delete', $rubrique->id) }}" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
                         </div>
                     </td>
                 </tr>
@@ -94,31 +96,31 @@
 </div>
 
 <!-- Modals Section -->
-@foreach ($evolutions as $evolution)
-    <!-- Modal view evolution -->
-    <div class="modal fade" id="viewEvolution{{ $evolution->id }}" tabindex="-1" role="dialog" aria-labelledby="viewEvolution" aria-hidden="true">
+@foreach ($rubriques as $rubrique)
+    <!-- Modal view rubrique -->
+    <div class="modal fade" id="viewrubrique{{ $rubrique->id }}" tabindex="-1" role="dialog" aria-labelledby="viewrubrique" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Details Evolution</h5>
+                    <h5 class="modal-title">Details rubrique</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <label for="libelle">Libelle</label>
-                    <div class="shadow-none p-3 bg-light rounded">{{ $evolution->libelle }}</div>
+                    <div class="shadow-none p-3 bg-light rounded">{{ $rubrique->libelle }}</div>
                 </div>
                 <div class="modal-body">
                     <label for="ordre">Ordre</label>
-                    <div class="shadow-none p-3 bg-light rounded">{{ $evolution->ordre }}</div>
+                    <div class="shadow-none p-3 bg-light rounded">{{ $rubrique->ordre }}</div>
                 </div>
                 <div class="modal-body">
                     <label for="ordre">Description</label>
-                    <div class="shadow-lg p-3 bg-body rounded">{{ $evolution->description }}</div>
+                    <div class="shadow-lg p-3 bg-body rounded">{{ $rubrique->description }}</div>
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-sm bg-teal mx-1" data-toggle="modal" data-target="#editEvolution{{ $evolution->id }}"> <i class="fas fa-edit"></i>
+                    <a class="btn btn-sm bg-teal mx-1" data-toggle="modal" data-target="#editrubrique{{ $rubrique->id }}"> <i class="fas fa-edit"></i>
                         Modifier
                     </a>
                     <button type="button" class="btn btn-primary mx-1 btn-sm" data-dismiss="modal">
@@ -129,22 +131,22 @@
         </div>
     </div>
 
-    <!-- Modal edit evolution -->
-    <div class="modal fade" id="editEvolution{{ $evolution->id }}" tabindex="-1" role="dialog" aria-labelledby="editEvolution" aria-hidden="true">
+    <!-- Modal edit rubrique -->
+    <div class="modal fade" id="editrubrique{{ $rubrique->id }}" tabindex="-1" role="dialog" aria-labelledby="editrubrique" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content max-h-full">
                 <div class="modal-header">
-                    <h5 class="modal-title">Modification évolution</h5>
+                    <h5 class="modal-title">Modification rubrique</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="{{ route('update-evolution', $evolution->id) }}">
+                <form method="POST" action="{{ route('rubrique.update', $rubrique->id) }}">
                     @csrf
                     @method('PUT')
                     <div class="modal-body">
                         <label for="libelle">Libelle</label>
-                        <input type="text" name="libelle" value="{{ $evolution->libelle }}" id="libelle" class="form-control @error('libelle') is-invalid @enderror">
+                        <input type="text" name="libelle" value="{{ $rubrique->libelle }}" id="libelle" class="form-control @error('libelle') is-invalid @enderror">
                         @error('libelle')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -153,7 +155,7 @@
                     </div>
                     <div class="modal-body">
                         <label for="ordre">Ordre</label>
-                        <input type="number" name="ordre" value="{{ $evolution->ordre }}" id="ordre" class="form-control @error('ordre') is-invalid @enderror">
+                        <input type="number" name="ordre" value="{{ $rubrique->ordre }}" id="ordre" class="form-control @error('ordre') is-invalid @enderror">
                         @error('ordre')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -162,7 +164,7 @@
                     </div>
                     <div class="modal-body">
                         <label for="description">Description</label>
-                        <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" rows="4">{{ $evolution->description }}</textarea>
+                        <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" rows="4">{{ $rubrique->description }}</textarea>
                         @error('description')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -185,20 +187,20 @@
     </div>
 @endforeach
 
-<!-- Modal create evolution  -->
-<div class="modal fade" id="createEvolution" tabindex="-1" role="dialog" aria-labelledby="createEvolution" aria-hidden="true">
+<!-- Modal create rubrique  -->
+<div class="modal fade" id="createrubrique" tabindex="-1" role="dialog" aria-labelledby="createrubrique" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content max-h-full">
             <div class="modal-header">
-                <h5 class="modal-title">Création évolution</h5>
+                <h5 class="modal-title">Création rubrique</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ route('create-evolution') }}">
+            <form method="POST" action=" {{ route('rubrique.store') }}">
                 @csrf
                 <div class="modal-body">
-                    <label for="nom_structure">Libelle</label>
+                    <label for="libelle">Libelle</label>
                     <input type="text" value="{{ old('libelle') }}" name="libelle" id="libelle" class="form-control @error('libelle') is-invalid @enderror">
                     @error('libelle')
                     <span class="invalid-feedback" role="alert">

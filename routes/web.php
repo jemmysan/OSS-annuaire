@@ -12,6 +12,7 @@ use App\Http\Controllers\PhaseController;
 use App\Http\Controllers\ShareController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\StartupController;
+use App\Http\Controllers\RubriqueController;
 use App\Http\Controllers\EvolutionController;
 use App\Http\Controllers\StartStatController;
 use App\Http\Controllers\FinanciereController;
@@ -91,8 +92,15 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/delete/{id}',[EvolutionController::class,'destroy'])->name('delete-evolution');
         Route::get('/evolution-startup/{id}',[EvolutionStartupController::class,'index'])->name('view-evo-startup');
         Route::post('/evolution-startup',[EvolutionStartupController::class,'store'])->name('add-evo-startup');
-        Route::put('/evolution/{id}', [EvolutionController::class, 'update'])->name('evolution.update');
+        Route::put('/evolution-startup/{id}', [EvolutionStartupController::class, 'update'])->name('evolution.update');
 
+    });
+
+    Route::prefix('rubrique')->group(function (){
+        Route::get('/index',[RubriqueController::class,'index'])->name('rubrique.index');
+        Route::post('/create',[RubriqueController::class,'store'])->name('rubrique.store');
+        Route::put('/update/{id}',[RubriqueController::class,'update'])->name('rubrique.update');
+        Route::get('/delete/{id}',[RubriqueController::class,'delete'])->name('rubrique.delete');
     });
     
     Route::prefix('phase')->group(function (){

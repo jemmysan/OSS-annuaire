@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Excel;
 use App\Exports\StartupsExport;
 use App\Imports\StartupsImport;
+use App\Models\EvolutionStartup;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Log;
@@ -260,11 +261,12 @@ class StartupController extends Controller
         
             Commentaire::where('startup_id', $id)->delete();
             Financement::where('startup_id', $id)->delete();
-            Phase::where('startup_id', $id)->delete(); // Add this line to delete related phases
+            Phase::where('startup_id', $id)->delete(); 
+            EvolutionStartup::where('startup_id',$id)->delete();
 
             $startup->secteur()->detach();
             $startup->tag()->detach();
-
+            
             $startup->delete();
 
             return redirect()->back()->with('success', 'Start-up supprimée avec succès');

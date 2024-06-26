@@ -877,14 +877,14 @@ document.addEventListener('DOMContentLoaded', function() {
             var cancelButton = form.querySelector('.cancel-btn');
             var saveButton = form.querySelector('.save-btn');
 
-            // Show the fields and buttons for editing
+            // 
             form.style.display = 'block';
             descriptionField.removeAttribute('readonly');
             fileField.removeAttribute('disabled');
             cancelButton.style.display = 'inline-block';
             saveButton.style.display = 'inline-block';
 
-            // Hide the edit button
+            // 
             this.style.display = 'none';
         });
     });
@@ -897,14 +897,14 @@ document.addEventListener('DOMContentLoaded', function() {
             var editButton = form.closest('.work-container').querySelector('.edit-btn');
             var saveButton = form.querySelector('.save-btn');
 
-            // Hide the fields and buttons for editing
+            // 
             form.style.display = 'block';
             descriptionField.setAttribute('readonly', 'readonly');
             fileField.setAttribute('disabled', 'disabled');
             this.style.display = 'none';
             saveButton.style.display = 'none';
 
-            // Show the edit button
+            // 
             editButton.style.display = 'inline-block';
         });
     });
