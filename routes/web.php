@@ -14,6 +14,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\StartupController;
 use App\Http\Controllers\RubriqueController;
 use App\Http\Controllers\EvolutionController;
+use App\Http\Controllers\FormationController;
 use App\Http\Controllers\StartStatController;
 use App\Http\Controllers\FinanciereController;
 use App\Http\Controllers\PermissionController;
@@ -96,6 +97,11 @@ Route::group(['middleware' => ['auth']], function() {
 
     });
 
+    
+    Route::prefix('phase')->group(function (){
+        Route::get('/index',[PhaseController::class,'index'])->name('phase');
+    });
+
     Route::prefix('rubrique')->group(function (){
         Route::get('/index',[RubriqueController::class,'index'])->name('rubrique.index');
         Route::post('/create',[RubriqueController::class,'store'])->name('rubrique.store');
@@ -103,8 +109,8 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/delete/{id}',[RubriqueController::class,'delete'])->name('rubrique.delete');
     });
     
-    Route::prefix('phase')->group(function (){
-        Route::get('/index',[PhaseController::class,'index'])->name('phase');
+    Route::prefix('/formation')->group(function (){
+        Route::get('/index',[FormationController::class,'index'])->name('formation.index');
     });
     
     Route::get('/owner', function(){

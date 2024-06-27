@@ -138,7 +138,11 @@
         <!---- Rubrique --------->
         <li class="nav-item">
             <a href="{{ route('rubrique.index') }}" class="nav-link">
-                <i class="bi bi-book"></i>
+                <!-- <i class="bi bi-book"></i> -->
+                <!-- <i class="bi bi-journal"></i> -->
+                <i class="bi bi-folder"></i>
+
+
                 <p> Rubrique </p>
             </a>
         </li>
@@ -146,7 +150,16 @@
 
         <!--------------------------->
 
+        <!---- Rubrique --------->
+        <li class="nav-item">
+            <a href="{{ route('formation.index') }}" class="nav-link">
+                <i class="bi bi-book"></i>
+                <p> Formations </p>
+            </a>
+        </li>
+        
 
+        <!--------------------------->
         <li class="nav-item">
             <a href="#" class="nav-link active">
                 <i class="fas fa-users-cog"></i>
