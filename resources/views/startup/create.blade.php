@@ -19,13 +19,13 @@
         }
     </style>
 
-    <div class="card" >
+    <div class="card p-2" >
         <!-- Content Header (Page header) -->
         <div class="card-header">
             <h3 class="card-title"> Nouvelle Start-Up</h3>
         </div>
 
-        <form method="POST" action="{{ route('store-startup') }}" enctype="multipart/form-data">
+        <form class="pt-2" method="POST" action="{{ route('store-startup') }}" enctype="multipart/form-data">
             @csrf
 
             <div class="row">
@@ -33,8 +33,8 @@
 
 {{--                données generale--}}
 
-                <div class="col-md-6">
-                    <div class="card card-primary collapsed-card">
+                <div class="col-md-6 ">
+                    <div class="card card-primary collapsed-card ">
                         <div class="card-header">
 
                             <h3 class="card-title">Général</h3>

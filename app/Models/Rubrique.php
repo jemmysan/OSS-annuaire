@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Formation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Rubrique extends Model
 {
@@ -17,4 +19,9 @@ class Rubrique extends Model
         'created_at',
         'updated_at'
     ];
+
+   
+    public function formation() : HasMany{
+        return $this->hasMany(Formation::class);
+    }
 }

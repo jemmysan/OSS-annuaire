@@ -231,7 +231,7 @@
 
     </style>
 
-<div class="container">
+    <div class="container">
        
     @can('voir_infos_gen_startup')
         <div>
@@ -312,10 +312,11 @@
                     <input type="text" class="form-control"   name="nom" placeholder="Nom Start-Up" id="nom">
                 </div>
             </div>
-            <div>
+            <div class="">
                 
                 <a href="{{ route('startup.index') }}" class=" mt-1">
                                     <span class="input-group-btn">
+                                        
                                         <button class="btn btn-danger" type="button" title="Refraichir">
                                             <span class="fas fa-sync-alt"></span>
                                         </button>
@@ -329,7 +330,7 @@
 
     <div class="card-tools">
         @can('creer_startup')
-            <a  @popper( Créer une nouvelle startup!) href="{{ route('startup.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></a>
+            <a  @popper( Créer une nouvelle startup!) href="{{ route('startup.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Ajouter</a>
         @endcan
 
         @can('importer_startup')

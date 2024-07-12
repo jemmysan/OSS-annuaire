@@ -30,7 +30,10 @@
 
     <!-- Template Main CSS File -->
     <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
+    <!----------------->
 
+    
+    <!----------------->
     <style>
         /* Make the image fully responsive */
         .carousel-inner img {

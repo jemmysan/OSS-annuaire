@@ -29,7 +29,16 @@ class StartupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
+    
+     public function searchStartup(Request $request)
+     {
+         $inputValue = $request->input('query'); 
+         $startups = Startup::where('libelle', 'like', '%' . $inputValue . '%')
+                            ->orWhere('description', 'like', '%' . $inputValue . '%')
+                            ->get();
+                            
+         return view('', compact('startups'));
+     }
 
     
     

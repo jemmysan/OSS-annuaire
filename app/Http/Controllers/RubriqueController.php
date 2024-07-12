@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rubrique;
+use App\Models\Formation;
 use Illuminate\Http\Request;
 
 class RubriqueController extends Controller
@@ -66,13 +67,27 @@ class RubriqueController extends Controller
         return redirect()->back()->with('message','Rubrique modifier avec succès !');
     }
 
-    public function delete($id){
-        $rubrique = Rubrique::findOrFail($id)->delete(); 
-        $reupdateRubriques = Rubrique::orderBy('ordre')->get();
-        foreach ($reupdateRubriques as $index => $rubrique) {
-            $rubrique->update(['ordre' => $index + 1]);
+    public function delete($id)
+    {
+        $rubrique = Rubrique::findOrFail($id);
+        try {
+           
+            $rubrique->formation()->delete();
+
+            $rubrique->delete(); 
+    
+            // Réordonner les rubriques restantes
+            $reupdateRubriques = Rubrique::orderBy('ordre')->get();
+            foreach ($reupdateRubriques as $index => $rubrique) {
+                $rubrique->update(['ordre' => $index + 1]);
+            }
+    
+            return redirect()->back()->with('message', 'Rubrique supprimée avec succès !');
+    
+        } catch (\Exception $e) {
+            return back()->withErrors('Une erreur est survenue lors de la suppression de la rubrique : ' . $e->getMessage());
         }
-        return redirect()->back()->with('message','Rubrique supprimée avec succès !');
     }
+    
 
 }

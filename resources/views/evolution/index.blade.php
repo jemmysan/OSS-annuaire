@@ -73,7 +73,7 @@
                         {{ $evolution->libelle }}
                     </td>
                     <td>
-                        {{ substr($evolution->description, 0, 50) }} ....
+                        {{ substr($evolution->description, 0, 100) }} ....
                     </td>
                     <td>
                         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">

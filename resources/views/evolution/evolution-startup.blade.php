@@ -110,7 +110,7 @@ Evolution-startup
    
         </div>
     </div>
-            @endsection
+@endsection
 
 <script>
      function updateFields()

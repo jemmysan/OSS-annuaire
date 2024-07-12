@@ -2,10 +2,26 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Rubrique;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Formation extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'rubrique_id',
+        'title',
+        'content'
+    ];
+
+
+
+    public function rubrique() : BelongsTo{
+        return $this->belongsTo(Rubrique::class,'rubrique_id');
+    }
+
+    
 }

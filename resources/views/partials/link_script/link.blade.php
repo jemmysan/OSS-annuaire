@@ -30,3 +30,6 @@
 <link href="{{asset('assets/vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
 <link href="{{asset('assets/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
 <link href="{{asset('assets/vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
+
+<link href="{{asset('https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css')}}" rel="stylesheet" />
+<!-- <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css" /> -->

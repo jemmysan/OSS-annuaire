@@ -108,34 +108,31 @@
     @endcan
 
     <!---- Reférentiels --------->
-    <li class="nav-item">
+    @can('voir_referentiel')
+        <li class="nav-item">
             <a href="#" class="nav-link active">
                 <i class="bi bi-journal"></i>
                 <p>
                     Référentiels
                     <i class="right fas fa-angle-left"></i>
                 </p>
-            </a>
+            </a>    
             <ul class="nav nav-treeview">
-                <!-- <li class="nav-item">
-                    <a href="{{ route('phase') }}" class="nav-link">
-                        <i class="bi bi-calendar4-range"></i>
-                        <p>Phase</p>
-                    </a>
-                </li> -->
                 <li class="nav-item">
                     <a href="{{ route('evolution') }}" class="nav-link">
                         <i class="bi bi-graph-up"></i>
                         <p>Evolution</p>
                     </a>
-                </li>
-                
+                </li>   
             </ul>
         </li>
+    @endcan
 
         <!--------------------------->
 
         <!---- Rubrique --------->
+
+    @can('voir_rubrique') 
         <li class="nav-item">
             <a href="{{ route('rubrique.index') }}" class="nav-link">
                 <!-- <i class="bi bi-book"></i> -->
@@ -146,17 +143,20 @@
                 <p> Rubrique </p>
             </a>
         </li>
+    @endcan
         
 
         <!--------------------------->
 
         <!---- Rubrique --------->
+    @can('voir_formation')   
         <li class="nav-item">
             <a href="{{ route('formation.index') }}" class="nav-link">
                 <i class="bi bi-book"></i>
                 <p> Formations </p>
             </a>
         </li>
+    @endcan
         
 
         <!--------------------------->
