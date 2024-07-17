@@ -17,7 +17,7 @@
             <h3 class="card-title">Structures Financiere</h3>
         </div>
 
-        <form method="POST" action="">
+        <form method="POST" action="{{ route('financiere.store') }}">
             @csrf
             <div class="row">
                 <div class="col-md-6">

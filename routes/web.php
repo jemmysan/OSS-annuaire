@@ -68,16 +68,24 @@ Route::group(['middleware' => ['auth']], function(){
 
         
         Route::post('startup/strore', [StartupController::class,'store'])->name('store-startup');
+        // Route::get('/startup/search',[StartupController::class,'recherche'])->name('startup-search');
+        Route::post('startup/search',[StartupController::class,'search'])->name('search-startup');
+
+        // Route::get('startup/index',[StartupController::class,'search'])->name('search-startup');
         Route::post('startup/{id}', [StartupController::class,'save_phase']);
         Route::get('startup/delete/{id}',[StartupController::class,'destroy'])->name('delete-startup');
-        Route::get('/startup/index',[StartupController::class,'search']);
         Route::post('/startup/add-evolution/{id}',[StartupController::class,'evolutionToStartup'])->name('addnewevolution');
         
         Route::resource('accompagnement', 'AccompagnementController');
         Route::get('delete/{id}',[AccompagnementController::class,'destroy'])->name('delete-accompagnement');
+        Route::post('accompagnement',[AccompagnementController::class,'search'])->name('search-accompagnement');
+
         
         Route::resource('financiere', 'FinanciereController');
-        Route::get('financieres/{id}',[FinanciereController::class,'destroy'])->name('delete-financement');
+        Route::get('financiere/{id}',[FinanciereController::class,'destroy'])->name('delete-financement');
+        Route::post('financiere',[FinanciereController::class,'search'])->name('financiere.search');
+
+        
         
         Route::resource('tasks', 'TasksController');
         
@@ -88,12 +96,16 @@ Route::group(['middleware' => ['auth']], function(){
             Route::get('/index',[EvolutionController::class,'index'])->name('evolution');
             Route::get('/create',[EvolutionController::class,'create'])->name('ajout-evolution');
             Route::post('/store',[EvolutionController::class,'store'])->name('create-evolution');
+            Route::post('/index', [EvolutionController::class, 'search'])->name('evolution.search');
             Route::get('/edit/{id}',[EvolutionController::class,'edit'])->name('edit-evolution');
             Route::put('/update/{id}',[EvolutionController::class,'update'])->name('update-evolution');
             Route::get('/delete/{id}',[EvolutionController::class,'destroy'])->name('delete-evolution');
             Route::get('/evolution-startup/{id}',[EvolutionStartupController::class,'index'])->name('view-evo-startup');
             Route::post('/evolution-startup',[EvolutionStartupController::class,'store'])->name('add-evo-startup');
             Route::put('/evolution-startup/{id}', [EvolutionStartupController::class, 'update'])->name('evolution.update');
+
+            
+            
 
         });
 
@@ -105,6 +117,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::prefix('rubrique')->group(function (){
             Route::get('/index',[RubriqueController::class,'index'])->name('rubrique.index');
             Route::post('/create',[RubriqueController::class,'store'])->name('rubrique.store');
+            Route::post('/index',[RubriqueController::class,'search'])->name('rubrique.search');
             Route::put('/update/{id}',[RubriqueController::class,'update'])->name('rubrique.update');
             Route::get('/delete/{id}',[RubriqueController::class,'delete'])->name('rubrique.delete');
         });

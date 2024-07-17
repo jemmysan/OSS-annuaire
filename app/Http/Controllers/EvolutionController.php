@@ -97,7 +97,15 @@ class EvolutionController extends Controller
                         ->with('success','evolution supprimer avec success');
     }
 
-    
+    public function search(Request $request)
+    {
+        $inputValue = $request->input('search');
+        $evolutions = Evolution::where('libelle', 'like', '%' . $inputValue . '%')
+                                ->orderBy('ordre')->get();
+                                
+        return view('evolution.index', compact('evolutions'))
+                    ->with('i',(request()->input('page',1)-1)*10);
+    }
 
     
 }

@@ -9,15 +9,15 @@
 
 
 
-    <div class="card">
+    <div class="card p-2">
         <h2>Gestion des structure financieres </h2>
-<br>
+        <br>
         <div class="row">
             <div class="col-12 col-sm-6 col-md-3">
                 <div class="info-box">
                     <span class="info-box-icon bg-info elevation-1">
                         <i class="fas fa-landmark"></i>
-</span>
+                    </span>
 
                     <div class="info-box-content">
                         <span class="info-box-text">TOTAL</span>
@@ -35,42 +35,50 @@
             </div>
 
         </div>
-        <div class="card-header">
+        
+        <div class=" card-header ">
+           <div class="w-full d-flex justify-content-between align-items-center">
+                <div >
+                    {{--                @can('creer structure')--}}
+        
+                    <a href="{{ route('financiere.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></a>
+                    {{--                @endcan--}}
+                </div>
 
+                <div>
 
-
-            <form action="{{ route('financiere.index') }}" method="GET" style="float: right"  role="search">
-                <div class="input-group">
+                <form action="{{ route('financiere.search') }}" method="POST" role="search" style="float: right">
+                @csrf <!-- Include this line to add the CSRF token -->
+                <div class="input-group bg-color-red">
                     <div id="custom-search-input">
                         <div class="col-sm-12">
-                            <input type="text" class="form-control"  name="nom" placeholder="Nom Structure" id="nom">
+                            <input type="text" class="form-control" name="search" placeholder="Nom évolution financière" id="nom">
                         </div>
                     </div>
-
-                    <a href="{{ route('financiere.index') }}" class=" mt-2">
+                    <div class="">
+                        <a class="mt-1">
                             <span class="input-group-btn">
-                                <button class="btn btn-danger" type="button" title="Rafraichir">
+                                <button class="btn btn-danger" type="submit" title="Refraichir">
                                     <span class="fas fa-sync-alt"></span>
                                 </button>
                             </span>
-                    </a>
+                        </a>
+                    </div>
+                    <br>
                 </div>
             </form>
+                </div>
+            </div>
 
 
         </div>
-        <div class="card-tools">
-            {{--                @can('creer structure')--}}
-
-            <a href="{{ route('financiere.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></a>
-            {{--                @endcan--}}
-        </div>
+       
         <!-- /.card-header -->
         <div class="card-body table-responsive p-0">
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Nom</th>
+                    <th >Nom</th>
                     <th>Description</th>
                     <th>Action</th>
                 </tr>
@@ -79,7 +87,7 @@
                 @forelse ($financieres as $key => $financiere)
 
                     <tr>
-                        <td>
+                        <td >
 
                         <h4>{{$financiere->nom_structure}}</h4>
 
@@ -89,17 +97,17 @@
 
                         </td>
                         <td >
-                            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="btn-toolbar d-flex justify-content-center" role="toolbar" aria-label="Toolbar with button groups">
                                 @can('voir_financiere')
-                                    <a  type="button" href="{{ route('financiere.show', $financiere->id  ) }}" class="btn btn-sm btn-primary"> <i class="fas fa-eye"></i></a>  
+                                    <a  type="button" href="{{ route('financiere.show', $financiere->id  ) }}" class="btn btn-sm btn-primary mx-1"> <i class="fas fa-eye"></i></a>  
                                 @endcan
 
                                 @can('modifier_financiere')
-                                    <a href="{{ route('financiere.edit', $financiere->id  ) }}" class="btn btn-sm bg-teal"> <i class="fas fa-edit"></i></a>
+                                    <a href="{{ route('financiere.edit', $financiere->id  ) }}" class="btn btn-sm bg-teal mx-1"> <i class="fas fa-edit"></i></a>
                                 @endcan
 
                                 @can('supprimer_financiere')
-                                    <a class="btn btn-sm  btn-danger" href="{{ route('delete-financement', $financiere->id ) }}" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
+                                    <a class="btn btn-sm  btn-danger mx-1" href="{{ route('delete-financement', $financiere->id ) }}" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
                                 @endcan
                             </div>
                         </td>

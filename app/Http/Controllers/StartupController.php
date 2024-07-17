@@ -30,17 +30,6 @@ class StartupController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-     public function searchStartup(Request $request)
-     {
-         $inputValue = $request->input('query'); 
-         $startups = Startup::where('libelle', 'like', '%' . $inputValue . '%')
-                            ->orWhere('description', 'like', '%' . $inputValue . '%')
-                            ->get();
-                            
-         return view('', compact('startups'));
-     }
-
-    
     
     public function index(Request $request)
     {
@@ -56,13 +45,6 @@ class StartupController extends Controller
                     ->with('i', (request()->input('page', 1) - 1) * 10);
             }
 
-            // Si l'utilisateur n'est pas un porteur de projet, récupérer les données globales
-            $total_startups = Startup::count();
-            $contact_count = Phase::where('phase', 'contact')->count();
-            $discussion_count = Phase::where('phase', 'discussion')->count();
-            $pilotage_count = Phase::where('phase', 'pilotage')->count();
-            $deploiement_count = Phase::where('phase', 'deploiement')->count();
-
             $startups = Startup::with('phase', 'secteur', 'commentaires')->get();
 
             $startups = Startup::where([
@@ -74,8 +56,9 @@ class StartupController extends Controller
                 }]
             ])->orderBy("id", "desc")->paginate(6);
 
-            return view('startup.index', compact('startups', 'total_startups', 'contact_count', 'discussion_count', 'pilotage_count', 'deploiement_count'))
-                ->with('i', (request()->input('page', 1) - 1) * 10);
+            return view('startup.index', compact('startups'))
+            ->with('i', (request()->input('page', 1) - 1) * 10);
+            //  'total_startups', 'contact_count', 'discussion_count', 'pilotage_count', 'deploiement_count'))
 
         } catch (\Exception $e) {
             Log::error('Error in index method: ' . $e->getMessage());
@@ -83,7 +66,8 @@ class StartupController extends Controller
         }
     }
 
-   
+    
+    
     /**
      * @return \Illuminate\Http\Response
      */
@@ -265,6 +249,7 @@ class StartupController extends Controller
      */
     public function destroy($id)
     {
+        
         $startup = Startup::findOrFail($id);
         try {
         
@@ -308,5 +293,34 @@ class StartupController extends Controller
         return back()->with('success','Merci');
 
     }
+
+    public function recherche($id){
+        return 1;
+    }
+
+    public function search(Request $request)
+{
+    $inputValue = $request->input('search');
+    $user = Auth::user();
+
+    if (Gate::allows('porteur-projet', $user)) {
+        $startups = Startup::whereHas('user', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->where('nom_startup', 'like', '%' . $inputValue . '%')
+          ->paginate(10);
+          
+        return view('startup.index', compact('startups'))
+               ->with('i', (request()->input('page', 1) - 1) * 10);
+    }
+
+    $startups = Startup::where('nom_startup', 'like', '%' . $inputValue . '%')
+                        ->paginate(10);
+    return view('startup.index', compact('startups'));
+}
+
+
+
+   
+    
     
 }

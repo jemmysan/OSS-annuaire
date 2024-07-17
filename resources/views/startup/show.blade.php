@@ -15,7 +15,7 @@
 
     <style type="text/css">
 
-
+      
 
         #msform {
             text-align: center;
@@ -254,6 +254,10 @@
             filter: alpha(opacity=60);
         }
 
+        
+        .custom-active.active {
+            color: white !important;
+        }
           
 </style>
 
@@ -384,33 +388,32 @@
                 <div class="card right-profile-card">
                     <div class="card-header p-0 pt-1">
 
-                        <ul class="nav nav-pills" id="pills-tab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="pills-details-tab" data-toggle="pill" href="#pills-details" role="tab" aria-selected="true">Détails</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-description-tab" data-toggle="pill" href="#pills-description" role="tab" aria-selected="false">Description</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-commentaire-tab" data-toggle="pill" href="#pills-commentaire" role="tab" aria-selected="false">Commentaires <span class="badge badge-dark">{{count($startup->commentaires)}}</span></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-video-tab" data-toggle="pill" href="#pills-video" role="tab" aria-selected="false">Vidéo</a>
-                            </li>
-                            @can('edit-statut-startup')
-                                <li class="nav-item">
-                                    <a class="nav-link" id="pills-phase-tab" data-toggle="pill" href="#pills-phase" role="tab" aria-selected="false">Statut</a>
-                                </li>
-                            @endcan
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-phase-tab" data-toggle="pill" href="#pills-financement" role="tab" aria-selected="false">Financement</a>
-                            </li>
+                    <ul class="nav nav-pills" id="pills-tab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active custom-active" id="pills-details-tab" data-toggle="pill" href="#pills-details" role="tab" aria-selected="true">Détails</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link custom-active" id="pills-description-tab" data-toggle="pill" href="#pills-description" role="tab" aria-selected="false">Description</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link custom-active" id="pills-commentaire-tab" data-toggle="pill" href="#pills-commentaire" role="tab" aria-selected="false">Commentaires <span class="badge badge-dark">{{count($startup->commentaires)}}</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link custom-active" id="pills-video-tab" data-toggle="pill" href="#pills-video" role="tab" aria-selected="false">Vidéo</a>
+    </li>
+    @can('edit-statut-startup')
+        <li class="nav-item">
+            <a class="nav-link custom-active" id="pills-phase-tab" data-toggle="pill" href="#pills-phase" role="tab" aria-selected="false">Statut</a>
+        </li>
+    @endcan
+    <li class="nav-item">
+        <a class="nav-link custom-active" id="pills-phase-tab" data-toggle="pill" href="#pills-financement" role="tab" aria-selected="false">Financement</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link custom-active" id="pills-phase-tab" data-toggle="pill" href="#pills-evolution" role="tab" aria-selected="false">Evolution</a>
+    </li>
+</ul>
 
-                            <li class="nav-item">
-                                <a class="nav-link" id="pills-phase-tab" data-toggle="pill" href="#pills-evolution" role="tab" aria-selected="false">Evolution</a>
-                            </li>
-
-                        </ul>
                     </div>
                     <div class="card-body">
                         <div class="tab-content" id="pills-tabContent">

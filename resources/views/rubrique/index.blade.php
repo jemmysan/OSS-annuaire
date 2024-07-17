@@ -36,22 +36,26 @@
                 Ajouter
             </a>
        
-        <form action="" method="GET" style="float: right" role="search">
-            <div class="input-group">
-                <div id="custom-search-input">
-                    <div class="col-sm-12">
-                        <input type="text" class="form-control" name="nom" placeholder="Nom Structure" id="nom">
+            <form action="{{ route('rubrique.search') }}" method="POST" role="search" style="float: right">
+                @csrf <!-- Include this line to add the CSRF token -->
+                <div class="input-group bg-color-red">
+                    <div id="custom-search-input">
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" name="search" placeholder="Nom Start-Up" id="nom">
+                        </div>
                     </div>
+                    <div class="">
+                        <a class="mt-1">
+                            <span class="input-group-btn">
+                                <button class="btn btn-danger" type="submit" title="Refraichir">
+                                    <span class="fas fa-sync-alt"></span>
+                                </button>
+                            </span>
+                        </a>
+                    </div>
+                    <br>
                 </div>
-                <a href="" class="mt-0">
-                    <span class="input-group-btn">
-                        <button class="btn btn-danger" type="button" title="Rafraichir">
-                            <span class="fas fa-sync-alt"></span>
-                        </button>
-                    </span>
-                </a>
-            </div>
-        </form>
+            </form>
     </div>
     
     <div class="card-body table-responsive p-0">

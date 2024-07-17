@@ -158,5 +158,24 @@ class AccompagnementController extends Controller
             ->with('success','Structure supprimée avec succés');
     }
 
+    public function search(Request $request)
+    {
+        $inputValue = $request->input('search');
+        $data = Accompagnement::where([
+            ['nom_structure', 'like', '%' . $inputValue . '%'],
+            [ function($query) use ($request){
+                if(($nom = $request->nom)){
+                    $query->orWhere('nom_structure','LIKE','%'.$nom.'%')->get();
+                }
+
+                }]
+            ])
+                ->orderBy("id","desc")
+                ->paginate(10);
+
+        return view('accompagnement.index',compact('data'))
+        ->with('i',(request()->input('page',1)-1)*10);   
+    }
+
 
 }

@@ -11,31 +11,68 @@ Liste
     <div class="card">
          <div class="card-body" >
 
-                <form action="{{ route('accompagnement.index') }}" method="GET" role="search">
+         <h2>Gestion des structure d'accompagnement </h2>
+        <br>
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="info-box">
+                    <span class="info-box-icon bg-info elevation-1">
+                        <i class="fas fa-sitemap"></i>
+                    </span>
 
-                    <div class="input-group">
-
-                     <input type="text" class="col-md-5"  name="nom" placeholder="Nom Structure" id="nom">
-                        <a href="{{ route('accompagnement.index') }}" class=" mt-1">
-                            <span class="input-group-btn">
-                                <button class="btn btn-danger" type="button" title="Refresh page">
-                                    <span class="fas fa-sync-alt"></span>
-                                </button>
-                            </span>
-                        </a>
+                    <div class="info-box-content">
+                        <span class="info-box-text">TOTAL</span>
+                        <span class="info-box-number">
+                                <?php
+                                    use Illuminate\Support\Facades\DB;
+                                    $count = DB::table('accompagnements')->count();
+                                    echo $count;
+                                ?>
+                             </span>
                     </div>
-                </form>
-
-        <div class="card-header">
-            <h3 class="card-title">Tableau des structures d'accompagnements</h3>
-
-            <div class="card-tools">
-                @can('creer_accompagnement')
-                <a href="{{ route('accompagnement.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></a>
-                @endcan
-{{--                    <a class="btn btn-sm btn-warning" href="{{ route('export') }}"> <i class="fas fa-file-csv"></i></a>--}}
-
+                    <!-- /.info-box-content -->
+                </div>
+                <!-- /.info-box -->
             </div>
+
+        </div>    
+
+       
+        <div class=" card-header ">
+           <div class="w-full d-flex justify-content-between align-items-center">
+                <div >
+                    {{-- @can('creer_accompagnement')--}}
+        
+                        <a href="{{  route('accompagnement.create')  }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Ajouter</a>
+                    {{-- @endcan--}}
+                </div>
+
+                
+                    <form action="{{ route('search-accompagnement') }}" method="POST" role="search" style="float: right">
+                        @csrf 
+                        <!-- Include this line to add the CSRF token -->
+                        <div class="input-group d-flex justify-items-center">
+                            <div id="custom-search-input ">
+                                <div class="col-sm-12">
+                                    <input type="text" class="form-control" name="search" placeholder="Nom évolution financière" id="nom">
+                                </div>
+                            </div>
+                            <div class="">
+                                <a class="">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-danger" type="submit" title="Refraichir">
+                                            <span class="fas fa-sync-alt"></span>
+                                        </button>
+                                    </span>
+                                </a>
+                            </div>
+                            <br>
+                        </div>
+                    </form>
+                
+            </div>
+
+
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive p-0">
@@ -64,18 +101,22 @@ Liste
                                            {{$accompagnement->description}}
                                     </td>
                                     <td>
-                                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                                        <div class="btn-toolbar " role="toolbar" aria-label="Toolbar with button groups">
 
 
-                                             @can('editer_accompagnement')
-                                              <a type="button" href="{{ route('accompagnement.edit', $accompagnement->id  ) }}" class="btn bg-teal"> <i class="fas fa-edit"></i></a>
+                                             @can('modifer_accompagnement')
+                                              <a type="button" href="{{ route('accompagnement.edit', $accompagnement->id  ) }}" class="btn bg-teal mx-1"> 
+                                                <i class="fas fa-edit "></i></a>
                                             @endcan
 
                                             @can('supprimer_accompagnement')
-                                                     <a class="btn btn-sm  btn-danger" href="{{ route('delete-accompagnement',$accompagnement->id ) }}" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> 
-                                                        <i class="fa fa-trash"></i>
+                                                     <a class="btn btn-sm  btn-danger mx-1 " href="{{ route('delete-accompagnement',$accompagnement->id ) }}" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> 
+                                                        <i class="fa fa-trash m-1"></i>
                                                     </a>
                                             @endcan
+
+                                           
+                                            
                                              </div>
                                      </td>
 

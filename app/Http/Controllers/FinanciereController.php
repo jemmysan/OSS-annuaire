@@ -36,17 +36,7 @@ class FinanciereController extends Controller
 
     }
 
-  public function search(Request $request)
-    {
-        if($request->has('search')){
-            $financiere = Financiere::search($request->get('search'))->get();
-        }else{
-            $financiere= Financiere::get();
-        }
-
-
-        return view('recherche', compact('financiere'));
-    }
+  
 
     /**
      * Show the form for creating a new resource.
@@ -168,5 +158,24 @@ class FinanciereController extends Controller
         return redirect()->route('financiere.index')
             ->with('success','Structure Financiére supprimée avec succés');
 
+    }
+
+    public function search(Request $request)
+    {
+        $inputValue = $request->input('search');
+        $financieres = Financiere::where([
+            ['nom_structure', 'like', '%' . $inputValue . '%'],
+            [ function($query) use ($request){
+                if(($nom = $request->nom)){
+                    $query->orWhere('nom_structure','LIKE','%'.$nom.'%')->get();
+                }
+
+                }]
+            ])
+                ->orderBy("id","desc")
+                ->paginate(10);
+
+            return view('financiere.index',compact('financieres'))
+                    ->with('i',(request()->input('page',1)-1)*10);   
     }
 }

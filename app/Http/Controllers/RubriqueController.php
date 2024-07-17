@@ -88,6 +88,16 @@ class RubriqueController extends Controller
             return back()->withErrors('Une erreur est survenue lors de la suppression de la rubrique : ' . $e->getMessage());
         }
     }
+
+    public function search(Request $request)
+    {
+        $inputValue = $request->input('search');
+        $rubriques = Rubrique::where('libelle', 'like', '%' . $inputValue . '%')
+                                ->orderBy('ordre')->get();
+                                
+        return view('rubrique.index', compact('rubriques'))
+                    ->with('i',(request()->input('page',1)-1)*10);
+    }
     
 
 }

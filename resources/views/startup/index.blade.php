@@ -243,9 +243,16 @@
                     </div>
                 </div>
             </div>
-
+               
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-3">
+                    @php
+                        $total_startups = DB::table('startups')->count();
+                        $contact_count = DB::table('phases')->where('phase', 'contact')->count();
+                        $discussion_count = DB::table('phases')->where('phase', 'discussion')->count();
+                        $pilotage_count = DB::table('phases')->where('phase', 'pilotage')->count();
+                        $deploiement_count = DB::table('phases')->where('phase', 'deploiement')->count();
+                    @endphp
                     <div class="info-box">
                         <span class="info-box-icon bg-info elevation-1"><i class="fas fa-rocket"></i></span>
                         <div class="info-box-content">
@@ -304,28 +311,29 @@
         </div>
     @endcan
 
-    <form action="{{ route('startup.index') }}" method="GET" role="search" style="float: right">
-
+   
+    
+    <form action="{{ route('search-startup') }}" method="POST" role="search" style="float: right">
+        @csrf <!-- Include this line to add the CSRF token -->
         <div class="input-group bg-color-red">
             <div id="custom-search-input">
                 <div class="col-sm-12">
-                    <input type="text" class="form-control"   name="nom" placeholder="Nom Start-Up" id="nom">
+                    <input type="text" class="form-control" name="search" placeholder="Nom Start-Up" id="nom">
                 </div>
             </div>
             <div class="">
-                
-                <a href="{{ route('startup.index') }}" class=" mt-1">
-                                    <span class="input-group-btn">
-                                        
-                                        <button class="btn btn-danger" type="button" title="Refraichir">
-                                            <span class="fas fa-sync-alt"></span>
-                                        </button>
-                                    </span>
+                <a class="mt-1">
+                    <span class="input-group-btn">
+                        <button class="btn btn-danger" type="submit" title="Refraichir">
+                            <span class="fas fa-sync-alt"></span>
+                        </button>
+                    </span>
                 </a>
             </div>
             <br>
         </div>
     </form>
+
     
 
     <div class="card-tools">
