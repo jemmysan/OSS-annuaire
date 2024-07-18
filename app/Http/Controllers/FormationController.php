@@ -25,6 +25,7 @@ class FormationController extends Controller
 
     public function coursIndex($id){
         $cours = Formation::where('id',$id)->first();
+       
         return  view('formations.cours.show',compact('cours'));
         $cours = Formation::where('id',$id)->first();
         // $cours->content  = html_entity_decode($cours->content);
@@ -48,7 +49,9 @@ class FormationController extends Controller
         Formation::create([
             'rubrique_id'=>$request->input('rubrique'),
             'title'=>$request->input('title'),
-            'content'=>$request->input('content')
+            'content'=>$request->input('content'),
+            'lien_video'=>$request->input('video'),
+
         ]);
         return redirect()->back()->with('message','Cours ajouté avec succès');
     }
@@ -72,7 +75,8 @@ class FormationController extends Controller
         
         $cours->update([
             'title'=>$request->input('title'),
-            'content'=>$request->input('content')
+            'content'=>$request->input('content'),
+            'lien_video'=>$request->input('video')
         ]);
         return redirect()->back()->with('message','Cours mis a jour avec succès');        
     }

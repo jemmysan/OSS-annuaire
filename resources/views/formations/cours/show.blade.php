@@ -28,18 +28,29 @@ Cours
 
             <form method="POST" action="{{ route('cours.update', $cours->id) }}">
                 @csrf
-                <div class="row px-4 pt-2">
-                    <div class="col-md-12">
+                <div class="row px-4 pt-2 ">
+                    <div class="col-md-12  mb-2">
                        
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group  ">
                                 <label for="title">Titre <span class="text-danger">*</span></label>
-                                <input type="text" id="title" value="{{ $cours->title }}" name="title" class="form-control @error('title') is-invalid @enderror" readOnly>
-                                @error('title')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <div class="d-flex justify-content-between">
+
+                                    <div class="w-auto">
+
+                                        <input type="text" id="title" value="{{ $cours->title }}" name="title" class="form-control @error('title') is-invalid @enderror" readOnly>
+                                    </div>
+
+                                    <div class=" md-col-6 d-flex justify-content-center">
+                                        <a href="{{ $cours->lien_video }}" class="nav-link">
+                                            <i class="fas fa-video"> Lien vidéo youtube</i>
+                                           
+                                
+                                        </a>
+                                    </div>
+                                </div>
+    
+
                             </div>
 
                             <div class="form-group">

@@ -14,6 +14,7 @@ class Formation extends Model
     protected $fillable = [
         'rubrique_id',
         'title',
+        'lien_video',
         'content'
     ];
 

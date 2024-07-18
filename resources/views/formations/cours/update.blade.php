@@ -42,6 +42,15 @@ Modifier-Cours
                                 @enderror
                             </div>
 
+                            <div class="form-group col-md-6">
+                                <label for="video" >Lien vidéo youtube </label>
+                                <input type="link" id="video" name="video" value="{{ $cours->lien_video }}"    class="form-control">
+
+
+                                
+                            </div>
+
+
                             <div class="form-group">
                                 
                                 <textarea id="content" name="content" rows="10" class="form-control @error('content') is-invalid @enderror">{{ $cours->content }}</textarea>

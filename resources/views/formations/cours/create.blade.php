@@ -61,6 +61,18 @@ Ajout-Cours
                         </div>
 
                         <div class="form-group">
+                                <label for="video" >Lien vidéo youtube </label>
+                                <input type="link" id="video" name="video" value="{{ old('video')}}"    class="form-control @error('video') is-invalid @enderror">
+
+
+                                @error('video')
+                                <span class="invalid-feedback" role="alert">
+                                                            <strong>{{ $message }}</strong>
+                                                        </span>
+                                @enderror
+                            </div>
+
+                        <div class="form-group">
                             <label for="content">Contenu</label>
                             <textarea id="content" name="content" rows="10" class="form-control @error('content') is-invalid @enderror">{{ old('content') }}</textarea>
                             @error('content')
