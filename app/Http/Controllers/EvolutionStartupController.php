@@ -16,18 +16,34 @@ class EvolutionStartupController extends Controller
         return view('evolution.evolution-startup',compact('startupId'));
     }
 
+    public function getEvolutionStartup($id)
+    {
+        $evolutionsStartups = EvolutionStartup::where('startup_id', $id)->get();
+
+        $evolutionIds = $evolutionsStartups->pluck('evolution_id')->toArray();
+
+        $ordreEvo = Evolution::whereIn('id', $evolutionIds)->get();
+
+        $data = [
+            "ordre" => $ordreEvo,
+            "evolutions" => $evolutionsStartups
+        ];
+        return response()->json($data);
+    }
+
     public function store(Request $request)
     {
+        // Validate form data
         $request->validate([
             'libelle' => 'required',
             'ordre' => 'required',
             'description' => 'required',
-            'description_files' => 'required|array',  // Validate for an array of files
-            'description_files.*' => 'required|file|mimes:ppt,pptx,doc,docx,pdf,xls,xlsx|max:204800', // Validation for each file
+            'description_files' => 'array', // Make this optional if files are not always required
+            'description_files.*' => 'file|mimes:ppt,pptx,doc,docx,pdf,xls,xlsx|max:204800', // Validate individual files
         ]);
 
         $filenames = [];
-        $storagePath = public_path('uploads/evolution_startup'); // Replace with desired path
+        $storagePath = public_path('uploads/evolution_startup'); // Replace with your desired path
 
         // Create storage directory if it doesn't exist
         if (!is_dir($storagePath)) {
@@ -38,28 +54,28 @@ class EvolutionStartupController extends Controller
         if ($request->hasFile('description_files')) {
             foreach ($request->file('description_files') as $file) {
                 $fileNom = uniqid('fichier_') . '.' . $file->getClientOriginalExtension();
-                $file->move($storagePath, $fileNom); // Store in 'uploads/evolution_startup' directory
+                $file->move($storagePath, $fileNom);
                 $filenames[] = $fileNom;
             }
         }
 
-        // Retrieve existing EvolutionStartup record if it exists
+        // Retrieve or create EvolutionStartup record
         $evolutionStartup = EvolutionStartup::where('evolution_id', $request->input('libelle'))
             ->where('startup_id', $request->input('startupId'))
             ->first();
 
         if ($evolutionStartup) {
-            // Merge new filenames with existing ones
+            // Merge existing filenames with new ones
             $existingFilenames = $evolutionStartup->filenames;
             $allFilenames = array_merge($existingFilenames, $filenames);
 
-            // Update the existing record
+            // Update existing record
             $evolutionStartup->update([
                 'description' => $request->input('description'),
                 'filename' => json_encode($allFilenames),
             ]);
         } else {
-            // Create a new record if it doesn't exist
+            // Create new record if it doesn't exist
             EvolutionStartup::create([
                 'evolution_id' => $request->input('libelle'),
                 'startup_id' => $request->input('startupId'),
@@ -70,6 +86,8 @@ class EvolutionStartupController extends Controller
 
         return redirect()->back()->with('success', 'Evolution ajoutée avec succès');
     }
+
+
 
    
     

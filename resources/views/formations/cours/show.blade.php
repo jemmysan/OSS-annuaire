@@ -58,16 +58,8 @@ Cours
                                     <?php
                                     echo $cours->content;
                                     ?>
-                                 <!-- {!! html_entity_decode($cours->content) !!} -->
                                 </p>
-                                <!-- <textarea id="content" name="content" rows="10" class="form-control @error('content') is-invalid @enderror" readOnly desabled>
-                                    {!! html_entity_decode($cours->content) !!}
-                                </textarea>
-                                @error('content')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror -->
+                                
                             </div>
 
                             

@@ -16,7 +16,7 @@ class EvolutionStartup extends Model
         'evolution_id',
         'startup_id',
         'description',
-        'filename'
+        'filename' // Assurez-vous que cet attribut correspond à votre base de données
     ];
 
     protected $hidden = [
@@ -26,7 +26,7 @@ class EvolutionStartup extends Model
 
     public function evaluation(): BelongsTo
     {
-        return $this->belongsTo(Evolution::class, 'evaluation_id');
+        return $this->belongsTo(Evolution::class, 'evolution_id');
     }
 
     public function startup(): BelongsTo
@@ -34,15 +34,14 @@ class EvolutionStartup extends Model
         return $this->belongsTo(Startup::class, 'startup_id');
     }
 
-    // Accessor to decode the filenames from JSON
     public function getFilenamesAttribute($value)
     {
-        return json_decode($value, true) ?: []; // Return an empty array if not JSON or invalid
+        return json_decode($value, true) ?: []; // Return an empty array if not valid JSON
     }
 
-    // Mutator to encode the filenames array into JSON before saving
     public function setFilenamesAttribute($value)
     {
-        $this->attributes['filename'] = json_encode($value);
+        $this->attributes['filename'] = json_encode($value); // Encode array to JSON
     }
+
 }

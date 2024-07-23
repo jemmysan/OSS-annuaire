@@ -92,6 +92,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::resource('comments', 'CommentsController');
         
 
+        Route::get('/startup/evolution/{id}', [EvolutionStartupController::class, 'getEvolutionStartup'])->name('startup.evolutions');
         Route::prefix('evolution')->group(function (){
             Route::get('/index',[EvolutionController::class,'index'])->name('evolution');
             Route::get('/create',[EvolutionController::class,'create'])->name('ajout-evolution');

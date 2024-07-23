@@ -258,6 +258,41 @@
         .custom-active.active {
             color: white !important;
         }
+
+        /************ Progess bar style *******/
+        .progress-container {
+            position: relative;
+            height: 10px;
+            background-color: #e0e0e0;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+.progress-bar {
+    height: 100%;
+    background-color: #e0e0e0;
+    border-radius: 15px;
+}
+
+.step {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: white;
+    border: 2px solid #4169E1;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+.active-step {
+    background-color: #4169E1;
+    color: white;
+}
+
           
 </style>
 
@@ -389,29 +424,32 @@
                     <div class="card-header p-0 pt-1">
 
                     <ul class="nav nav-pills" id="pills-tab" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link active custom-active" id="pills-details-tab" data-toggle="pill" href="#pills-details" role="tab" aria-selected="true">Détails</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link custom-active" id="pills-description-tab" data-toggle="pill" href="#pills-description" role="tab" aria-selected="false">Description</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link custom-active" id="pills-commentaire-tab" data-toggle="pill" href="#pills-commentaire" role="tab" aria-selected="false">Commentaires <span class="badge badge-dark">{{count($startup->commentaires)}}</span></a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link custom-active" id="pills-video-tab" data-toggle="pill" href="#pills-video" role="tab" aria-selected="false">Vidéo</a>
-    </li>
-    @can('edit-statut-startup')
-        <li class="nav-item">
-            <a class="nav-link custom-active" id="pills-phase-tab" data-toggle="pill" href="#pills-phase" role="tab" aria-selected="false">Statut</a>
-        </li>
-    @endcan
-    <li class="nav-item">
-        <a class="nav-link custom-active" id="pills-phase-tab" data-toggle="pill" href="#pills-financement" role="tab" aria-selected="false">Financement</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link custom-active" id="pills-phase-tab" data-toggle="pill" href="#pills-evolution" role="tab" aria-selected="false">Evolution</a>
-    </li>
+                        <li class="nav-item">
+                            <a class="nav-link active custom-active" id="pills-details-tab" data-toggle="pill" href="#pills-details" role="tab" aria-selected="true">Détails</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-active" id="pills-description-tab" data-toggle="pill" href="#pills-description" role="tab" aria-selected="false">Description</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-active" id="pills-commentaire-tab" data-toggle="pill" href="#pills-commentaire" role="tab" aria-selected="false">Commentaires <span class="badge badge-dark">{{count($startup->commentaires)}}</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link custom-active" id="pills-video-tab" data-toggle="pill" href="#pills-video" role="tab" aria-selected="false">Vidéo</a>
+                        </li>
+
+                        @can('edit-statut-startup')
+                            <li class="nav-item">
+                                <a class="nav-link custom-active" id="pills-phase-tab" data-toggle="pill" href="#pills-phase" role="tab" aria-selected="false">Statut</a>
+                            </li>
+                        @endcan
+
+                        <li class="nav-item">
+                            <a class="nav-link custom-active" id="pills-phase-tab" data-toggle="pill" href="#pills-financement" role="tab" aria-selected="false">Financement</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link custom-active" id="pills-phase-tab" data-toggle="pill" href="#pills-evolution" role="tab" aria-selected="false" onclick="getStartUpEvolution({{$startup->id}});">Evolution</a>
+                        </li>
 </ul>
 
                     </div>
@@ -626,9 +664,7 @@
 
                             <!----- pills evolution links --->
                             <div class="tab-pane fade" id="pills-evolution" role="tabpanel" aria-labelledby="pills-evolution-tab">
-                                <?php
-                                    use Illuminate\Support\Facades\DB;
-                                ?>
+                                
                                 <div class="d-flex justify-content-between align-items-center ">
                                     
                                     <div class="d-fex  justify-content-center align-items-start">
@@ -643,77 +679,13 @@
                                     </a>
                                 </div>
                                 <hr>
-                               <!------------ reglage -------->
-                               <div class="px-4">
-                                    @php
-                                        $associatedIds = DB::table('evolution_startups')
-                                            ->where('startup_id', $startup->id)
-                                            ->pluck('evolution_id');
-                                            $evolutions = DB::table('evolutions')
-                                            ->select('id', 'ordre', 'libelle', 'description')
-                                            ->whereIn('id', $associatedIds)
-                                            ->get();
 
-                                    @endphp
-
-                                    <div class="position-relative m-4 nav nav-pills position-relative my-4 bg-primary" id="pills-tab" role="tablist">
-                                        <div class="progress" style="height: 1px;">
-                                            <div class="progress-bar" role="progressbar" style="width: {{ count($evolutions) > 0 ? 100 / count($evolutions) : 0 }}%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        @foreach($evolutions as $index => $evolution)
-                                            @php
-                                                $leftPercentage = ($index / count($evolutions)) * 75;
-                                            @endphp
-                                            <button type="button" class=" position-absolute top-0 translate-middle btn btn-sm btn-primary rounded-pill circle-btn" style="left: {{ $leftPercentage }}%;" id="pills-details{{ $index + 1 }}-tab" data-toggle="pill" href="#pills-details{{ $index + 1 }}" role="tab" aria-selected="{{ $index === 0 ? 'true' : 'false' }}">{{ $evolution->ordre }}</button>
-                                        @endforeach
-                                    </div>
-
+                               <!------------ Evolution-Startup -------->
+                               <div id="progress-container" class="progress-container">
+                                    <div id="progress-bar" class="progress-bar"></div>
                                 </div>
-
-
-                            <div class="card-body">
-        
-
-                            <div class="tab-content" id="pills-tabContent">
-                                @foreach($evolutions as $index => $evolution)
-                                    <div class="tab-pane fade show {{ $index === 0 ? 'active' : '' }}" id="pills-details{{ $index + 1 }}" role="tabpanel" aria-labelledby="pills-details{{ $index + 1 }}-tab">
-                                        <div class="work-container">
-                                            @php
-                                                $associatedEvo = DB::table('evolution_startups')
-                                                                ->where('evolution_id', $evolution->id)
-                                                                ->where('startup_id', $startup->id)
-                                                                ->first();
-                                            @endphp
-                                            <div class="d-flex justify-content-end">
-                                                <button class="btn btn-sm bg-warning mx-1 edit-btn" data-index="{{ $index }}">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                            </div>                         
-                                            <form method="POST" action="{{ route('evolution.update', $associatedEvo->id) }}" enctype="multipart/form-data" class="evolution-form">
-                                                @csrf
-                                                @method('PUT')
-                                                <div class="modal-body">
-                                                    <label for="description-{{ $index }}">Description phase de la startup</label>
-                                                    <textarea id="description-{{ $index }}" name="description" class="form-control" readonly>{{ $associatedEvo->description }}</textarea>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <label for="filename-{{ $index }}">Fichier de description</label>
-                                                    <input type="file" id="filename-{{ $index }}" name="filename" class="form-control-file" disabled>
-                                                    <a href="{{ url('fichier/' . $associatedEvo->filename) }}">{{ $associatedEvo->filename }}</a>
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <button type="button" class="btn btn-warning cancel-btn" style="display: none;">
-                                                        <i class="fa fa-ban"></i> Annuler
-                                                    </button>
-                                                    <button type="submit" class="btn btn-success save-btn" style="display: none;">
-                                                        <i class="fas fa-save"></i> Enregistrer
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
+                                <div id="evolution-details-container"></div>
+                               
     </div>
     
 </div>
@@ -724,82 +696,7 @@
 
     
 
-        <!-- Modal add evolution for startup -->
-        <!-- <div class="modal fade" id="addEvolutionForStartup" tabindex="-1" role="dialog" aria-labelledby="addEvolutionForStartup" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content max-h-full">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Ajout évolution startup</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                        </div>
-                        <form method="POST" action="{{ route('add-evo-startup', $startup->id ) }}"  enctype="multipart/form-data">
-                            @csrf
-                            <div class="modal-body">
-                                <label for="leve_fond">Libelle <span class="text-danger">*</span></label>
-                                <?php
-                                    $associatedIds = DB::table('evolution_startups')
-                                        ->where('startup_id', $startup->id)
-                                        ->pluck('evolution_id');
-                                    $evolutions = DB::table('evolutions')
-                                        ->whereNotIn('id', $associatedIds)
-                                        ->get();
-                                ?>
-                                
-                                <select class="form-control custom-select @error('libelle') is-invalid @enderror" id="libelle" name="libelle" onchange="updateFields()">
-                                    <option value="" selected disabled>Choose...</option>
-                                    @foreach($evolutions as $evolutionOption)
-                                        <option value="{{ $evolutionOption->id }}" 
-                                                data-ordre="{{ $evolutionOption->ordre }}" 
-                                                data-description="{{ $evolutionOption->description }}">
-                                            {{ $evolutionOption->libelle }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('libelle')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-
-                            <div class="modal-body">
-                                <label for="ordre">Ordre</label>
-                                <input type="number" name="ordre" id="ordre" class="form-control @error('ordre') is-invalid @enderror" value="{{ old('ordre') }}" readOnly>
-                                @error('ordre')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-
-                            <div class="modal-body">
-                                <label for="description">Description</label>
-                                <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror" rows="4" readOnly>{{ old('description') }}</textarea>
-                                @error('description')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-
-                        
-
-                            <div class="modal-body">
-                                <button class="btn btn-warning" data-dismiss="modal">
-                                    <i class="fa fa-ban" aria-hidden="true"></i>
-                                    Annuler
-                                </button>
-                                <button type="submit" class="btn btn-success float-right">
-                                    <i class="fas fa-save"></i>
-                                    Ajouter
-                                </button>
-                            </div>
-                        </form> 
-                    </div>
-                </div>
-        </div> -->
+       
 
 </div>
 
@@ -822,92 +719,215 @@
     </script>
 
     <script src="jquery-bar-rating-master/dist/jquery.barrating.min.js" type="text/javascript"></script>
-
-        <!-------- Remplir champs formulaire ------>
+    
+    <!------  Progress designing --->
+    
     <script>
-        function updateFields()
-        {
-            var libelle = document.getElementById('libelle');
-            var ordre = document.getElementById('ordre');
-            var description = document.getElementById('description');
-            var fileInputContainer = document.getElementById('file-input-container');
+    async function getStartUpEvolution(id) {
+    const progressContainer = document.getElementById('progress-container');
+    const progressBar = document.getElementById('progress-bar');
+    const detailsContainer = document.getElementById('evolution-details-container');
 
-            var selectedOption = libelle.options[libelle.selectedIndex];
-        
-            if (selectedOption.value) {
-                ordre.value = selectedOption.getAttribute('data-ordre');
-                description.value = selectedOption.getAttribute('data-description');
-                ordre.readOnly = true;
-                description.readOnly = true;
-                fileInputContainer.style.display = 'block'; // Show file input
-            } else {
-                ordre.value = '';
-                description.value = '';
-                ordre.readOnly = false;
-                description.readOnly = false;
-                fileInputContainer.style.display = 'none'; // Hide file input
-            }
+    try {
+        const response = await fetch(`evolution/${id}`);
+
+        if (!response.ok) {
+            throw new Error('Evolutions not found');
         }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('file-input-container').style.display = 'none'; // Initially hide the file input
-    });
+        const data = await response.json();
+        const { ordre, evolutions } = data;
+        console.log(data);
 
-    function updateFileName(input) {
-        const fileName = input.files[0].name;
-        const label = input.nextElementSibling;
-        label.textContent = fileName;
+        // Sort the ordre array based on the 'ordre' property
+        ordre.sort((a, b) => a.ordre - b.ordre);
+
+        createProgressBar(ordre);
+        displayEvolutionDetails(evolutions, ordre[0].id); // Pass the first ordre id to display its details by default
+    } catch (error) {
+        console.error('Error:', error);
     }
 
-/*********** Modifier evolution startups *******/
+    function createProgressBar(ordres) {
+        // Clear previous progress bar
+        progressContainer.innerHTML = '';
+        progressBar.style.width = `${100 / ordres.length}%`;
 
-document.addEventListener('DOMContentLoaded', function() {
-    var editButtons = document.querySelectorAll('.edit-btn');
-    var cancelButtons = document.querySelectorAll('.cancel-btn');
-    var saveButtons = document.querySelectorAll('.save-btn');
+        // Create steps
+        ordres.forEach((ordre, index) => {
+            const stepElement = document.createElement('div');
+            stepElement.classList.add('step');
+            if (index === 0) {
+                stepElement.classList.add('active-step');
+            }
+            stepElement.style.left = `${(index * 100) / ordres.length}%`;
+            stepElement.innerText = ordre.ordre; // Assuming 'ordre' has 'ordre'
+            stepElement.dataset.evolutionId = ordre.id;
 
-    editButtons.forEach(function(button) {
+            // Click event listener to filter and display elements
+            stepElement.addEventListener('click', () => {
+                document.querySelectorAll('.step').forEach(step => step.classList.remove('active-step'));
+                stepElement.classList.add('active-step');
+                filterEvolutionDetails(ordre.id);
+            });
+
+            progressContainer.appendChild(stepElement);
+        });
+    }
+
+    function displayEvolutionDetails(evolutions, defaultEvolutionId = null) {
+        detailsContainer.innerHTML = '';
+
+        evolutions.forEach(evolution => {
+            const evolutionElement = document.createElement('div');
+            evolutionElement.classList.add('evolution-detail');
+            evolutionElement.dataset.evolutionId = evolution.evolution_id;
+            evolutionElement.innerHTML = `
+                <p><strong>ID:</strong> ${evolution.id}</p>
+                <p><strong>Description:</strong> ${evolution.description}</p>
+                <p><strong>Filename:</strong> ${evolution.filename}</p>
+            `;
+            detailsContainer.appendChild(evolutionElement);
+        });
+
+        if (defaultEvolutionId) {
+            filterEvolutionDetails(defaultEvolutionId);
+        }
+    }
+
+    function filterEvolutionDetails(evolutionId) {
+        document.querySelectorAll('.evolution-detail').forEach(detail => {
+            detail.style.display = detail.dataset.evolutionId == evolutionId ? 'block' : 'none';
+        });
+    }
+}
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-------- Remplir champs formulaire ------>
+<!--- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // Handle edit button click
+    document.querySelectorAll('.edit-btn').forEach(button => {
         button.addEventListener('click', function() {
-            var index = this.getAttribute('data-index');
-            var form = document.querySelector(`#pills-details${parseInt(index) + 1} .evolution-form`);
-            var descriptionField = form.querySelector(`#description-${index}`);
-            var fileField = form.querySelector(`#filename-${index}`);
-            var cancelButton = form.querySelector('.cancel-btn');
-            var saveButton = form.querySelector('.save-btn');
+            let index = this.getAttribute('data-index');
+            let form = document.querySelector(`#pills-details${parseInt(index) + 1} .evolution-form`);
+            let descriptionField = form.querySelector(`#description-${index}`);
+            let fileField = form.querySelector(`#files-${index}`);
+            let fileList = form.querySelector(`#file-list-${index}`);
+            let cancelButton = form.querySelector('.cancel-btn');
+            let saveButton = form.querySelector('.save-btn');
 
-            // 
             form.style.display = 'block';
             descriptionField.removeAttribute('readonly');
             fileField.removeAttribute('disabled');
             cancelButton.style.display = 'inline-block';
             saveButton.style.display = 'inline-block';
 
-            // 
             this.style.display = 'none';
         });
     });
 
-    cancelButtons.forEach(function(button) {
+    // Handle cancel button click
+    document.querySelectorAll('.cancel-btn').forEach(button => {
         button.addEventListener('click', function() {
-            var form = this.closest('form');
-            var descriptionField = form.querySelector('textarea');
-            var fileField = form.querySelector('input[type="file"]');
-            var editButton = form.closest('.work-container').querySelector('.edit-btn');
-            var saveButton = form.querySelector('.save-btn');
+            let form = this.closest('form');
+            let descriptionField = form.querySelector('textarea');
+            let fileField = form.querySelector('input[type="file"]');
+            let editButton = form.closest('.work-container').querySelector('.edit-btn');
+            let saveButton = form.querySelector('.save-btn');
 
-            // 
             form.style.display = 'block';
             descriptionField.setAttribute('readonly', 'readonly');
             fileField.setAttribute('disabled', 'disabled');
             this.style.display = 'none';
             saveButton.style.display = 'none';
-
-            // 
             editButton.style.display = 'inline-block';
         });
     });
+
+    // Handle file input change
+    document.querySelectorAll('input[type="file"]').forEach(input => {
+        input.addEventListener('change', function() {
+            updateFileList(this);
+        });
+    });
+
+    // Handle remove file button click
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('remove-file')) {
+            let index = event.target.getAttribute('data-index');
+            let filename = event.target.getAttribute('data-filename');
+            let fileList = document.querySelector(`#file-list-${index}`);
+
+            // Remove file item from the list
+            let fileItem = event.target.closest('.file-item');
+            fileItem.remove();
+
+            // You may also want to send a request to remove the file from the server
+            // Example:
+            /*
+            fetch('/remove-file', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ filename: filename, index: index })
+            }).then(response => {
+                if (response.ok) {
+                    console.log('File removed');
+                } else {
+                    console.log('Error removing file');
+                }
+            });
+            */
+        }
+    });
 });
 
+function updateFileList(input) {
+    let fileList = document.querySelector(`#file-list-${input.getAttribute('data-index')}`);
+    let files = input.files;
 
-   </script>
+    // Clear existing list
+    fileList.innerHTML = '';
+
+    // Add selected files to the list
+    Array.from(files).forEach(file => {
+        let fileItem = document.createElement('div');
+        fileItem.classList.add('file-item');
+
+        let fileLink = document.createElement('a');
+        fileLink.href = URL.createObjectURL(file);
+        fileLink.target = '_blank';
+        fileLink.textContent = file.name;
+        fileItem.appendChild(fileLink);
+
+        let removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.classList.add('btn', 'btn-sm', 'btn-danger', 'remove-file');
+        removeButton.textContent = 'Supprimer';
+        removeButton.setAttribute('data-index', input.getAttribute('data-index'));
+        removeButton.setAttribute('data-filename', file.name);
+        fileItem.appendChild(removeButton);
+
+        fileList.appendChild(fileItem);
+    });
+}
+
+   </script> -->
 @endsection
