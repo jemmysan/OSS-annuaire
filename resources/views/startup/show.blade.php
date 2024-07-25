@@ -293,6 +293,22 @@
     color: white;
 }
 
+
+/************* fvjffvfvf */
+    .evolution-detail {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+    .filename-container {
+        gap: 10px;
+    }
+    .filename-item {
+        flex-basis: calc(33.333% - 10px);
+        min-width: 150px;
+    }
+
           
 </style>
 
@@ -724,85 +740,130 @@
     
     <script>
     async function getStartUpEvolution(id) {
-    const progressContainer = document.getElementById('progress-container');
-    const progressBar = document.getElementById('progress-bar');
-    const detailsContainer = document.getElementById('evolution-details-container');
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+        const detailsContainer = document.getElementById('evolution-details-container');
 
-    try {
-        const response = await fetch(`evolution/${id}`);
-
-        if (!response.ok) {
-            throw new Error('Evolutions not found');
+        if (!progressContainer || !progressBar || !detailsContainer) {
+            console.error('Required elements not found in the DOM.');
+            return;
         }
 
-        const data = await response.json();
-        const { ordre, evolutions } = data;
-        console.log(data);
+        try {
+            const response = await fetch(`evolution/${id}`);
 
-        // Sort the ordre array based on the 'ordre' property
-        ordre.sort((a, b) => a.ordre - b.ordre);
-
-        createProgressBar(ordre);
-        displayEvolutionDetails(evolutions, ordre[0].id); // Pass the first ordre id to display its details by default
-    } catch (error) {
-        console.error('Error:', error);
-    }
-
-    function createProgressBar(ordres) {
-        // Clear previous progress bar
-        progressContainer.innerHTML = '';
-        progressBar.style.width = `${100 / ordres.length}%`;
-
-        // Create steps
-        ordres.forEach((ordre, index) => {
-            const stepElement = document.createElement('div');
-            stepElement.classList.add('step');
-            if (index === 0) {
-                stepElement.classList.add('active-step');
+            if (!response.ok) {
+                throw new Error('Evolutions not found');
             }
-            stepElement.style.left = `${(index * 100) / ordres.length}%`;
-            stepElement.innerText = ordre.ordre; // Assuming 'ordre' has 'ordre'
-            stepElement.dataset.evolutionId = ordre.id;
 
-            // Click event listener to filter and display elements
-            stepElement.addEventListener('click', () => {
-                document.querySelectorAll('.step').forEach(step => step.classList.remove('active-step'));
-                stepElement.classList.add('active-step');
-                filterEvolutionDetails(ordre.id);
+            const data = await response.json();
+            const { ordre, evolutions } = data;
+            console.log(data);
+
+            // Sort the ordre array based on the 'ordre' property
+            ordre.sort((a, b) => a.ordre - b.ordre);
+
+            createProgressBar(ordre);
+            displayEvolutionDetails(evolutions, ordre[0].id); // Pass the first ordre id to display its details by default
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
+        function createProgressBar(ordres) {
+            // Clear previous progress bar
+            progressContainer.innerHTML = '';
+            progressBar.style.width = `${100 / ordres.length}%`;
+
+            // Create steps
+            ordres.forEach((ordre, index) => {
+                const stepElement = document.createElement('div');
+                stepElement.classList.add('step');
+                if (index === 0) {
+                    stepElement.classList.add('active-step');
+                }
+                stepElement.style.left = `${(index * 100) / ordres.length}%`;
+                stepElement.innerText = ordre.ordre; // Assuming 'ordre' has 'ordre'
+                stepElement.dataset.evolutionId = ordre.id;
+
+                // Click event listener to filter and display elements
+                stepElement.addEventListener('click', () => {
+                    document.querySelectorAll('.step').forEach(step => step.classList.remove('active-step'));
+                    stepElement.classList.add('active-step');
+                    filterEvolutionDetails(ordre.id);
+                });
+
+                progressContainer.appendChild(stepElement);
             });
+        }
 
-            progressContainer.appendChild(stepElement);
+        function displayEvolutionDetails(evolutions, defaultEvolutionId = null) {
+            detailsContainer.innerHTML = '';
+
+            evolutions.forEach(evolution => {
+    const evolutionElement = document.createElement('div');
+    evolutionElement.classList.add('evolution-detail');
+    evolutionElement.dataset.evolutionId = evolution.evolution_id;
+    
+    // Créer l'input pour la description
+    const descriptionInput = `
+        <div class="pb-2  h-[25%]">
+                 <div  type="button"  class=" btn btn-warning  float-right">
+                                <i class="fas fa-edit "></i>
+                </div>
+        </div>
+        <br>
+        <hr>
+        
+        <div class="form-group">
+            <label for="description-${evolution.evolution_id}"><strong>Description:</strong></label>
+            <input type="text" id="description-${evolution.evolution_id}" class="form-control" value="${evolution.description}" readonly>
+        </div>
+    `;
+
+    // Créer la div pour les filenames
+    let filenamesHtml = `
+        <div class="form-group">
+            <label><strong>Filenames:</strong></label>
+            <div class="filename-container d-flex flex-wrap">
+    `;
+
+    // Vérifier si filename est un tableau
+    if (Array.isArray(evolution.filename)) {
+        evolution.filename.forEach(file => {
+            filenamesHtml += `
+                <input type="text" class="form-control filename-item m-1" value="${file}" readonly>
+            `;
         });
+    } else if (typeof evolution.filename === 'string') {
+        // Si c'est une chaîne, on l'affiche directement
+        filenamesHtml += `
+            <input type="text" class="form-control filename-item m-1" value="${evolution.filename}" readonly>
+        `;
     }
 
-    function displayEvolutionDetails(evolutions, defaultEvolutionId = null) {
-        detailsContainer.innerHTML = '';
+    filenamesHtml += `
+            </div>
+        </div>
+    `;
 
-        evolutions.forEach(evolution => {
-            const evolutionElement = document.createElement('div');
-            evolutionElement.classList.add('evolution-detail');
-            evolutionElement.dataset.evolutionId = evolution.evolution_id;
-            evolutionElement.innerHTML = `
-                <p><strong>ID:</strong> ${evolution.id}</p>
-                <p><strong>Description:</strong> ${evolution.description}</p>
-                <p><strong>Filename:</strong> ${evolution.filename}</p>
-            `;
-            detailsContainer.appendChild(evolutionElement);
-        });
+    evolutionElement.innerHTML = descriptionInput + filenamesHtml;
+    detailsContainer.appendChild(evolutionElement);
+});
+            // console.log(evolutions);
 
-        if (defaultEvolutionId) {
-            filterEvolutionDetails(defaultEvolutionId);
+            if (defaultEvolutionId) {
+                filterEvolutionDetails(defaultEvolutionId);
+            }
+        }
+
+        function filterEvolutionDetails(evolutionId) {
+            document.querySelectorAll('.evolution-detail').forEach(detail => {
+                detail.style.display = detail.dataset.evolutionId == evolutionId ? 'block' : 'none';
+            });
         }
     }
-
-    function filterEvolutionDetails(evolutionId) {
-        document.querySelectorAll('.evolution-detail').forEach(detail => {
-            detail.style.display = detail.dataset.evolutionId == evolutionId ? 'block' : 'none';
-        });
-    }
-}
-
 </script>
+
 
 
 

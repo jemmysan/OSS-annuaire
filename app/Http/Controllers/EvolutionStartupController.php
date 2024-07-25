@@ -33,59 +33,44 @@ class EvolutionStartupController extends Controller
 
     public function store(Request $request)
     {
-        // Validate form data
-        $request->validate([
-            'libelle' => 'required',
-            'ordre' => 'required',
-            'description' => 'required',
-            'description_files' => 'array', // Make this optional if files are not always required
-            'description_files.*' => 'file|mimes:ppt,pptx,doc,docx,pdf,xls,xlsx|max:204800', // Validate individual files
-        ]);
-
-        $filenames = [];
-        $storagePath = public_path('uploads/evolution_startup'); // Replace with your desired path
-
-        // Create storage directory if it doesn't exist
-        if (!is_dir($storagePath)) {
-            mkdir($storagePath, 0755, true);
-        }
-
-        // Handle new files
-        if ($request->hasFile('description_files')) {
-            foreach ($request->file('description_files') as $file) {
-                $fileNom = uniqid('fichier_') . '.' . $file->getClientOriginalExtension();
-                $file->move($storagePath, $fileNom);
-                $filenames[] = $fileNom;
+        try {
+            $request->validate([
+                'libelle' => 'required',
+                'description' => 'required|string',
+                'filename' => 'required',
+                'filename.*' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            ]);
+    
+            $fileNames = [];
+            if ($request->hasFile('filename')) {
+                foreach ($request->file('filename') as $file) {
+                    if ($file->isValid()) {
+                        $fileName = time() . '_' . $file->getClientOriginalName();
+                        $file->storeAs('public/files', $fileName);
+                        $fileNames[] = $fileName;
+                    } else {
+                        throw new \Exception("Le fichier {$file->getClientOriginalName()} n'est pas valide.");
+                    }
+                }
             }
+    
+            $evolutionStartup = new EvolutionStartup();
+            $evolutionStartup->evolution_id = $request->input('libelle');
+            $evolutionStartup->startup_id = $request->input('startupId');
+            $evolutionStartup->description = $request->input('description');
+            $evolutionStartup->filename = $fileNames;
+            $evolutionStartup->save();
+    
+            return redirect()->back()->with('success', 'Evolution startup ajouté avec succès.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Erreur : ' . $e->getMessage())->withInput();
         }
-
-        // Retrieve or create EvolutionStartup record
-        $evolutionStartup = EvolutionStartup::where('evolution_id', $request->input('libelle'))
-            ->where('startup_id', $request->input('startupId'))
-            ->first();
-
-        if ($evolutionStartup) {
-            // Merge existing filenames with new ones
-            $existingFilenames = $evolutionStartup->filenames;
-            $allFilenames = array_merge($existingFilenames, $filenames);
-
-            // Update existing record
-            $evolutionStartup->update([
-                'description' => $request->input('description'),
-                'filename' => json_encode($allFilenames),
-            ]);
-        } else {
-            // Create new record if it doesn't exist
-            EvolutionStartup::create([
-                'evolution_id' => $request->input('libelle'),
-                'startup_id' => $request->input('startupId'),
-                'description' => $request->input('description'),
-                'filename' => json_encode($filenames),
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Evolution ajoutée avec succès');
     }
+    
+    
+    
+
+    
 
 
 
