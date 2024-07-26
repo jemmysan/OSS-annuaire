@@ -794,74 +794,129 @@
 
                 progressContainer.appendChild(stepElement);
             });
+
+
         }
 
         function displayEvolutionDetails(evolutions, defaultEvolutionId = null) {
             detailsContainer.innerHTML = '';
 
             evolutions.forEach(evolution => {
-    const evolutionElement = document.createElement('div');
-    evolutionElement.classList.add('evolution-detail');
-    evolutionElement.dataset.evolutionId = evolution.evolution_id;
-    
-    // Créer l'input pour la description
-    const descriptionInput = `
-        <div class="pb-2  h-[25%]">
-                 <div  type="button"  class=" btn btn-warning  float-right">
-                                <i class="fas fa-edit "></i>
+            const evolutionElement = document.createElement('div');
+            evolutionElement.classList.add('evolution-detail');
+            evolutionElement.dataset.evolutionId = evolution.evolution_id;
+            
+            // Créer l'input pour la description
+            const descriptionInput = `
+                <div class="pb-2  h-[25%]">
+                        <div id="${evolution.startup_id}" class="edit-button"  type="button"  class=" btn btn-warning  float-right">
+                                        <i class="fas fa-edit "></i>
+                        </div>
                 </div>
-        </div>
-        <br>
-        <hr>
-        
-        <div class="form-group">
-            <label for="description-${evolution.evolution_id}"><strong>Description:</strong></label>
-            <input type="text" id="description-${evolution.evolution_id}" class="form-control" value="${evolution.description}" readonly>
-        </div>
-    `;
-
-    // Créer la div pour les filenames
-    let filenamesHtml = `
-        <div class="form-group">
-            <label><strong>Filenames:</strong></label>
-            <div class="filename-container d-flex flex-wrap">
-    `;
-
-    // Vérifier si filename est un tableau
-    if (Array.isArray(evolution.filename)) {
-        evolution.filename.forEach(file => {
-            filenamesHtml += `
-                <input type="text" class="form-control filename-item m-1" value="${file}" readonly>
+                <br>
+                <hr>
+                
+                <div class="form-group">
+                    <label for="description-${evolution.evolution_id}"><strong>Description:</strong></label>
+                    <input type="text" id="description-${evolution.evolution_id}" class="form-control description" value="${evolution.description}" readonly>
+                </div>
             `;
-        });
-    } else if (typeof evolution.filename === 'string') {
-        // Si c'est une chaîne, on l'affiche directement
-        filenamesHtml += `
-            <input type="text" class="form-control filename-item m-1" value="${evolution.filename}" readonly>
-        `;
-    }
 
-    filenamesHtml += `
-            </div>
-        </div>
-    `;
+                        // Créer la div pour les filenames
+                        let filenamesHtml = `
+                        <div class="form-group">
+                        <label><strong>Filenames:</strong></label>
+                        <div class="filename-container d-flex flex-wrap">
+                        `;
 
-    evolutionElement.innerHTML = descriptionInput + filenamesHtml;
-    detailsContainer.appendChild(evolutionElement);
-});
+                    // Vérifier si filename est un tableau
+                    if (Array.isArray(evolution.filename)) {
+                        evolution.filename.forEach(file => {
+                            filenamesHtml += `
+                                <input type="text" class="form-control filename-item m-1 file-desc" value="${file}" readonly>
+                            `;
+                        });
+                    } else if (typeof evolution.filename === 'string') {
+                        // Si c'est une chaîne, on l'affiche directement
+                        filenamesHtml += `
+                            <input type="text" class="form-control filename-item m-1 file-desc" value="${evolution.filename}" readonly>
+                        `;
+                    }
+
+                    filenamesHtml += `
+                            </div>
+                        </div>
+                    `;
+
+                    buttonsEditDiscard = `
+                        <div class="d-flex justify-content-end ">
+                            <div class="w-[25]"> 
+                                <div class="btn btn-sm btn-warning text-white font-bolder discard-b">Annuler</div>
+
+                                <div class="btn btn-sm btn-success" >
+                                     Enregister
+                                </div>
+                            </div>
+                        </div>
+                    `
+                    
+                    evolutionElement.innerHTML = descriptionInput + filenamesHtml+ buttonsEditDiscard ;
+                    detailsContainer.appendChild(evolutionElement);
+                });
             // console.log(evolutions);
 
-            if (defaultEvolutionId) {
-                filterEvolutionDetails(defaultEvolutionId);
+                if (defaultEvolutionId) {
+                    filterEvolutionDetails(defaultEvolutionId);
+                }
+            }
+
+                function filterEvolutionDetails(evolutionId) {
+                    document.querySelectorAll('.evolution-detail').forEach(detail => {
+                        detail.style.display = detail.dataset.evolutionId == evolutionId ? 'block' : 'none';
+                    });
+                }
+
+            
+                editButton = getSelector('.edit-button');
+                filesDesc = document.querySelectorAll('.file-desc')
+                description = getSelector('.description');
+                annuler = getSelector('.discard-b');
+               
+                editButton.addEventListener('click', ()=>{
+                    console.log(editButton.id);
+                    enableOrDesableReadOnly('desabled',description,filesDesc);
+                });
+
+                annuler.addEventListener('click',()=>{
+                    enableOrDesableReadOnly('enabled',description,filesDesc);
+                })
+
+
+        }
+
+        
+        function getSelector(element) {
+            return document.querySelector(element);
+        }
+
+        function enableOrDesableReadOnly(value,description,files){
+            if(value =='desabled'){
+                description.readOnly = false;
+                files.forEach(file =>{
+                    file.readOnly = false;
+                })
+            }
+
+            if(value =='enabled'){
+                description.readOnly = true;
+                files.forEach(file =>{
+                    file.readOnly = true;
+                }) 
             }
         }
 
-        function filterEvolutionDetails(evolutionId) {
-            document.querySelectorAll('.evolution-detail').forEach(detail => {
-                detail.style.display = detail.dataset.evolutionId == evolutionId ? 'block' : 'none';
-            });
-        }
-    }
+      
+            
 </script>
 
 
