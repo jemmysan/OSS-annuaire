@@ -24,7 +24,9 @@ class FormationController extends Controller
     }
 
     public function coursIndex($id){
+        
         $cours = Formation::where('id',$id)->first();
+       
        
         return  view('formations.cours.show',compact('cours'));
         $cours = Formation::where('id',$id)->first();
@@ -35,6 +37,8 @@ class FormationController extends Controller
     public function coursStoreView(){
         return view('formations.cours.create');
     }
+
+
     public function coursStore(Request $request){
         request()->validate([
             'rubrique'=>'required',

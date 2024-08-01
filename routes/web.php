@@ -93,6 +93,8 @@ Route::group(['middleware' => ['auth']], function(){
         
 
         Route::get('/startup/evolution/{id}', [EvolutionStartupController::class, 'getEvolutionStartup'])->name('startup.evolutions');
+        Route::post('evolution/evolution-startup/{id}', [EvolutionStartupController::class, 'update'])->name('evolution.update');
+
         Route::prefix('evolution')->group(function (){
             Route::get('/index',[EvolutionController::class,'index'])->name('evolution');
             Route::get('/create',[EvolutionController::class,'create'])->name('ajout-evolution');
@@ -103,7 +105,6 @@ Route::group(['middleware' => ['auth']], function(){
             Route::get('/delete/{id}',[EvolutionController::class,'destroy'])->name('delete-evolution');
             Route::get('/evolution-startup/{id}',[EvolutionStartupController::class,'index'])->name('view-evo-startup');
             Route::post('/evolution-startup',[EvolutionStartupController::class,'store'])->name('add-evo-startup');
-            Route::put('/evolution-startup/{id}', [EvolutionStartupController::class, 'update'])->name('evolution.update');
 
             
             

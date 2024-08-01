@@ -73,39 +73,84 @@ class EvolutionStartupController extends Controller
     
 
 
-
+    public function update(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'libelle' => 'required',
+                'description' => 'required|string',
+                'filename.*' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            ]);
+    
+            $evolutionStartup = EvolutionStartup::findOrFail($id);
+    
+            // Mettre à jour les informations non liées aux fichiers
+            $evolutionStartup->evolution_id = $request->input('libelle');
+            $evolutionStartup->startup_id = $request->input('startupId');
+            $evolutionStartup->description = $request->input('description');
+    
+            $fileNames = $evolutionStartup->filename; // Garder les noms de fichiers existants
+    
+            if ($request->hasFile('filename')) {
+                // Supprimer les anciens fichiers
+                foreach ($fileNames as $fileName) {
+                    Storage::disk('public')->delete('files/' . $fileName);
+                }
+    
+                // Ajouter les nouveaux fichiers
+                $fileNames = [];
+                foreach ($request->file('filename') as $file) {
+                    if ($file->isValid()) {
+                        $fileName = time() . '_' . $file->getClientOriginalName();
+                        $file->storeAs('public/files', $fileName);
+                        $fileNames[] = $fileName;
+                    } else {
+                        throw new \Exception("Le fichier {$file->getClientOriginalName()} n'est pas valide.");
+                    }
+                }
+            }
+    
+            $evolutionStartup->filename = $fileNames;
+            $evolutionStartup->save();
+    
+            return redirect()->back()->with('success', 'Evolution startup mis à jour avec succès.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Erreur : ' . $e->getMessage())->withInput();
+        }
+    }
+    
    
     
 
     
 
   
-    public function update(Request $request, $id)
-    {
-        // return EvolutionStartup::find($id);
-        $request->validate([
-            'description' => 'required',
-            'filename' => 'file|mimes:ppt,pptx,doc,docx,pdf,xls,xlsx|max:204800',
-        ]);
+    // public function update(Request $request, $id)
+    // {
+    //     // return EvolutionStartup::find($id);
+    //     $request->validate([
+    //         'description' => 'required',
+    //         'filename' => 'file|mimes:ppt,pptx,doc,docx,pdf,xls,xlsx|max:204800',
+    //     ]);
         
-        $evolutionStartup = EvolutionStartup::find($id);
+    //     $evolutionStartup = EvolutionStartup::find($id);
        
-        if (!$evolutionStartup) {
-            return redirect()->back()->with('error', 'Evolution not found.');
-        }
+    //     if (!$evolutionStartup) {
+    //         return redirect()->back()->with('error', 'Evolution not found.');
+    //     }
 
-        $evolutionStartup->description = $request->input('description');
+    //     $evolutionStartup->description = $request->input('description');
 
-        if ($request->hasFile('filename')) {
-            $fileNom = 'fichier_' . time() . '.' . $request->filename->getClientOriginalExtension();
-            $request->filename->move(public_path('fichier'), $fileNom);
-            $evolutionStartup->filename = $fileNom;
-        }
+    //     if ($request->hasFile('filename')) {
+    //         $fileNom = 'fichier_' . time() . '.' . $request->filename->getClientOriginalExtension();
+    //         $request->filename->move(public_path('fichier'), $fileNom);
+    //         $evolutionStartup->filename = $fileNom;
+    //     }
 
-        $evolutionStartup->save();
+    //     $evolutionStartup->save();
 
-        return redirect()->back()->with('success', 'Evolution updated successfully.');
-    }
+    //     return redirect()->back()->with('success', 'Evolution updated successfully.');
+    // }
 
     
 }

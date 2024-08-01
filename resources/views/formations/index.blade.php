@@ -15,12 +15,9 @@
             <h5>Rubriques</h5>
             <ul class="border rounded list-group-item p-1 overflow-auto nav nav-pills" id="rubriques-list" style="min-height: 50vh; max-height: 50vh;">
                 @forelse ($rubriques as $index => $rubrique)
-                    <li class="nav-item nav-link">
+                    <li class="nav-item nav-link" >
                         <a id="rubrique-{{ $rubrique->id }}" class="border rounded list-group-item  list-group-item-action" 
-                           role="tab" 
-                           
-                          
-                           data-rubrique-id="{{ $rubrique->id }}">
+                           role="tab" data-rubrique-id="{{ $rubrique->id }}">
                             {{ $rubrique->libelle }}
                         </a>
                     </li>
@@ -40,8 +37,13 @@
             </div>
             <hr>
 
-            <div id="rubrique-cours">
-                <p>Sélectionnez une rubrique pour afficher les cours.</p>
+            <div id="rubrique-cours" >
+                <div class="  border-radius-2 d-flex justify-content-center align-items-center" style="background :rgba(179, 229, 252, 0.2); color : blue; border-radiux:20px">
+                    <h6>
+    
+                        Sélectionnez une rubrique pour afficher les cours.
+                    </h6>
+                </div>
             </div>
         </div>
     </div>
@@ -86,15 +88,15 @@
             courseElement.innerHTML = `
                 <div>
                     <div class="d-flex w-100 justify-content-between">
-                        <a href="/cours/show/${cours.id}" class="w-auto">
+                        <a href="cours/show/${cours.id}" class="w-auto">
                             <h5 class="mb-1 p-2 rounded" onmouseover="this.style.backgroundColor='#007bff'; this.style.color='white';" onmouseout="this.style.backgroundColor=''; this.style.color='';" style="text-transform: uppercase;">
                                 ${cours.title}
                             </h5>
                         </a>
                         <div class="w-25 d-flex justify-content-end align-items-center">
                             <div>
-                                <a class="btn btn-sm bg-teal mx-1" href="/cours/show/update/${cours.id}"><i class="fas fa-edit"></i></a>
-                                <a class="btn btn-sm btn-danger mx-1" href="/cours/delete/${cours.id}" onclick="return confirm('Etes-vous sur de vouloir supprimer le cours ?')"><i class="fa fa-trash"></i></a>
+                                <a class="btn btn-sm bg-teal mx-1" href="cours/update/${cours.id}"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-danger mx-1" href="cours/delete/${cours.id}" onclick="return confirm('Etes-vous sur de vouloir supprimer le cours ?')"><i class="fa fa-trash"></i></a>
                             </div>
                         </div>
                     </div>

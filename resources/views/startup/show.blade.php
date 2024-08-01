@@ -738,7 +738,11 @@
     
     <!------  Progress designing --->
     
-    <script>
+<script>
+    let initialFiles = {};  // Stocke l'état initial des fichiers pour chaque évolution
+    let currentEditingElement;  // Élement actuellement en cours d'édition
+    let deletedFiles = [];  // Stocke les fichiers supprimés temporairement
+
     async function getStartUpEvolution(id) {
         const progressContainer = document.getElementById('progress-container');
         const progressBar = document.getElementById('progress-bar');
@@ -760,21 +764,18 @@
             const { ordre, evolutions } = data;
             console.log(data);
 
-            // Sort the ordre array based on the 'ordre' property
             ordre.sort((a, b) => a.ordre - b.ordre);
 
             createProgressBar(ordre);
-            displayEvolutionDetails(evolutions, ordre[0].id); // Pass the first ordre id to display its details by default
+            displayEvolutionDetails(evolutions, ordre[0].id);
         } catch (error) {
             console.error('Error:', error);
         }
 
         function createProgressBar(ordres) {
-            // Clear previous progress bar
             progressContainer.innerHTML = '';
             progressBar.style.width = `${100 / ordres.length}%`;
 
-            // Create steps
             ordres.forEach((ordre, index) => {
                 const stepElement = document.createElement('div');
                 stepElement.classList.add('step');
@@ -782,10 +783,9 @@
                     stepElement.classList.add('active-step');
                 }
                 stepElement.style.left = `${(index * 100) / ordres.length}%`;
-                stepElement.innerText = ordre.ordre; // Assuming 'ordre' has 'ordre'
+                stepElement.innerText = ordre.ordre;
                 stepElement.dataset.evolutionId = ordre.id;
 
-                // Click event listener to filter and display elements
                 stepElement.addEventListener('click', () => {
                     document.querySelectorAll('.step').forEach(step => step.classList.remove('active-step'));
                     stepElement.classList.add('active-step');
@@ -794,130 +794,318 @@
 
                 progressContainer.appendChild(stepElement);
             });
-
-
         }
 
         function displayEvolutionDetails(evolutions, defaultEvolutionId = null) {
             detailsContainer.innerHTML = '';
 
-            evolutions.forEach(evolution => {
-            const evolutionElement = document.createElement('div');
-            evolutionElement.classList.add('evolution-detail');
-            evolutionElement.dataset.evolutionId = evolution.evolution_id;
-            
-            // Créer l'input pour la description
-            const descriptionInput = `
-                <div class="pb-2  h-[25%]">
-                        <div id="${evolution.startup_id}" class="edit-button"  type="button"  class=" btn btn-warning  float-right">
-                                        <i class="fas fa-edit "></i>
-                        </div>
-                </div>
-                <br>
-                <hr>
-                
-                <div class="form-group">
-                    <label for="description-${evolution.evolution_id}"><strong>Description:</strong></label>
-                    <input type="text" id="description-${evolution.evolution_id}" class="form-control description" value="${evolution.description}" readonly>
-                </div>
-            `;
+            // Stocker l'état initial des fichiers
+            initialFiles = {};
 
-                        // Créer la div pour les filenames
-                        let filenamesHtml = `
-                        <div class="form-group">
+            evolutions.forEach(evolution => {
+                const evolutionElement = document.createElement('div');
+                evolutionElement.classList.add('evolution-detail');
+                evolutionElement.dataset.evolutionId = evolution.evolution_id;
+
+                const descriptionInput = `
+                    <div class="pb-2  w-[100%]" style=" display:flex; justify-content:end; ">
+                        <div id="${evolution.startup_id}"  type="button" class="edit-button btn btn-warning float-right " style="width:5%">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    <div class="form-group">
+                        <label for="description-${evolution.evolution_id}"><strong>Description:</strong></label>
+                        <input type="text" id="description-${evolution.evolution_id}" class="form-control description" value="${evolution.description}" readonly>
+                    </div>
+                `;
+
+                let filenamesHtml = `
+                    <div class="form-group">
                         <label><strong>Filenames:</strong></label>
                         <div class="filename-container d-flex flex-wrap">
-                        `;
+                `;
 
-                    // Vérifier si filename est un tableau
-                    if (Array.isArray(evolution.filename)) {
-                        evolution.filename.forEach(file => {
-                            filenamesHtml += `
-                                <input type="text" class="form-control filename-item m-1 file-desc" value="${file}" readonly>
-                            `;
-                        });
-                    } else if (typeof evolution.filename === 'string') {
-                        // Si c'est une chaîne, on l'affiche directement
+                // Stocker les fichiers initiaux
+                initialFiles[evolution.evolution_id] = Array.isArray(evolution.filename) ? [...evolution.filename] : [evolution.filename];
+
+                if (Array.isArray(evolution.filename)) {
+                    evolution.filename.forEach((file, index) => {
                         filenamesHtml += `
-                            <input type="text" class="form-control filename-item m-1 file-desc" value="${evolution.filename}" readonly>
-                        `;
-                    }
-
-                    filenamesHtml += `
+                            <div class="d-flex justify-content-between align-items-center mx-1 border border-2 px-1">
+                                <input type="text" class="w-auto form-control filename-item m-1 file-desc" value="${file}" readonly>
+                                <i class="fas fa-minus-circle text-danger remove-file" data-index="${index}" style="display:none"></i>
                             </div>
+                        `;
+                    });
+                } else if (typeof evolution.filename === 'string') {
+                    filenamesHtml += `
+                        <div class="d-flex justify-content-between align-items-center mx-1 border border-2 px-1">
+                            <input type="text" class="form-control filename-item m-1 file-desc" value="${evolution.filename}" readonly>
+                            <i class="fas fa-minus-circle text-danger remove-file" data-index="0" style="display:none"></i>
                         </div>
                     `;
+                }
 
-                    buttonsEditDiscard = `
-                        <div class="d-flex justify-content-end ">
-                            <div class="w-[25]"> 
-                                <div class="btn btn-sm btn-warning text-white font-bolder discard-b">Annuler</div>
+                filenamesHtml += `
+                        </div>
+                    </div>
+                `;
 
-                                <div class="btn btn-sm btn-success" >
-                                     Enregister
+                const buttonsEditDiscard = `
+                    <div class="inter-Act" style="display:none">
+                        <div>
+                            <div class="input-group increment">
+                                <input type="file" name="filename[]" class="myfrm form-control @error('filename') is-invalid @enderror">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-primary btn-add" type="button">
+                                        <i class="fas fa-plus-circle"></i> Ajouter
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="clone d-none">
+                                <div class="input-group mt-2">
+                                    <input type="file" name="filename[]" class="form-control @error('filename') is-invalid @enderror" >
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-danger btn-remove" type="button">
+                                            <i class="fas fa-minus-circle"></i> Retirer
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    `
-                    
-                    evolutionElement.innerHTML = descriptionInput + filenamesHtml+ buttonsEditDiscard ;
-                    detailsContainer.appendChild(evolutionElement);
-                });
-            // console.log(evolutions);
+                        <br>
+                        <div class="d-flex justify-content-end">
+                            <div class=" w-[25]" >
+                                <div class="btn btn-sm btn-warning text-white font-bolder discard-b">Annuler</div>
+                                <div class="btn btn-sm btn-success save-b">Enregistrer</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
 
-                if (defaultEvolutionId) {
-                    filterEvolutionDetails(defaultEvolutionId);
-                }
+                evolutionElement.innerHTML = descriptionInput + filenamesHtml + buttonsEditDiscard;
+                detailsContainer.appendChild(evolutionElement);
+            });
+
+            if (defaultEvolutionId) {
+                filterEvolutionDetails(defaultEvolutionId);
             }
 
-                function filterEvolutionDetails(evolutionId) {
-                    document.querySelectorAll('.evolution-detail').forEach(detail => {
-                        detail.style.display = detail.dataset.evolutionId == evolutionId ? 'block' : 'none';
-                    });
-                }
+            attachEventListeners();
+        }
 
+        function filterEvolutionDetails(evolutionId) {
+            document.querySelectorAll('.evolution-detail').forEach(detail => {
+                detail.style.display = detail.dataset.evolutionId == evolutionId ? 'block' : 'none';
+            });
+        }
+
+    
+        function attachEventListeners() {
+            const editButtons = document.querySelectorAll('.edit-button');
+            const discardButtons = document.querySelectorAll('.discard-b');
+            const saveButtons = document.querySelectorAll('.save-b');
+
+            editButtons.forEach(button => {
+                button.addEventListener('click', handleEdit);
+                addFileFields();
+            });
+
+            discardButtons.forEach(button => {
+                button.addEventListener('click', handleDiscard);
+            });
+
+            saveButtons.forEach(button => {
+                button.addEventListener('click', handleSave);
+            });
+        }
+
+        function handleEdit(event) {
+            currentEditingElement = event.currentTarget.closest('.evolution-detail');
             
-                editButton = getSelector('.edit-button');
-                filesDesc = document.querySelectorAll('.file-desc')
-                description = getSelector('.description');
-                annuler = getSelector('.discard-b');
-               
-                editButton.addEventListener('click', ()=>{
-                    console.log(editButton.id);
-                    enableOrDesableReadOnly('desabled',description,filesDesc);
-                });
+            // Cacher le bouton d'édition
+            const editButton = currentEditingElement.querySelector('.edit-button');
+            editButton.style.display = 'none';
 
-                annuler.addEventListener('click',()=>{
-                    enableOrDesableReadOnly('enabled',description,filesDesc);
-                })
-
-
+            const interAct = currentEditingElement.querySelector('.inter-Act');
+            interAct.style.display = 'block';
+            
+            const id = currentEditingElement.dataset.evolutionId;
+            const description = currentEditingElement.querySelector(`#description-${id}`);
+            const filesDesc = currentEditingElement.querySelectorAll('.file-desc');
+            enableOrDesableReadOnly('disabled', description, filesDesc);
+            
+            const rmFileButtons = currentEditingElement.querySelectorAll('.remove-file');
+            displayRemoveButton(rmFileButtons);
+            attachRemoveListeners(rmFileButtons);
         }
 
-        
-        function getSelector(element) {
-            return document.querySelector(element);
+        function handleDiscard(event) {
+            if (!currentEditingElement) return;
+            
+            const description = currentEditingElement.querySelector('.description');
+            const filesDesc = currentEditingElement.querySelectorAll('.file-desc');
+            enableOrDesableReadOnly('enabled', description, filesDesc);
+
+            restoreDeletedFiles(currentEditingElement);
+
+            // Masquer le conteneur inter-Act
+            const interAct = currentEditingElement.querySelector('.inter-Act');
+            interAct.style.display = 'none';
+
+            // Réafficher le bouton d'édition
+            const editButton = currentEditingElement.querySelector('.edit-button');
+            editButton.style.display = 'block';
+
+            // Réinitialiser l'élément en cours d'édition
+            currentEditingElement = null;
         }
 
-        function enableOrDesableReadOnly(value,description,files){
-            if(value =='desabled'){
+
+
+        function handleSave() 
+        {
+            // Object.keys(initialFiles).forEach(evolutionId => {
+            // let filteredFiles = {};
+            // filteredFiles[evolutionId] = initialFiles[evolutionId].filter(file => !deletedFiles.includes(file));
+            // });
+
+            // const formData = new FormData();
+            // const description = currentEditingElement.querySelector('.description').value;
+            // const evolutionId = currentEditingElement.dataset.evolutionId;
+
+            // formData.append('description', description);
+            // formData.append('libelle', evolutionId);  // Ajoutez d'autres champs nécessaires
+
+            // const fileInputs = currentEditingElement.querySelectorAll('input[type="file"]');
+            // fileInputs.forEach((fileInput, index) => {
+            //     if (fileInput.files[0]) {
+            //         formData.append('filename[]', fileInput.files[0]);
+            //     }
+            // });
+
+            // fetch(`/evolution/evolution-startup/${evolutionId}`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            //     },
+            // }).then(response => {
+            //     if (!response.ok) {
+            //         throw new Error('Erreur lors de la mise à jour.');
+            //     }
+            //     return response.json();
+            // }).then(data => {
+            //     console.log('Success:', data);
+            //     // Réinitialiser les champs ou effectuer d'autres actions après la mise à jour réussie
+            // }).catch(error => {
+            //     console.error('Error:', error);
+            // });
+        }
+
+
+
+        function enableOrDesableReadOnly(value, description, files) {
+            if (value == 'disabled') {
                 description.readOnly = false;
-                files.forEach(file =>{
-                    file.readOnly = false;
-                })
             }
 
-            if(value =='enabled'){
+            if (value == 'enabled') {
                 description.readOnly = true;
-                files.forEach(file =>{
-                    file.readOnly = true;
-                }) 
             }
         }
 
-      
-            
+        function displayRemoveButton(elements) {
+            elements.forEach(element => {
+                element.style.display = "block";
+            });
+        }
+
+        function removeFile(element) {
+            const index = parseInt(element.dataset.index);
+            const filenameContainer = element.closest('.filename-container');
+            const fileElement = filenameContainer.children[index];
+
+            // Stocker le fichier supprimé temporairement
+            deletedFiles.push(fileElement.querySelector('.file-desc').value);
+
+            fileElement.remove();
+
+            // Mettre à jour les index des éléments restants
+            Array.from(filenameContainer.children).forEach((child, i) => {
+                child.querySelector('.remove-file').dataset.index = i;
+            });
+        }
+
+        function updateFilenamesDisplay(container) {
+            let filenamesHtml = '';
+
+            deletedFiles.forEach((file, index) => {
+                filenamesHtml += `
+                    <div class="d-flex justify-content-between align-items-center mx-1 border border-2 px-1">
+                        <input type="text" class="w-auto form-control filename-item m-1 file-desc" value="${file}" readonly>
+                        <i class="fas fa-minus-circle text-danger remove-file" data-index="${index}" style="display:none"></i>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = filenamesHtml;
+            const rmFileButtons = container.querySelectorAll('.remove-file');
+            attachRemoveListeners(rmFileButtons);
+        }
+
+        function attachRemoveListeners(elements) {
+            elements.forEach(button => {
+                button.addEventListener('click', () => removeFile(button));
+            });
+        }
+
+        function restoreDeletedFiles(evolutionElement) {
+            const filenameContainer = evolutionElement.querySelector('.filename-container');
+            const evolutionId = evolutionElement.dataset.evolutionId;
+
+            // Restaurer les fichiers à partir de l'état initial
+            let filenamesHtml = '';
+            if (initialFiles[evolutionId]) {
+                initialFiles[evolutionId].forEach((file, index) => {
+                    filenamesHtml += `
+                        <div class="d-flex justify-content-between align-items-center mx-1 border border-2 px-1">
+                            <input type="text" class="form-control filename-item m-1 file-desc" value="${file}" readonly>
+                            <i class="fas fa-minus-circle text-danger remove-file" data-index="${index}" style="display:none"></i>
+                        </div>
+                    `;
+                });
+            }
+
+            filenameContainer.innerHTML = filenamesHtml;
+            const rmFileButtons = filenameContainer.querySelectorAll('.remove-file');
+            attachRemoveListeners(rmFileButtons);
+        }
+    }
+
+    function addFileFields(){
+        // Ajouter un nouveau champ de fichier
+        document.querySelector('.btn-add').addEventListener('click', function() {
+            var clone = document.querySelector('.clone').cloneNode(true);
+            clone.classList.remove('d-none', 'clone');
+            document.querySelector('.increment').after(clone);
+        });
+
+        // Supprimer un champ de fichier
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('btn-remove')) {
+                e.target.closest('.input-group').remove();
+            }
+        });
+    }
 </script>
+
+
+
+
+   
 
 
 
