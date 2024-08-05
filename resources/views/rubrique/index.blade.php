@@ -7,28 +7,10 @@
 @endsection
 @section('content')
 
+<h2 class="p-1">Gestion des rubriques </h2>
 <div class="card p-4">
-    <h2>Gestion des rubriques </h2>
-    <br>
-    <div class="row">
-        <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box">
-                <span class="info-box-icon bg-info elevation-1">
-                    <i class="bi bi-graph-up"></i>
-                </span>
-                <div class="info-box-content">
-                    <span class="info-box-text">TOTAL</span>
-                    <span class="info-box-number">
-                        <?php
-                            use Illuminate\Support\Facades\DB;
-                            $count = DB::table('rubriques')->count();
-                            echo $count;
-                        ?>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
+
+    
     <div class="card-header">
 
             <a class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#createrubrique">
@@ -63,7 +45,7 @@
             <thead>
                 <hr>
                 <tr>
-                    <th>Ordre</th>
+                    
                     <th>Libelle</th>
                     <th>Description</th>
                     <th>Action</th>
@@ -72,9 +54,7 @@
             <tbody>
                 @forelse ($rubriques as $key => $rubrique)
                 <tr>
-                    <td>
-                        <h4>{{ $rubrique->ordre }}</h4>
-                    </td>
+                   
                     <td>
                         {{ $rubrique->libelle }}
                     </td>

@@ -9,13 +9,13 @@
 @endsection
 
 @section('content')
+    <h2 class="card-title"> Ajout évolution startup</h2>
   <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
       <a href="{{ route('startup.show', $startupId) }}" class="nav-link">
         <i class="fas fa-undo-alt"></i>
         Retour
       </a>
-      <h3 class="card-title"> Ajout évolution startup</h3>
     </div>
     <div>
       <form action="{{ route('add-evo-startup', $startupId) }}" id="evo-form" method="POST" enctype="multipart/form-data">

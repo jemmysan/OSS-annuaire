@@ -6,6 +6,8 @@
     Détails
 @endsection
 @section('content')
+    <h2 class="p-1">Voir structure d'accompagnement </h2>
+
     <div>
         <a href="{{ route('accompagnement.index') }}" class="nav-link ">
             <i class="fas fa-undo-alt"></i>

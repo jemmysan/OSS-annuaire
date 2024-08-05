@@ -1,14 +1,18 @@
 @extends('layouts.admin')
-
+@section('pageName')
+  
+    <a href="{{route('permission.index')}}">Permissions</a>
+@endsection
 @section('title')
-    Création de permission
+    Créer permission
 @endsection
 @section('content')
+    <h2 class="p-1 mb-2">Création permission</h2>
+
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">Ajouter une nouvelle permission</h3>
             <div class="card-tools">
-                <a href="{{ route('permission.index') }}" class="btn btn-danger"><i class="fas fa-shield-alt"></i>Toutes les permissions</a>
+                <a href="{{ route('permission.index') }}" class="btn btn-danger"><i class="fas fa-shield-alt"></i> Toutes les permissions</a>
             </div>
         </div>
 

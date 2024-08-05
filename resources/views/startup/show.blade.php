@@ -312,10 +312,11 @@
           
 </style>
 
+    <h2 class="p-2">Voir startup </h2>
 
       <!-- Default box -->
 <div class="card card-solid">
-    <div class="container">
+    <div class="px-4">
         <a href="{{ route('startup.index') }}" class="nav-link">
             <i class="fas fa-undo-alt"></i>
             Retour
@@ -335,11 +336,20 @@
                         <div class="text-center">
                             <img src="{{asset('img/'.$startup->logo)}}" alt="" class="user-profile">
 
-                            <h3> {{$startup->nom_startup}}</h3>
+                            <div class="d-flex justify-content-between">
+                                <div>
 
-                            <button type="button" class="btn btn-primary mx-auto" data-toggle="modal" data-target="#modal-default">
-                                <i class="fas fa-share-alt-square"></i>
-                            </button>
+                                    <h3> {{$startup->nom_startup}}</h3>
+                                </div>
+
+                                <div>
+
+                                    <button type="button" class="btn btn-primary mx-auto" data-toggle="modal" data-target="#modal-default">
+                                        <i class="fas fa-share-alt-square"></i>
+                                    </button>
+                                </div>
+    
+                            </div>
                             <div class="modal fade" id="modal-default">
                                 <div class="modal-dialog">
                                     <div class="modal-content">

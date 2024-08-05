@@ -7,8 +7,8 @@
 @endsection
 @section('content')
 
+<h2 class="p-1">Gestion des formations</h2>
 <div class="card p-4">
-    <h2>Formations</h2>
     <br>
     <div class="d-flex">
         <div class="w-25 mr-4">

@@ -1,23 +1,23 @@
 @extends('layouts.admin')
 @section('pageName')
-    <a href="{{route('user.index')}}"> Liste des Utilisateurs</a>
+    <a href="{{route('user.index')}}"> Utilisateurs</a>
 @endsection
 @section('title')
     Création
 @endsection
 @section('content')
-
+    <h2 class="p-2">Ajout utilisateur</h2>
     <div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title"> Nouvelle utilisateur</h3>
             <div class="card-tools">
-                <a href="{{ route('user.index') }}" class="btn btn-danger"><i class="fas fa-shield-alt"></i>Toutes les roles</a>
+                <a href="{{ route('user.index') }}" class="btn btn-danger"><i class="fas fa-shield-alt"></i> Tous les roles</a>
             </div>
         </div>
 
-        <div class="col-lg-7" style="margin: 25px">
-            <div class="container">
-                <form action="{{ route('user.store') }}" method="POST" role="form" class="php-email-form">
+        <div class="card-body" style="margin-top: 25px">
+            <div class="">
+                <form action="{{ route('user.store') }}" method="POST" role="form" class="php-email-form pb-4">
 
                     @csrf
                     <div class="row">
@@ -69,8 +69,8 @@
                         <br/>
 
                     </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                    <div class="text-start">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Ajouter</button>
                     </div>
                 </form>
 

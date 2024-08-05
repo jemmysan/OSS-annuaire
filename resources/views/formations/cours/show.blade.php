@@ -3,14 +3,16 @@
 @extends('layouts.admin')
 
 @section('pageName')
+
     <a href="{{ route('formation.index') }}"> Formation</a>
 @endsection
 @section('title')
-Cours
+Voir-cours
 @endsection
 
 
 @section('content')
+    <h2 class="p-1">Voir cours</h2>
     <div class="card" >
         <!-- Content Header (Page header) -->
         
@@ -20,7 +22,6 @@ Cours
                 <i class="fas fa-undo-alt"></i>
                 Retour
             </a>
-            <!-- <h3 class="card-title"> Modifier cours</h3> -->
 
         </div>
         <div>

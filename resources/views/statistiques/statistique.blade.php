@@ -13,12 +13,14 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{asset('dist/css/adminlte.min.css')}}">
 </head>
+
 <body class="hold-transition  sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
 
         @include('partials.menu_bar')
     </nav>
+    
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->

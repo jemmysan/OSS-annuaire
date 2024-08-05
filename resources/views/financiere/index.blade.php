@@ -9,8 +9,8 @@
 
 
 
+    <h2 class="p-1">Structures financieres </h2>
     <div class="card p-2">
-        <h2>Gestion des structure financieres </h2>
         <br>
         <div class="row">
             <div class="col-12 col-sm-6 col-md-3">
@@ -41,7 +41,7 @@
                 <div >
                     {{--                @can('creer structure')--}}
         
-                    <a href="{{ route('financiere.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></a>
+                    <a href="{{ route('financiere.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Ajouter</a>
                     {{--                @endcan--}}
                 </div>
 
@@ -89,7 +89,7 @@
                     <tr>
                         <td >
 
-                        <h4>{{$financiere->nom_structure}}</h4>
+                        <h5>{{$financiere->nom_structure}}</h5>
 
                         </td>
                         <td>

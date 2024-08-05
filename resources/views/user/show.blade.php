@@ -1,14 +1,18 @@
 @extends('layouts.admin')
-
+@section('pageName')
+  
+    <a href="{{route('user.index')}}">Utilisateurs</a>
+@endsection
 @section('title')
     Détails
 @endsection
 @section('content')
-    <div class="card card-primary col-6 " style="align-content: center">
-        <div class="card-header">
+    <h2 class="p-2">Détails utilisateur</h2>
+    <div class="card card-primary col-6 pt-1 " style="align-content: center">
+        <div class="card-header ">
             <h3 class="card-title">Détails</h3>
             <div class="card-tools">
-                <a href="{{ route('user.index') }}" class="btn btn-danger"><i class="fas fa-shield-alt"></i>Toutes les utilisateurs</a>
+                <a href="{{ route('user.index') }}" class="btn btn-danger"><i class="fas fa-shield-alt"></i> Tous les utilisateurs</a>
             </div>
         </div>
 

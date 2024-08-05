@@ -10,27 +10,24 @@
 @section('content')
 
 
+    <h2 class="p-1">Créer structure financiere </h2>
 
     <div class="card" >
         <!-- Content Header (Page header) -->
         <div class="card-header">
-            <h3 class="card-title">Structures Financiere</h3>
+            <h3 class="card-title">Structure financière </h3>
         </div>
 
         <form method="POST" action="{{ route('financiere.store') }}">
             @csrf
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card card-primary collapsed-card">
+            <div class="row p-2" style="height: 64dvh">
+                <div class="col-md-6" >
+                    <div class="card card-primary ">
                         <div class="card-header">
                             <h3 class="card-title">Général</h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
+                            
                         </div>
-                        <div class="card-body" style="display: none;">
+                        <div class="card-body" style="height: 56dvh; overflow-y : scroll" >
                             <div class="form-group">
                                 <label for="nom_structure">Nom de la structure</label>
                                 <input type="text" value="{{old('nom_structure')}}"   name="nom_structure" id="nom_structure" class="form-control @error('nom_structure') is-invalid @enderror" >
@@ -105,17 +102,13 @@
                     <!-- /.card -->
                 </div>
                 <div class="col-md-6">
-                    <div class="card card-secondary collapsed-card">
+                    <div class="card card-secondary ">
                         <div class="card-header">
                             <h3 class="card-title">Coordonnées</h3>
 
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool"  data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
+                           
                         </div>
-                        <div class="card-body" style="display: none;">
+                        <div class="card-body" >
                             <div class="form-group">
                                 <label for="adresses">Adresse</label>
                                 <input type="text" id="adresses" value="{{old('adresses')}}"   name="adresses" class="form-control @error('description') is-invalid @enderror">
@@ -142,13 +135,13 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <a href="{{route('financiere.index')}}" class="btn btn-secondary"> <i class="fa fa-ban" aria-hidden="true"></i>
+            <div class="p-2">
+                
+                    <a href="{{route('financiere.index')}}" class="btn btn-warning"> <i class="fa fa-ban" aria-hidden="true"></i>
                         Annuler</a>
-                    <button type="submit" class="btn btn-success float-right "><i class="fas fa-save"></i>  Crééer</button>
+                    <button type="submit" class="btn btn-success float-right "><i class="fas fa-save"></i>  Créer</button>
 
-                </div>
+                
             </div>
 
 

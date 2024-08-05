@@ -1,14 +1,19 @@
 @extends('layouts.admin')
-
+@section('pageName')
+  
+    <a href="{{route('role.index')}}">Rôles</a>
+@endsection
 @section('title')
-    Création de role
+    Création  
 @endsection
 @section('content')
-    <div class="card card-primary">
+    <h2 class="p-1">Ajouter un nouveau rôle</h2>
+
+    <div class="card card-primary" style="height: 75vh;  ">
         <div class="card-header">
-            <h3 class="card-title">Ajouter une nouvelle role</h3>
+            
             <div class="card-tools">
-                <a href="{{ route('role.index') }}" class="btn btn-danger"><i class="fas fa-shield-alt"></i>Toutes les roles</a>
+                <a href="{{ route('role.index') }}" class="btn btn-danger"><i class="fas fa-shield-alt"></i> Toutes les roles</a>
             </div>
         </div>
         <form method="POST" action="{{ route('role.store') }}">
@@ -27,14 +32,17 @@
 
             <div class="card-body">
                 <div class="form-group">
-                    <label for="name">Assigner les Permissions</label>
-                    <br/>
-                    @foreach($permission as $value)
-                        <label>
-                            {{ Form::checkbox('permission[]', $value->id, false, array('class' => 'name')) }}
-                            {{ $value->name }}</label>
-                        <br/>
-                    @endforeach
+                <label for="name">Assigner les Permissions</label>
+                
+                    <div class="card card-info p-4" style="height:42dvh; overflow-y: scroll;">
+
+                        @foreach($permission as $value)
+                            <label>
+                                {{ Form::checkbox('permission[]', $value->id, false, array('class' => 'name')) }}
+                                {{ $value->name }}</label>
+                            <br/>
+                        @endforeach
+                    </div>
                 </div>
             </div>
 

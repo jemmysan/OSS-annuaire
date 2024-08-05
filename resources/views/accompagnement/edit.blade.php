@@ -9,34 +9,31 @@
 @endsection
 
 @section('content')
+    <h2 class="p-1">Modifier structure d'accompagnement </h2>
 
 
-    <div class="card" >
+    <div class="card" style="height: 74dvh" >
         <!-- Content Header (Page header) -->
         <div class="card-header">
             <h3 class="card-title"> Editer  structure d'accompagnement</h3>
 
             <div class="card-tools">
-                <a href="{{ route('accompagnement.create') }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i>Nouvelle</a>
+                <a href="{{ route('accompagnement.create') }}" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Ajouter</a>
             </div>
         </div>
 
         <form method="POST" action="{{ route('accompagnement.update',$accompagnement->id) }}">
             @csrf
             @method('PUT')
-            <div class="row">
+            <div class="row  p-2">
                 <div class="col-md-6">
-                    <div class="card card-primary collapsed-card">
+                    <div class="card card-primary ">
                         <div class="card-header">
                             <h3 class="card-title">Général</h3>
 
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
+                            
                         </div>
-                        <div class="card-body" style="display: none;">
+                        <div class="card-body"  style="height: 55dvh ; overflow-y:scroll">
                             <div class="form-group">
                                 <label for="nom_structure">Nom de la structure</label>
                                 <input type="text"  name="nom_structure"  value="{{$accompagnement->nom_structure}}" id="nom_structure" class="form-control @error('nom_structure') is-invalid @enderror" >
@@ -112,17 +109,12 @@
                     <!-- /.card -->
                 </div>
                 <div class="col-md-6">
-                    <div class="card card-secondary collapsed-card">
+                    <div class="card card-secondary ">
                         <div class="card-header">
                             <h3 class="card-title">Coordonnées</h3>
 
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
                         </div>
-                        <div class="card-body" style="display: none;">
+                        <div class="card-body" >
                             <div class="form-group">
                                 <label for="adresses">Adresse</label>
                                 <input type="text" id="adresses"  value="{{$accompagnement->adresses}}"  name="adresses" class="form-control @error('description') is-invalid @enderror">
@@ -149,13 +141,13 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <a href="{{route('accompagnement.index')}}" class="btn btn-secondary"> <i class="fa fa-ban" aria-hidden="true"></i>
+            <div class="px-2">
+               
+                    <a href="{{route('accompagnement.index')}}" class="btn btn-warning"> <i class="fa fa-ban" aria-hidden="true"></i>
                         Annuler</a>
                     <button type="submit" class="btn btn-success float-right "><i class="fas fa-save"></i>  Modifer</button>
 
-                </div>
+                
             </div>
 
 

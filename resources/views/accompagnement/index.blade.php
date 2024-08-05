@@ -8,10 +8,10 @@ Liste
 @endsection
 @section('content')
 
+    <h2 class="p-1">Gestion des structures d'accompagnement </h2>
     <div class="card">
          <div class="card-body" >
 
-         <h2>Gestion des structure d'accompagnement </h2>
         <br>
         <div class="row">
             <div class="col-12 col-sm-6 col-md-3">
@@ -43,7 +43,7 @@ Liste
                 <div >
                     {{-- @can('creer_accompagnement')--}}
         
-                        <a href="{{  route('accompagnement.create')  }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Ajouter</a>
+                        <a href="{{ route('accompagnement.create')}}" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Ajouter</a>
                     {{-- @endcan--}}
                 </div>
 

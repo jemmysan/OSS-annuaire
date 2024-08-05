@@ -6,11 +6,12 @@
     <a href="{{ route('formation.index') }}"> Formation</a>
 @endsection
 @section('title')
-Ajout-Cours
+Création
 @endsection
 
 
 @section('content')
+    <h2 class="p-2"> Ajout cours</h2>
     <div class="card" >
         <!-- Content Header (Page header) -->
         
@@ -20,7 +21,6 @@ Ajout-Cours
                 <i class="fas fa-undo-alt"></i>
                 Retour
             </a>
-            <h3 class="card-title"> Ajout cours</h3>
 
         </div>
         <div>

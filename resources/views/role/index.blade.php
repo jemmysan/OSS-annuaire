@@ -1,14 +1,20 @@
 @extends('layouts.admin')
+@section('pageName')
+  
+    <a href="{{route('role.index')}}">Rôles</a>
+@endsection
 @section('title')
-    Roles
+    Rôles
 @endsection
 
 @section('content')
+    <h2 class="p-1">Rôles</h2>
     <div class="card">
+
         <div class="card-header">
-            <h3 class="card-title">Table des Roles </h3>
+            <h3 class="card-title text-strong">Table des Roles </h3>
             <div class="card-tools">
-                <a href="{{ route('role.create') }} "  class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></a>
+                <a href="{{ route('role.create') }} "  class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Ajouter</a>
 
             </div>
         </div>
@@ -16,7 +22,7 @@
             <table class="table table-hover text-nowrap">
                 <thead>
                 <tr>
-                    <th>ID</th>
+                   
                     <th>Role</th>
                     <th>Permission</th>
                 </tr>
@@ -24,9 +30,7 @@
                 <tbody>
                 @forelse ($roles as $role )
                     <tr>
-                        <td>
-                            {{ $role->id }}
-                        </td>
+                       
                         <td>
                                 <a href="{{route('user.index')}}" >
                                         {{ $role->name }}
@@ -49,13 +53,12 @@
 
 
                         </td>
-                         <td>
+                         <td class=" d-flex justify-content-center align-items-between">
 
-                            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                            
+                                 <a type="button" href="{{ route('role.edit', $role->id ) }}" class="btn btn-sm bg-teal mx-2"> <i class="fas fa-edit"></i> </a>
 
-                                 <a type="button" href="{{ route('role.edit', $role->id ) }}" class="btn btn-sm bg-teal"> <i class="fas fa-edit"></i> </a>
-
-                                <form action="{{action('RoleController@destroy', $role['id'])}}" method="POST">
+                                <form action="{{action('RoleController@destroy', $role['id'])}}" method="POST" class="mx-2">
                                                         {{csrf_field()}}
                                                         <input name="_method" type="hidden" value="DELETE">
                                         <button type="submit" title="delete"  class="btn  bg-danger">
@@ -63,7 +66,7 @@
 
                                         </button>
                                  </form>
-                             </div>
+                             
                          </td>
                     </tr>
                 @empty

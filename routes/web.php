@@ -77,15 +77,18 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('/startup/add-evolution/{id}',[StartupController::class,'evolutionToStartup'])->name('addnewevolution');
         
         Route::resource('accompagnement', 'AccompagnementController');
-        Route::get('delete/{id}',[AccompagnementController::class,'destroy'])->name('delete-accompagnement');
-        Route::post('accompagnement',[AccompagnementController::class,'search'])->name('search-accompagnement');
+        Route::prefix('accompagnement')->group(function(){
+            Route::post('/create',[AccompagnementController::class,'store'])->name('accompagnement.create');
+            Route::get('delete/{id}',[AccompagnementController::class,'destroy'])->name('delete-accompagnement');
+            Route::post('search',[AccompagnementController::class,'search'])->name('search-accompagnement');
+        });
 
-        
         Route::resource('financiere', 'FinanciereController');
-        Route::get('financiere/{id}',[FinanciereController::class,'destroy'])->name('delete-financement');
-        Route::post('financiere',[FinanciereController::class,'search'])->name('financiere.search');
-
-        
+        Route::prefix('financiere')->group(function (){
+            Route::get('/{id}',[FinanciereController::class,'destroy'])->name('delete-financement');
+            Route::post('search',[FinanciereController::class,'search'])->name('financiere.search');
+            Route::post('/create', [FinanciereController::class,'store'])->name('financiere.store');
+        });
         
         Route::resource('tasks', 'TasksController');
         

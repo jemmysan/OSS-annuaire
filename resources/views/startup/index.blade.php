@@ -231,11 +231,11 @@
 
     </style>
 
-    <div class="container">
+<div class="px-4">
        
+    <h2>Annuaire des Start-up</h2>
     @can('voir_infos_gen_startup')
         <div>
-            <h1>Annuaire des Start-up</h1>
             <div class="col-md-2" style="margin-left: 10px">
                 <div class="sticky-top mb-5">
                     <div style="display: inline-block;">
@@ -244,8 +244,8 @@
                 </div>
             </div>
                
-            <div class="row">
-                <div class="col-12 col-sm-6 col-md-3">
+            <div class="d-flex justify-content-between flex-1 pb-4">
+                <div class="" style="width : 18%">
                     @php
                         $total_startups = DB::table('startups')->count();
                         $contact_count = DB::table('phases')->where('phase', 'contact')->count();
@@ -263,7 +263,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-3">
+                <div class="" style="width : 18%">
                     <div class="info-box mb-3">
                         <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-user-shield"></i></span>
                         <div class="info-box-content">
@@ -274,7 +274,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-3">
+                <div class="w-20" style="width : 18%">
                     <div class="info-box mb-3">
                         <span class="info-box-icon bg-success elevation-1"><i class="fas fa-house-user"></i></span>
                         <div class="info-box-content" style="width:auto">
@@ -285,7 +285,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-3">
+                <div class="w-20" style="width : 18%">
                     <div class="info-box mb-3">
                         <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-user-tag"></i></span>
                         <div class="info-box-content">
@@ -296,7 +296,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-3">
+                <div class="w-20" style="width : 18%">
                     <div class="info-box mb-3">
                         <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-user-tag"></i></span>
                         <div class="info-box-content">
@@ -313,7 +313,7 @@
 
    
     
-    <form action="{{ route('search-startup') }}" method="POST" role="search" style="float: right">
+    <form action="{{ route('search-startup') }}" method="POST" role="search" style="float: right" class="">
         @csrf <!-- Include this line to add the CSRF token -->
         <div class="input-group bg-color-red">
             <div id="custom-search-input">
@@ -342,15 +342,15 @@
         @endcan
 
         @can('importer_startup')
-            <a @popper( Importer \ Export un fichier CSV!) href="{{url('/import-export')}}" class="btn btn-sm btn-info ">
+            <a @popper( Importer \ Export un fichier CSV!) href="{{route('import-export')}}" class="btn btn-sm btn-info ">
                 <i class="fas fa-file-import expo"></i> / <i class="fas fa-file-export"></i>
             </a>
         @endcan
     </div>
 
         <div class="album py-5 bg-light">
-                    <div class="container">
-                        <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 g-4">
+                    <div class="">
+                        <div class="row row-cols-3 row-cols-sm-3 row-cols-md-4 g-4">
 
                                 @if($startups->count()  )
 
@@ -412,7 +412,7 @@
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <small class="text-muted">{{ $startup->date_creation }}</small>
-                                                <div class="btn-group">
+                                                <div class="  d-flex justify-content-between" style="width:110px">
                                                     @can('voir_startup')
                                                         <a  type="button" href="{{ route('startup.show', $startup->id  ) }}" class="btn btn-sm btn-primary"> <i class="fas fa-eye"></i></a>
                                                     @endcan

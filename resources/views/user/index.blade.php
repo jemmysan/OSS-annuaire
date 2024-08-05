@@ -1,12 +1,17 @@
 @extends('layouts.admin')
-
+@section('pageName')
+  
+    <a href="{{route('user.index')}}">Utilisateurs</a>
+@endsection
 @section('title')
     Utilisateurs
 @endsection
 @section('content')
+<h2 class="p-1">Utilisateurs</h2>
+
     <div class="card">
 
-        <div class="row">
+        <div class="row p-4 ">
             <div class="col-12 col-sm-6 col-md-3">
                 <div class="info-box">
                     <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
@@ -93,27 +98,29 @@
             <!-- /.col -->
         </div>
         <div class="card-header">
-            <h3 class="card-title">Gestion des utilisateurs</h3>
+           
+            <div class="d-flex justify-content-between  h-10">
+                <div class="w-50">
 
-            <div class="card-tools">
-                <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i></a>
+                    <form action="{{ route('user.index') }}" method="GET" role="search">
+        
+                            <div class="input-group">
+        
+                             <input type="text" class="col-md-5" style="float: right" name="nom" placeholder="Nom  de l'utilisateur" id="nom">
+        
+                                <a href="{{ route('user.index') }}" class="">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-danger" type="button" title="Rafraichir">
+                                            <span class="fas fa-sync-alt"></span>
+                                        </button>
+                                    </span>
+                                </a>
+                            </div>
+                    </form>
+                </div>
+                <a href="{{ route('user.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Ajouter</a>
             </div>
 
-            <form action="{{ route('user.index') }}" method="GET" role="search">
-
-                    <div class="input-group">
-
-                     <input type="text" class="col-md-5" style="float: right" name="nom" placeholder="Nom  de l'utilisateur" id="nom">
-
-                        <a href="{{ route('user.index') }}" class=" mt-2">
-                            <span class="input-group-btn">
-                                <button class="btn btn-danger" type="button" title="Rafraichir">
-                                    <span class="fas fa-sync-alt"></span>
-                                </button>
-                            </span>
-                        </a>
-                    </div>
-                </form>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive p-0">
@@ -140,13 +147,13 @@
                         </td>
                         <td>
                              <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                                <a  type="button" href="{{ route('user.show', $user->id ) }}" class="btn bg-teal"> <i class="fas fa-eye"></i></a>
-                                <a href="{{ route('user.edit', $user->id  ) }}" class="btn btn-primary"> <i class="fas fa-edit"></i></a>
+                                <a  type="button" href="{{ route('user.show', $user->id ) }}" class="btn bg-teal mx-1"> <i class="fas fa-eye"></i></a>
+                                <a href="{{ route('user.edit', $user->id  ) }}" class="btn btn-primary mx-1" > <i class="fas fa-edit"></i></a>
 
                                  <form action="{{action('UserController@destroy', $user['id'])}}" method="POST">
                                                         {{csrf_field()}}
                                                         <input name="_method" type="hidden" value="DELETE">
-                                        <button type="submit" title="delete"  class="btn  bg-danger">
+                                        <button type="submit" title="delete"  class="btn  bg-danger mx-1">
                                                         <i class="fas fa-trash " onclick="return confirm('Etes-vous sur de vouloir supprimer l\'utilisateur ?')"> </i>
 
                                         </button>

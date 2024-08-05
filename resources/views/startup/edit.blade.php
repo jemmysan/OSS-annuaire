@@ -9,12 +9,13 @@
 Modification
 @endsection
 
-
 @section('content')
-    <div class="card" >
+    <h2 class="p-2">Modifier startup </h2>
+
+    <div class="card " >
         <!-- Content Header (Page header) -->
         <div class="card-header">
-            <h3 class="card-title"> Editer la Start-Up</h3>
+            <h3 class="card-title"> Modifier la Start-Up</h3>
 
         </div>
 
@@ -22,22 +23,18 @@ Modification
             @csrf
             @method('PUT')
 
-            <div class="row">
+            <div class="row p-2">
 
                 {{--                    données generale--}}
                 <div class="col-md-6">
-                    <div class="card card-primary collapsed-card">
+                    <div class="card card-primary ">
                         <div class="card-header">
 
                             <h3 class="card-title">Général</h3>
 
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
+                           
                         </div>
-                        <div class="card-body" >
+                        <div class="card-body" style="height: 28vh; overflow-y: scroll; ">
                             {{--nomstartup--}}
                             <div class="form-group">
                                 <label for="nom_startup">Nom start-up <span class="text-danger">*</span></label>
@@ -214,17 +211,13 @@ Modification
 
                 {{--             Coordonnées       --}}
                 <div class="col-md-6">
-                    <div class="card card-secondary collapsed-card">
+                    <div class="card card-secondary ">
                         <div class="card-header">
                             <h3 class="card-title">Coordonnées</h3>
 
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
+                           
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" style="height: 28vh; overflow-y: scroll; ">
                             {{-- email--}}
                             <div class="form-group">
                                 <label for="email">E-Mail <span class="text-danger">*</span></label>
@@ -339,13 +332,13 @@ Modification
 
             </div>
 
-            <div class="row">
-                <div class="col-12">
-                    <a href="{{route('startup.index')}}" class="btn btn-secondary"> <i class="fa fa-ban" aria-hidden="true"></i>
+            <div class=" px-2 d-flex justify-content-between">
+                
+                    <a href="{{route('startup.index')}}" class="btn btn-warning"> <i class="fa fa-ban" aria-hidden="true"></i>
                         Annuler</a>
-                    <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-save"></i> </button>
+                    <button type="submit" class="btn btn-sm btn-success"><i class="fas fa-save"></i> Enregistrer</button>
 
-                </div>
+               
             </div>
 
 

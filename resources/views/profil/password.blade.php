@@ -1,8 +1,13 @@
 @extends('layouts.admin')
+@section('pageName')
+  
+    <a href="{{route('user.profil')}}">Profils</a>
+@endsection
     @section('title')
      Password
     @endsection
 @section('content')
+
 <div class="content">
     <div class="">
         <div class="row" >

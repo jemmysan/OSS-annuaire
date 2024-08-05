@@ -3,7 +3,8 @@
     Import/ export Structure d'accompagnement
 @endsection
 @section('content')
-    <div class="container">
+
+<div class="container">
         <div class="card bg-light mt-3">
 
             <div class="card-body">

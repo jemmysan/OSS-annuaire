@@ -3,11 +3,12 @@
     <a href="{{route('startup.index')}}"> Annuaire Start-up</a>
 @endsection
 @section('title')
-    Importer
+    Importer/Export
 @endsection
 @section('content')
 
 
+<h2 class="p-2">Import/Export startup </h2>
 
 
 <div class="container mt-5 text-center">

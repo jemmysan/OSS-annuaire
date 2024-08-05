@@ -1,9 +1,13 @@
 @extends('layouts.admin')
-
+@section('pageName')
+  
+    <a href="{{route('role.index')}}">Rôles</a>
+@endsection
 @section('title')
-    Création de role
+    Détails
 @endsection
 @section('content')
+    <h2 class="p-1">Gestion des rôles</h2>
     <div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">Détails</h3>

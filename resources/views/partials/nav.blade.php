@@ -1,3 +1,4 @@
+
 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
 
     @can('voir_gestion_utilisateur')
@@ -117,46 +118,37 @@
                     <i class="right fas fa-angle-left"></i>
                 </p>
             </a>    
-            <ul class="nav nav-treeview">
+            <ul class="nav nav-treeview pl-2">
                 <li class="nav-item">
+
+                     <!---- Evolution --------->
+
                     <a href="{{ route('evolution') }}" class="nav-link">
                         <i class="bi bi-graph-up"></i>
                         <p>Evolution</p>
+                    </a>
+
+                     <!---- Rubrique --------->
+                    <a href="{{ route('rubrique.index') }}" class="nav-link">
+                        <!-- <i class="bi bi-book"></i> -->
+                        <!-- <i class="bi bi-journal"></i> -->
+                        <i class="bi bi-folder"></i>
+
+
+                        <p> Rubrique </p>
+                    </a>
+
+                     <!---- Formation --------->
+                    <a href="{{ route('formation.index') }}" class="nav-link">
+                        <i class="bi bi-book"></i>
+                        <p> Formations </p>
                     </a>
                 </li>   
             </ul>
         </li>
     @endcan
 
-        <!--------------------------->
-
-        <!---- Rubrique --------->
-
-    @can('voir_rubrique') 
-        <li class="nav-item">
-            <a href="{{ route('rubrique.index') }}" class="nav-link">
-                <!-- <i class="bi bi-book"></i> -->
-                <!-- <i class="bi bi-journal"></i> -->
-                <i class="bi bi-folder"></i>
-
-
-                <p> Rubrique </p>
-            </a>
-        </li>
-    @endcan
         
-
-        <!--------------------------->
-
-        <!---- Rubrique --------->
-    @can('voir_formation')   
-        <li class="nav-item">
-            <a href="{{ route('formation.index') }}" class="nav-link">
-                <i class="bi bi-book"></i>
-                <p> Formations </p>
-            </a>
-        </li>
-    @endcan
         
     
         <!--------------------------->

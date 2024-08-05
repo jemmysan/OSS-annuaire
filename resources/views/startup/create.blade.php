@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+
 @section('pageName')
     <a href="{{route('startup.index')}}"> Annuaire Start-up</a>
 @endsection
@@ -19,11 +20,12 @@
         }
     </style>
 
-    <div class="card p-2" >
+<h2 class="p-1"> Créer une nouvelle start-up</h2>
+
+<div class="card px-4 pt-2" >
         <!-- Content Header (Page header) -->
-        <div class="card-header">
-            <h3 class="card-title"> Nouvelle Start-Up</h3>
-        </div>
+        <!-- <div class="card-header">
+        </div> -->
 
         <form class="pt-2" method="POST" action="{{ route('store-startup') }}" enctype="multipart/form-data">
             @csrf
@@ -33,19 +35,16 @@
 
 {{--                données generale--}}
 
-                <div class="col-md-6 ">
-                    <div class="card card-primary collapsed-card ">
-                        <div class="card-header">
+                <div class="col-md-6 mb-4">
+                        <div class="card card-info" >
 
-                            <h3 class="card-title">Général</h3>
+                        <div class="card-header bg-primary">
 
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
+                            <h3 class="card-title ">Général</h3>
+
+                           
                         </div>
-                        <div class="card-body" >
+                        <div class="card-body  " style="height: 28vh; overflow-y: scroll; ">
 
 {{--                            nomstartup--}}
 
@@ -245,17 +244,13 @@
 {{--                Coordonnées--}}
 
                 <div class="col-md-6">
-                    <div class="card card-secondary collapsed-card">
+                    <div class="card card-secondary ">
                         <div class="card-header">
                             <h3 class="card-title">Coordonnées</h3>
 
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
+                           
                         </div>
-                        <div class="card-body">
+                        <div class="card-body " style="height: 28vh; overflow-y: scroll; border:1px solid :gray; ">
 
 {{--                            email--}}
 
@@ -335,12 +330,6 @@
                     <div class="card card-info">
                         <div class="card-header">
                             <h3 class="card-title">Médias</h3>
-
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
                         </div>
                         <div class="card-body">
 
