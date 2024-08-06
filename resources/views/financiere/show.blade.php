@@ -1,5 +1,10 @@
 @extends('layouts.admin')
-
+@section('retour')
+<button class="btn btn-sm " style="background : white; border : 1px solid #D3D3D3">                
+    <i class="bi bi-arrow-left-circle-fill text-gray"></i>
+        <a class="text-gray" href="{{route('financiere.index')}}">Retour</a>
+</button>
+@endsection
  @section('pageName')
      <a href="{{route('financiere.index')}}">  Structure Financiere</a>
     @endsection
@@ -9,12 +14,7 @@
 @section('content')
     <h2 class="p-1">Voir structure financière</h2>
 
-    <div>
-        <a href="{{ route('financiere.index') }}" class="nav-link ">
-            <i class="fas fa-undo-alt"></i>
-            Retour
-        </a>
-    </div>
+    
     <div class="invoice p-3 mb-2">
         <!-- title row -->
 

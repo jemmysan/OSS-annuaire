@@ -1,7 +1,10 @@
-
-
 @extends('layouts.admin')
-
+@section('retour')
+<button class="btn btn-sm " style="background : white; border : 1px solid #D3D3D3">                
+    <i class="bi bi-arrow-left-circle-fill text-gray"></i>
+        <a class="text-gray" href="{{route('formation.index')}}">Retour</a>
+</button>
+@endsection
 @section('pageName')
     <a href="{{ route('formation.index') }}"> Formation</a>
 @endsection
@@ -15,14 +18,7 @@ Modification
     <div class="card" >
         <!-- Content Header (Page header) -->
         
-        
-        <div class="card-header d-flex justify-content-between align-items-center ">
-            <a href="{{ route('formation.index') }}"  class="nav-link">
-                <i class="fas fa-undo-alt"></i>
-                Retour
-            </a>
-
-        </div>
+    
         <div>
            
 

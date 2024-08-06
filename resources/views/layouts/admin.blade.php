@@ -56,12 +56,21 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                     </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{route('home')}}">Acceuil</a></li>
-                            <li class="breadcrumb-item active">@yield('pageName')</li>
-                            <li class="breadcrumb-item active">@yield('title')</li>
-                        </ol>
+                    <div class="col-sm-12">
+                        @yield('retour')
+                        <div class="breadcrumb float-sm-right ">
+                           
+                            <button class="btn btn-sm " style="background : white; border : 1px solid #D3D3D3">
+                                <a href="{{route('home')}}">Acceuil</a>
+                            </button>
+                            <button class="btn btn-sm " style="background : white; border : 1px solid #D3D3D3">
+                                @yield('pageName')
+                            </button>
+
+                            <button class="btn btn-sm " style="background : white; border : 1px solid #D3D3D3; color :gray">
+                                @yield('title')
+                            </button>
+                        </div>
                     </div><!-- /.col -->
                 </div>
             </div><!-- /.container-fluid -->

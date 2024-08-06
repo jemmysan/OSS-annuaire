@@ -1,4 +1,10 @@
 @extends('layouts.admin')
+@section('retour')
+<button class="btn btn-sm " style="background : white; border : 1px solid #D3D3D3">                
+    <i class="bi bi-arrow-left-circle-fill text-gray"></i>
+        <a class="text-gray" href="{{route('startup.index')}}">Retour</a>
+</button>
+@endsection
 @section('pageName')
     <a href="{{route('startup.index')}}"> Annuaire Start-up</a>
 @endsection
@@ -316,11 +322,8 @@
 
       <!-- Default box -->
 <div class="card card-solid">
-    <div class="px-4">
-        <a href="{{ route('startup.index') }}" class="nav-link">
-            <i class="fas fa-undo-alt"></i>
-            Retour
-        </a>
+    <div class="p-4">
+        
 
         <div class="row">
 
