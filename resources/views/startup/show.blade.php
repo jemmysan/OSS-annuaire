@@ -609,7 +609,10 @@
 
                             <!-------- financement ---------->
                             <div class="tab-pane fade" id="pills-financement" role="tabpanel" aria-labelledby="pills-financement-tab">
-
+                                <?php
+                                    use Illuminate\Support\Facades\DB;
+                                    $phaseFins = DB::table('phase_financements')->get();
+                                ?>
                                 <h2>
                                     <b>Registre des Partenariats
                                         @can('ajout_partenariat')  
@@ -625,6 +628,16 @@
                                     @csrf
                                     <div class="row g-3">
                                         <div class="col">
+                                        <select class="form-control"  name="phase">
+                                            <option value="" selected disabled>Choose...</option>
+                                            @foreach($phaseFins as $phaseFin)
+                                                <option value="{{ $phaseFin->libelle }}" {{ old('$phaseFin') == $phaseFin->libelle ? 'selected' : '' }}>
+                                                    {{ $phaseFin->libelle }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        </div>
+                                        <div class="col">
                                             <input type="text" class="form-control" placeholder="Nom" name="nom">
                                         </div>
                                         <div class="col">
@@ -633,12 +646,16 @@
                                         <div class="col">
                                             <input type="date" class="form-control"  name="date">
                                         </div>
+                                        
                                         <div class="col">
                                             <input type="hidden" name="startup_id" value="{{ $startup->id }}" />
                                         </div>
+
+                                        
                                         <div class="col">
                                             <input type="submit" class="btn btn-info float-right startupFinancement"  value="Ajouter">
                                         </div>
+                                        
                                     </div>
                                 </form>
 
@@ -647,6 +664,7 @@
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
+                                                    <th>Phase</th>
                                                     <th>Par</th>
                                                     <th>Montant</th>
                                                     <th>Date</th>
@@ -655,6 +673,7 @@
                                             </thead>
                                            <tbody>
                                             @if($startup->partenariat_orange == "oui" && $startup->leve_fond == "oui")
+                                               
                                                 <td>
                                                     <span class="badge bg-gradient-info">Orange </span>
                                                 </td>
@@ -666,7 +685,9 @@
                                             @if($startup->financements)
                                                 @foreach($startup->financements as $finance)
                                                     <tr>
-
+                                                            <td>
+                                                                {{$finance->phase}}
+                                                            </td>
                                                         <td>
                                                             <span class="badge bg-gradient-info">{{$finance->nom}} </span>
                                                         </td>
@@ -810,104 +831,114 @@
         }
 
         function displayEvolutionDetails(evolutions, defaultEvolutionId = null) {
-            detailsContainer.innerHTML = '';
+    detailsContainer.innerHTML = '';
 
-            // Stocker l'état initial des fichiers
-            initialFiles = {};
+    // Stocker l'état initial des fichiers
+    initialFiles = {};
 
-            evolutions.forEach(evolution => {
-                const evolutionElement = document.createElement('div');
-                evolutionElement.classList.add('evolution-detail');
-                evolutionElement.dataset.evolutionId = evolution.evolution_id;
+    evolutions.forEach(evolution => {
+        const evolutionElement = document.createElement('div');
+        evolutionElement.classList.add('evolution-detail');
+        evolutionElement.dataset.evolutionId = evolution.evolution_id;
 
-                const descriptionInput = `
-                    <div class="pb-2  w-[100%]" style=" display:flex; justify-content:end; ">
-                        <div id="${evolution.startup_id}"  type="button" class="edit-button btn btn-warning float-right " style="width:5%">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                    </div>
-                    
-                    <hr>
-                    <div class="form-group">
-                        <label for="description-${evolution.evolution_id}"><strong>Description:</strong></label>
-                        <input type="text" id="description-${evolution.evolution_id}" class="form-control description" value="${evolution.description}" readonly>
-                    </div>
-                `;
+        const descriptionInput = `
+            <div class="pb-2  w-[100%]" style=" display:flex; justify-content:space-between; ">
+                <div>
+                    <label><strong>
+                        ${evolution.evolution_id}
+                    </strong></label>
+                </div>
+                <div id="${evolution.startup_id}"  type="button" class="edit-button btn btn-warning float-right " style="width:5%">
+                    <i class="fas fa-edit"></i>
+                </div>
+            </div>
+            
+            <hr>
+            <div class="form-group">
+                <label for="description-${evolution.evolution_id}"><strong>Description:</strong></label>
+                <input type="text" id="description-${evolution.evolution_id}" class="form-control description" value="${evolution.description}" readonly>
+            </div>
+        `;
 
-                let filenamesHtml = `
-                    <div class="form-group">
-                        <label><strong>Filenames:</strong></label>
-                        <div class="filename-container d-flex flex-wrap">
-                `;
+        let filenamesHtml = `
+            <div class="form-group">
+                <label><strong>Files:</strong></label>
+                <div class="filename-container d-flex flex-wrap">
+        `;
 
-                // Stocker les fichiers initiaux
-                initialFiles[evolution.evolution_id] = Array.isArray(evolution.filename) ? [...evolution.filename] : [evolution.filename];
+        // Stocker les fichiers initiaux
+        initialFiles[evolution.evolution_id] = Array.isArray(evolution.filename) ? [...evolution.filename] : [evolution.filename];
 
-                if (Array.isArray(evolution.filename)) {
-                    evolution.filename.forEach((file, index) => {
-                        filenamesHtml += `
-                            <div class="d-flex justify-content-between align-items-center mx-1 border border-2 px-1">
-                                <input type="text" class="w-auto form-control filename-item m-1 file-desc" value="${file}" readonly>
-                                <i class="fas fa-minus-circle text-danger remove-file" data-index="${index}" style="display:none"></i>
-                            </div>
-                        `;
-                    });
-                } else if (typeof evolution.filename === 'string') {
-                    filenamesHtml += `
-                        <div class="d-flex justify-content-between align-items-center mx-1 border border-2 px-1">
-                            <input type="text" class="form-control filename-item m-1 file-desc" value="${evolution.filename}" readonly>
-                            <i class="fas fa-minus-circle text-danger remove-file" data-index="0" style="display:none"></i>
-                        </div>
-                    `;
-                }
-
+        if (Array.isArray(evolution.filename)) {
+            evolution.filename.forEach((file, index) => {
                 filenamesHtml += `
-                        </div>
+                    <div class="d-flex justify-content-between align-items-center mx-1 border border-2 px-1">
+                        <input type="text" class="w-auto form-control filename-item m-1 file-desc" value="${file}" readonly>
+                        <a href="/startup/files/${evolution.id}" class="btn btn-primary btn-sm m-1" target="_blank">Voir</a>
+                        <a href="/startup/files/${evolution.id}" class="btn btn-success btn-sm m-1" download="${file}">Télécharger</a>
+                        <i class="fas fa-minus-circle text-danger remove-file" data-index="${index}" style="display:none"></i>
                     </div>
                 `;
-
-                const buttonsEditDiscard = `
-                    <div class="inter-Act" style="display:none">
-                        <div>
-                            <div class="input-group increment">
-                                <input type="file" name="filename[]" class="myfrm form-control @error('filename') is-invalid @enderror">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-primary btn-add" type="button">
-                                        <i class="fas fa-plus-circle"></i> Ajouter
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="clone d-none">
-                                <div class="input-group mt-2">
-                                    <input type="file" name="filename[]" class="form-control @error('filename') is-invalid @enderror" >
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-danger btn-remove" type="button">
-                                            <i class="fas fa-minus-circle"></i> Retirer
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="d-flex justify-content-end">
-                            <div class=" w-[25]" >
-                                <div class="btn btn-sm btn-warning text-white font-bolder discard-b">Annuler</div>
-                                <div class="btn btn-sm btn-success save-b">Enregistrer</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                evolutionElement.innerHTML = descriptionInput + filenamesHtml + buttonsEditDiscard;
-                detailsContainer.appendChild(evolutionElement);
             });
-
-            if (defaultEvolutionId) {
-                filterEvolutionDetails(defaultEvolutionId);
-            }
-
-            attachEventListeners();
+        } else if (typeof evolution.filename === 'string') {
+            filenamesHtml += `
+                <div class="d-flex justify-content-between align-items-center mx-1 border border-2 px-1">
+                    <input type="text" class="form-control filename-item m-1 file-desc" value="${evolution.filename}" readonly>
+                    <a href="/startup/files/${evolution.id}" class="btn btn-primary btn-sm m-1" target="_blank">Voir</a>
+                    <a href="/startup/files/${evolution.id}" class="btn btn-success btn-sm m-1" download="${evolution.filename}">Télécharger</a>
+                    <i class="fas fa-minus-circle text-danger remove-file" data-index="0" style="display:none"></i>
+                </div>
+            `;
         }
+
+        filenamesHtml += `
+                </div>
+            </div>
+        `;
+
+        const buttonsEditDiscard = `
+            <div class="inter-Act" style="display:none">
+                <div>
+                    <div class="input-group increment">
+                        <input type="file" name="filename[]" class="myfrm form-control @error('filename') is-invalid @enderror">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary btn-add" type="button">
+                                <i class="fas fa-plus-circle"></i> Ajouter
+                            </button>
+                        </div>
+                    </div>
+                    <div class="clone d-none">
+                        <div class="input-group mt-2">
+                            <input type="file" name="filename[]" class="form-control @error('filename') is-invalid @enderror" >
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-danger btn-remove" type="button">
+                                    <i class="fas fa-minus-circle"></i> Retirer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="d-flex justify-content-end">
+                    <div class=" w-[25]" >
+                        <div class="btn btn-sm btn-warning text-white font-bolder discard-b">Annuler</div>
+                        <div class="btn btn-sm btn-success save-b">Enregistrer</div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        evolutionElement.innerHTML = descriptionInput + filenamesHtml + buttonsEditDiscard;
+        detailsContainer.appendChild(evolutionElement);
+    });
+
+    if (defaultEvolutionId) {
+        filterEvolutionDetails(defaultEvolutionId);
+    }
+
+    attachEventListeners();
+}
+
 
         function filterEvolutionDetails(evolutionId) {
             document.querySelectorAll('.evolution-detail').forEach(detail => {

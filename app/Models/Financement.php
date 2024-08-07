@@ -10,6 +10,7 @@ class Financement extends Model
     use HasFactory;
 
     protected $fillable = [
+        'phase',
         'nom',
         'montant',
         'startup_id',

@@ -37,6 +37,7 @@ class FinancementController extends Controller
     public function store(Request $request)
     {
         $financement = new Financement;
+        $financement->phase= $request->get('phase');
         $financement->nom= $request->get('nom');
         $financement->montant= $request->get('montant');
         $financement->date= $request->get('date');

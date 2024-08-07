@@ -121,7 +121,7 @@ class EvolutionStartupController extends Controller
     
    
     
-
+   
     
 
   
@@ -152,5 +152,18 @@ class EvolutionStartupController extends Controller
     //     return redirect()->back()->with('success', 'Evolution updated successfully.');
     // }
 
+
+    public function getFile($id)
+    {
+        $evo = EvolutionStartup::find($id)->filename;
+        return($evo);
+        $path = storage_path('app/public/fichier/' . $filename);
+
+        if (!file_exists($path)) {
+            abort(404);
+        }
+
+        return response()->file($path);
+    }
     
 }

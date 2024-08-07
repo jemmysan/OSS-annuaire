@@ -143,6 +143,21 @@
                         <i class="bi bi-book"></i>
                         <p> Formations </p>
                     </a>
+
+                    <!---- Phase --------->
+
+                    <a href="{{ route('phase') }}" class="nav-link">
+                        <i class="bi bi-graph-up"></i>
+                        <p>Phase</p>
+                    </a>
+
+                    <!---- Phase de financement--------->
+
+                    <a href="{{ route('phase-financement.index') }}" class="nav-link">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <p>Phase de financement</p>
+                    </a>
+
                 </li>   
             </ul>
         </li>

@@ -24,6 +24,7 @@ use App\Http\Controllers\ImportExportController;
 use App\Http\Controllers\StartRegistreController;
 use App\Http\Controllers\AccompagnementController;
 use App\Http\Controllers\EvolutionStartupController;
+use App\Http\Controllers\PhaseFinancementController;
 
 
 
@@ -89,6 +90,14 @@ Route::group(['middleware' => ['auth']], function(){
             Route::post('search',[FinanciereController::class,'search'])->name('financiere.search');
             Route::post('/create', [FinanciereController::class,'store'])->name('financiere.store');
         });
+
+        Route::prefix('phase-financement')->group(function (){
+            Route::get('/liste',[PhaseFinancementController::class,'index'])->name('phase-financement.index');
+            Route::post('/store',[PhaseFinancementController::class,'store'])->name('phase-financement.store');
+            Route::put('/update/{id}',[PhaseFinancementController::class,'update'])->name('phase-financement.update');
+            Route::get('/delete/{id}',[PhaseFinancementController::class,'delete'])->name('phase-financement.delete');
+
+        });
         
         Route::resource('tasks', 'TasksController');
         
@@ -97,6 +106,8 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::get('/startup/evolution/{id}', [EvolutionStartupController::class, 'getEvolutionStartup'])->name('startup.evolutions');
         Route::post('evolution/evolution-startup/{id}', [EvolutionStartupController::class, 'update'])->name('evolution.update');
+        Route::get('/startup/files/{id}', [EvolutionStartupController::class, 'getFile'])->name('getfile');
+
 
         Route::prefix('evolution')->group(function (){
             Route::get('/index',[EvolutionController::class,'index'])->name('evolution');
@@ -117,6 +128,8 @@ Route::group(['middleware' => ['auth']], function(){
         
         Route::prefix('phase')->group(function (){
             Route::get('/index',[PhaseController::class,'index'])->name('phase');
+            Route::post('/store',[PhaseController::class,'store'])->name('phase.create');
+
         });
 
         Route::prefix('rubrique')->group(function (){
