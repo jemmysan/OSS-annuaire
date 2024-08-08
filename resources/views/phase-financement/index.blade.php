@@ -18,7 +18,7 @@
                 Ajouter
             </a>
        
-            <form action="" method="POST" role="search" style="float: right">
+            <form action="{{ route('phase-financement.search')}}" method="POST" role="search" style="float: right">
                 @csrf <!-- Include this line to add the CSRF token -->
                 <div class="input-group bg-color-red">
                     <div id="custom-search-input">

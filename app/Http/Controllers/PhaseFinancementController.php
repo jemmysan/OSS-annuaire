@@ -7,8 +7,8 @@ use App\Models\PhaseFinancement;
 class PhaseFinancementController extends Controller
 {
     public function index(){
-        $phases = PhaseFinancement::all();
-        return view('phase-financement.index',compact('phases'));
+        $phases = PhaseFinancement::paginate(10);
+        return view('phase-financement.index',['phases'=>$phases]);
     }
 
 
@@ -41,5 +41,13 @@ class PhaseFinancementController extends Controller
         $phase->delete();
         return redirect()->back()->with('success','Phase de finacement ajoutée avec succès !'); 
         
+    }
+
+    public function search(Request $request)
+    {
+        $inputValue = $request->input('search');
+        $phases = PhaseFinancement::where('libelle', 'like', '%' . $inputValue . '%')->paginate(10);
+                                
+        return view('phase-financement.index',['phases'=>$phases]);
     }
 }

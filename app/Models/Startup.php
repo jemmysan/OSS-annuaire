@@ -60,6 +60,7 @@ class Startup extends Model implements Likeable
     {
         return $this->hasMany(Financement::class);
     }
+    
     public function secteur()
     {
         return $this->belongsToMany(Secteur::class,'startup_secteur');
@@ -78,6 +79,8 @@ class Startup extends Model implements Likeable
     public function evolutionStartup(){
         return $this->hasMany(EvolutionStartup::class);
     }
+
+   
 
 
 }

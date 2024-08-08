@@ -93,33 +93,30 @@
                                     @enderror
                                 </select>
                             </div>
+
+
 {{--secteur d'activite--}}
 
 
 
                             <div class="col-xs-12 form-group">
 
-
-
-                            {!! Form::label('secteur', 'Secteurs d\'activité', ['class' => 'control-label']) !!}
-<!--                                <button type="button" class="btn btn-primary btn-xs" id="selectbtn-secteur">
-                                    Tout Selectionner                                        </button>
-                                <button type="button" class="btn btn-primary btn-xs" id="deselectbtn-secteur">
-                                    Tout Déselectionner
-                                </button>-->
-
-                                {!! Form::select('secteur[]', $secteurs, old('secteur'), ['class' => 'js-example-placeholder-multiple js-states form-control ', 'id' => 'selectall-secteur']) !!}
-
-                                    <p class="help-block"></p>
-                                @if($errors->has('secteur'))
-                                    <p class="help-block">
-                                        {{ $errors->first('secteur') }}
-                                    </p>
-                                @endif
+                                {!! Form::label('secteur', 'Secteurs', ['class' => 'control-label']) !!}
+                                    {{-- <button type="button" class="btn btn-primary btn-xs" id="selectbtn-secteur">
+                                            Tout Selectionner                                        </button>
+                                        <button type="button" class="btn btn-primary btn-xs" id="deselectbtn-secteur">
+                                            Tout Déselectionner
+                                        </button>--}}
+                                        <span @popper(Appuyer sur Shift pour selectionner plusieurs!)> <i class="fas fa-info-circle text-danger" ></i></span>
+                                        {!! Form::select('secteur[]', $secteurs, old('secteur'), ['class' => 'form-control select2', 'multiple' => 'multiple', 'id' => 'selectall-secteur' ]) !!}
+                                        <p class="help-block"></p>
+                                        @if($errors->has('secteur'))
+                                            <p class="help-block">
+                                                {{ $errors->first('secteur') }}
+                                            </p>
+                                        @endif
+                                {{--                            tags--}}
                             </div>
-
-{{--                            tags--}}
-
 
                             <div class="col-xs-12 form-group">
 

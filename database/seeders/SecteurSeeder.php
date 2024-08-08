@@ -100,7 +100,5 @@ class SecteurSeeder extends Seeder
         DB::table('secteurs')->insert([ 'secteur' => 'Vente au détail',]);
         DB::table('secteurs')->insert([ 'secteur' => 'Video à la demande',]);
         DB::table('secteurs')->insert([ 'secteur' =>  'Voyage',]);
-
-
-           }
+}
 }

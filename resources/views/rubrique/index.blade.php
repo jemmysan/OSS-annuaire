@@ -78,7 +78,7 @@
         </table>
     </div>
 </div>
-
+{!! $rubriques->links() !!}
 <!-- Modals Section -->
 @foreach ($rubriques as $rubrique)
     <!-- Modal view rubrique -->

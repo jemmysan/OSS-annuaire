@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 @section('pageName')
-    <a href="{{ route('statut.index') }}">  Statut</a>
+    <a href="{{ route('secteur.index') }}">  Secteur</a>
 @endsection
 @section('title')
-    Statuts
+    Secteurs
 @endsection
 @section('content')
 
-<h2 class="p-1">Gestion des statuts </h2>
+<h2 class="p-1">Gestion des secteurs </h2>
 <div class="card p-4">
 
     
@@ -18,7 +18,7 @@
                 Ajouter
             </a>
        
-            <form action="{{ route('statut.search')}}" method="POST" role="search" style="float: right">
+            <form action="{{ route('secteur.search')}}" method="POST" role="search" style="float: right">
                 @csrf <!-- Include this line to add the CSRF token -->
                 <div class="input-group bg-color-red">
                     <div id="custom-search-input">
@@ -40,33 +40,29 @@
             </form>
     </div>
     
-    <div class="card-body table-responsive p-0">
+    <div class="card-body table-responsive p-0 h-50dvh" >
         <table class="table table-hover">
             <thead>
                 <hr>
                 <tr>
-                    <th>Ordre</th>
                     <th>Libelle</th>
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
-                @forelse ($statuts as $statut )
+            
+            <tbody class="" style="overflow-y : scroll" >
+                @forelse ($secteurs as $secteur )
                     <tr>
                     
-                        <td>
-                            {{$statut->ordre}}
-
-                        </td>
 
                         <td>
-                            {{$statut->libelle}}
+                            {{$secteur->secteur}}
                         </td>
                         <td>
                             <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                                <a class="btn btn-sm bg-primary mx-1" data-toggle="modal" data-target="#viewphase{{$statut->id}}"> <i class="fas fa-eye"></i></a>
-                                <a class="btn btn-sm bg-teal mx-1" data-toggle="modal" data-target="#editphase{{$statut->id}}"> <i class="fas fa-edit"></i></a>
-                                <a class="btn btn-sm btn-danger mx-1" href="" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
+                                <a class="btn btn-sm bg-primary mx-1" data-toggle="modal" data-target="#viewphase{{$secteur->id}}"> <i class="fas fa-eye"></i></a>
+                                <a class="btn btn-sm bg-teal mx-1" data-toggle="modal" data-target="#editphase{{$secteur->id}}"> <i class="fas fa-edit"></i></a>
+                                <a class="btn btn-sm btn-danger mx-1" href="{{ route('secteur.delete',$secteur->id ) }}" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -81,14 +77,15 @@
             </tbody>
         </table>
     </div>
+
 </div>
-{!! $statuts->links() !!}
+{!! $secteurs->links() !!}
 
 <!-- Modals Section -->
-@foreach ($statuts as $statut)
+@foreach ($secteurs as $secteur)
     
     <!-- Modal view phase -->
-    <div class="modal fade" id="viewphase{{$statut->id}}" tabindex="-1" role="dialog" aria-labelledby="viewphase" aria-hidden="true">
+    <div class="modal fade" id="viewphase{{$secteur->id}}" tabindex="-1" role="dialog" aria-labelledby="viewphase" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -99,12 +96,9 @@
                 </div>
                 <div class="modal-body">
                     <label for="libelle">Libelle</label>
-                    <div class="shadow-none p-3 bg-light rounded">{{$statut->libelle}}</div>
+                    <div class="shadow-none p-3 bg-light rounded">{{$secteur->secteur}}</div>
                 </div>
-                <div class="modal-body">
-                    <label for="ordre">Ordre</label>
-                    <div class="shadow-none p-3 bg-light rounded">{{$statut->ordre}}</div>
-                </div>
+               
             
                 <div class="modal-footer">
                     <a class="btn btn-sm bg-teal mx-1" data-toggle="modal" data-target="#editphase"> <i class="fas fa-edit"></i>
@@ -119,7 +113,7 @@
     </div>
 
     <!-- Modal edit phase -->
-    <div class="modal fade" id="editphase{{$statut->id}}" tabindex="-1" role="dialog" aria-labelledby="editphase" aria-hidden="true">
+    <div class="modal fade" id="editphase{{$secteur->id}}" tabindex="-1" role="dialog" aria-labelledby="editphase" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content max-h-full">
                 <div class="modal-header">
@@ -128,22 +122,13 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="{{ route('statut.update',$statut->id) }}">
+                <form method="POST" action="{{ route('secteur.update',$secteur->id) }}">
                     @csrf
                     @method('PUT')
                     <div class="modal-body">
                         <label for="libelle">Libelle</label>
-                        <input type="text" name="libelle" value="{{$statut->libelle}}" id="libelle" class="form-control @error('libelle') is-invalid @enderror">
-                        @error('libelle')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                    <div class="modal-body">
-                        <label for="ordre">Ordre</label>
-                        <input type="number" name="ordre" value="{{$statut->ordre}}" id="ordre" class="form-control @error('ordre') is-invalid @enderror">
-                        @error('ordre')
+                        <input type="text" name="secteur" value="{{$secteur->secteur}}" id="secteur" class="form-control @error('secteur') is-invalid @enderror">
+                        @error('secteur')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -177,27 +162,17 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" action="{{ route('statut.store') }} ">
+            <form method="POST" action="{{ route('secteur.store') }} ">
                 @csrf
                 <div class="modal-body">
-                    <label for="libelle">Libelle</label>
-                    <input type="text" value="" name="libelle" id="libelle" class="form-control @error('libelle') is-invalid @enderror">
+                    <label for="secteur">Libelle</label>
+                    <input type="text" value="" name="secteur" id="libelle" class="form-control @error('libelle') is-invalid @enderror">
                     @error('libelle')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
                 </div>
-                <div class="modal-body">
-                    <label for="ordre">Ordre</label>
-                    <input type="number" name="ordre" id="ordre" class="form-control @error('ordre') is-invalid @enderror">
-                    @error('ordre')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                
                
                 <div class="modal-body">
                     <button class="btn btn-warning" data-dismiss="modal">

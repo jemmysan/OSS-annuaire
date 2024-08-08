@@ -10,7 +10,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PhaseController;
 use App\Http\Controllers\ShareController;
+use App\Http\Controllers\StatutController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\SecteurController;
 use App\Http\Controllers\StartupController;
 use App\Http\Controllers\RubriqueController;
 use App\Http\Controllers\EvolutionController;
@@ -96,6 +98,8 @@ Route::group(['middleware' => ['auth']], function(){
             Route::post('/store',[PhaseFinancementController::class,'store'])->name('phase-financement.store');
             Route::put('/update/{id}',[PhaseFinancementController::class,'update'])->name('phase-financement.update');
             Route::get('/delete/{id}',[PhaseFinancementController::class,'delete'])->name('phase-financement.delete');
+            Route::post('/search',[PhaseFinancementController::class,'search'])->name('phase-financement.search');
+
 
         });
         
@@ -127,9 +131,26 @@ Route::group(['middleware' => ['auth']], function(){
 
         
         Route::prefix('phase')->group(function (){
-            Route::get('/index',[PhaseController::class,'index'])->name('phase');
+            // Route::get('/index',[PhaseController::class,'index'])->name('phase');
             Route::post('/store',[PhaseController::class,'store'])->name('phase.create');
+            
 
+        });
+
+        Route::prefix('statut')->group(function (){
+            Route::get('/list',[StatutController::class,'index'])->name('statut.index');
+            Route::post('/store',[StatutController::class,'store'])->name('statut.store');
+            Route::put('/update/{id}',[StatutController::class,'update'])->name('statut.update');
+            Route::get('/delete/{id}',[StatutController::class,'delete'])->name('statut.delete');
+            Route::post('/search',[StatutController::class,'search'])->name('statut.search');
+        });
+
+        Route::prefix('secteur')->group(function (){
+            Route::get('/list',[SecteurController::class,'index'])->name('secteur.index');
+            Route::post('/store',[SecteurController::class,'store'])->name('secteur.store');
+            Route::put('/update/{id}',[SecteurController::class,'update'])->name('secteur.update');
+            Route::get('/delete/{id}',[SecteurController::class,'destroy'])->name('secteur.delete');
+            Route::post('/search',[SecteurController::class,'search'])->name('secteur.search');
         });
 
         Route::prefix('rubrique')->group(function (){

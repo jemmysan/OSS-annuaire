@@ -78,21 +78,22 @@ Modification
 
                             <div class="col-xs-12 form-group">
 
-                            {!! Form::label('secteur', 'Secteurs d\'activité', ['class' => 'control-label']) !!}
-                            <!--                                <button type="button" class="btn btn-primary btn-xs" id="selectbtn-secteur">
-                                    Tout Selectionner                                        </button>
-                                <button type="button" class="btn btn-primary btn-xs" id="deselectbtn-secteur">
-                                    Tout Déselectionner
-                                </button>-->
-
-                                {!! Form::select('secteur[]', $secteurs, old('secteur') ? old('secteur') : $startup->secteur->pluck('id')->toArray(), ['class' => 'form-control ', 'id' => 'selectall-secteur' ]) !!}
-                                <p class="help-block"></p>
-                                @if($errors->has('secteur'))
-                                    <p class="help-block">
-                                        {{ $errors->first('secteur') }}
-                                    </p>
-                                @endif
-                            </div>
+                                {!! Form::label('secteur', 'Secteurs', ['class' => 'control-label']) !!}
+                                    {{-- <button type="button" class="btn btn-primary btn-xs" id="selectbtn-secteur">
+                                            Tout Selectionner                                        </button>
+                                        <button type="button" class="btn btn-primary btn-xs" id="deselectbtn-secteur">
+                                            Tout Déselectionner
+                                        </button>--}}
+                                        <span @popper(Appuyer sur Shift pour selectionner plusieurs!)> <i class="fas fa-info-circle text-danger" ></i></span>
+                                        {!! Form::select('secteur[]', $secteurs, old('secteur'), ['class' => 'form-control select2', 'multiple' => 'multiple', 'id' => 'selectall-secteur' ]) !!}
+                                        <p class="help-block"></p>
+                                        @if($errors->has('secteur'))
+                                            <p class="help-block">
+                                                {{ $errors->first('secteur') }}
+                                            </p>
+                                        @endif
+{{--                            tags--}}
+</div>
 
                             {{--tags--}}
                             <div class="form-group">
@@ -283,11 +284,7 @@ Modification
                         <div class="card-header">
                             <h3 class="card-title">Médias</h3>
 
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
+                            
                         </div>
                         <div class="card-body">
                             {{--fiche--}}

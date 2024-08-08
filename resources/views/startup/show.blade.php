@@ -426,11 +426,14 @@
                                 <li><i class="fas fa-map-marker-alt "></i><span style="align-content:center "> {{$startup->adresses}}</span></li>
                                 <li> <i class="fas fa-mail-bulk" style="color: #0c63e4"></i><span> <a href="mailto: {{$startup->email}}">{{$startup->email}}</a></span></li>
                                 <li><i class="fas fa-mobile "></i><span> {{$startup->coordonnee}}</span></li>
-                               <span class="badge badge-pill">Secteur(s):</span>  <li>  @foreach ($startup->secteur as $secteur)
-                                        <i class="fas fa-volume-down">{{ $secteur->secteur }}</i> <br>
-                                         @endforeach
-                                </li>
-
+                               <span class="badge badge-pill">Secteur(s):</span> 
+                                    <li> 
+                                        @forelse ( $startup->secteur as $secteur )
+                                            <i class="fas fa-volume-down"> {{ $secteur->secteur }}</i> <br>
+                                        @empty
+                                            <i class="fas fa-volume-down"> Secteur non précis </i> <br> 
+                                        @endforelse
+                                    </li>
                             </ul>
 
                         </div>
@@ -577,12 +580,15 @@
                                         </h5>
                                         <div class="card-body">
 
-                                            <form method="POST" action="{{route('commentaire.add')}}">
+                                            <form method="POST" action="{{route('commentaire.add')}}" >
                                                  @csrf
-                                                <input type="hidden" name="startup_id" value="{{$startup->id}}" />
-                                                <textarea name="comment" value="{{ old('comment')}}" class="form-control">
-                                                </textarea>
-                                                <input type="submit" class="btn btn-info float-right startupCommentaire" value="Commenter">
+                                                 <div class="d-flex " style="height : 50px">
+
+                                                     <input type="hidden" name="startup_id" value="{{$startup->id}}" />
+                                                     <textarea name="comment" value="{{ old('comment')}}" class="form-control">
+                                                     </textarea>
+                                                     <input type="submit" class="btn btn-info float-right startupCommentaire" value="Commenter">
+                                                 </div>
                                             </form>
                                         </div>
                                     </div>
@@ -597,7 +603,7 @@
                                 </div>
                             </div>
 
-                            <!-------- details ---------->
+                            <!-------- Statut ---------->
                             <div class="tab-pane fade" id="pills-phase" role="tabpanel" aria-labelledby="pills-phase-tab">
                                            <div class="col-auto">
 
@@ -897,6 +903,7 @@
         `;
 
         const buttonsEditDiscard = `
+        
             <div class="inter-Act" style="display:none">
                 <div>
                     <div class="input-group increment">

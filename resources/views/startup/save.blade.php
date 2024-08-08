@@ -1,8 +1,8 @@
-<form method="POST" action="{{url('startup/'.$startup->id)}}">
+<form method="POST" action="{{url('startup/'.$startup->id)}}" class="d-flex">
     @csrf
 
         <select  name="phase" id="phase"  class="form-control bi-align-center ">
-            <option selected="selected">Selectionnez</option>
+            <option selected="selected" disabled>Selectionnez</option>
 
             <option  value="Contact">Contact</option>
             <option  value="Discussion">Discussion</option>

@@ -10,9 +10,9 @@ class RubriqueController extends Controller
 {
     public function index()
     {
-        $rubriques = Rubrique::orderBy('ordre')->get();
-        return view('rubrique.index', compact('rubriques'))
-                ->with('i', (request()->input('page', 1) - 1) * 10);
+        $rubriques = Rubrique::orderBy('ordre')->paginate(10);
+        return view('rubrique.index', ['rubriques'=>$rubriques]);
+                
     }
 
    
@@ -93,10 +93,9 @@ class RubriqueController extends Controller
     {
         $inputValue = $request->input('search');
         $rubriques = Rubrique::where('libelle', 'like', '%' . $inputValue . '%')
-                                ->orderBy('ordre')->get();
+                                ->orderBy('ordre')->paginate(10);
+                            return view('rubrique.index', ['rubriques'=>$rubriques]);
                                 
-        return view('rubrique.index', compact('rubriques'))
-                    ->with('i',(request()->input('page',1)-1)*10);
     }
     
 

@@ -146,9 +146,9 @@
 
                     <!---- Phase --------->
 
-                    <a href="{{ route('phase') }}" class="nav-link">
-                        <i class="bi bi-graph-up"></i>
-                        <p>Phase</p>
+                    <a href="{{ route('statut.index') }}" class="nav-link">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <p>Statut</p>
                     </a>
 
                     <!---- Phase de financement--------->
@@ -156,6 +156,13 @@
                     <a href="{{ route('phase-financement.index') }}" class="nav-link">
                         <i class="fas fa-hand-holding-usd"></i>
                         <p>Phase de financement</p>
+                    </a>
+
+                    <!---- Phase --------->
+
+                    <a href="{{ route('secteur.index') }} " class="nav-link">
+                        <i class="bi bi-globe"></i>
+                        <p>Secteur</p>
                     </a>
 
                 </li>   

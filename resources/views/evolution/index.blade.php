@@ -76,7 +76,7 @@
         </table>
     </div>
 </div>
-
+{!! $evolutions->links() !!}
 <!-- Modals Section -->
 @foreach ($evolutions as $evolution)
     <!-- Modal view evolution -->
