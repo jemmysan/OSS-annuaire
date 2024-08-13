@@ -39,10 +39,12 @@ class StartupController extends Controller
             if (Gate::allows('porteur-projet', $user)) {
                 $startups = Startup::whereHas('user', function ($query) use ($user) {
                     $query->where('user_id', $user->id);
-                })->where('nom_startup', '!=', null)->orderBy('id', 'desc')->paginate(6);
+                })->where('nom_startup', '!=', null)
+                    ->orderBy('id', 'desc')
+                    ->paginate(4);
 
-                return view('startup.index', compact('startups'))
-                    ->with('i', (request()->input('page', 1) - 1) * 10);
+                return view('startup.index', ['startups'=>$startups]);
+                    
             }
 
             $startups = Startup::with('phase', 'secteur', 'commentaires')->get();
@@ -54,10 +56,12 @@ class StartupController extends Controller
                         $query->orWhere('nom_startup', 'LIKE', '%' . $nom . '%');
                     }
                 }]
-            ])->orderBy("id", "desc")->paginate(6);
+            ])->orderBy("id", "desc")->paginate(4);
 
-            return view('startup.index', compact('startups'))
-            ->with('i', (request()->input('page', 1) - 1) * 10);
+            
+
+            return view('startup.index', ['startups'=>$startups]);
+           
             //  'total_startups', 'contact_count', 'discussion_count', 'pilotage_count', 'deploiement_count'))
 
         } catch (\Exception $e) {

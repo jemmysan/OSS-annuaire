@@ -360,15 +360,15 @@
                                         <div class="pw_img">
                                             <img class="img-responsive"  style="width:280px;height:230px; " src="{{asset('img/'.$startup->logo)}}" alt="LOGO">
                                         </div>
-                                        <div class="ribbon ribbon-top-left"><span>
+                                        <div class="ribbon ribbon-top-left">
+                                            <span>
                                               @if(isset($startup->phase->phase))
 
                                                     {{$startup->phase->phase}}
                                                 @else
                                                     <b> Aucun phase</b>
                                                 @endif
-
-                                                  </span>
+                                            </span>
                                         </div>
                                         <div class="card-body">
                                             <div class="pw_content" >
@@ -390,13 +390,11 @@
 
                                                 <div class="pw_meta">
 
-
-
                                                          @foreach ($startup->secteur as $secteur)
-                                                        <span class="badge badge-primary">
-                                                         <i class="fas fa-bookmark"> {{$secteur->secteur }}</i> <br>
-                                                         </span>
-                                                                 @endforeach
+                                                            <span class="badge badge-primary">
+                                                            <i class="fas fa-bookmark"> {{$secteur->secteur }}</i> <br>
+                                                            </span>
+                                                        @endforeach
 
                                                 </div>
                                                 <br>
@@ -439,10 +437,9 @@
                         </div>
                     </div>
                 </div>
-
-
-</div>
-
+            </div>
+            {!! $startups->links() !!}
+        
 <script>
     var shareModal = document.getElementById('shareModal')
     shareModal.addEventListener('show.bs.modal', function (event) {

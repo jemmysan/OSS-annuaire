@@ -19,7 +19,6 @@ class Rating extends JsonResource
             'startup_id'=>$this->startup_id,
             'user_id'=>$this->user_id,
             'rating'=>$this->rating,
-
         ];
     }
 }

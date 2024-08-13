@@ -846,13 +846,15 @@
         const evolutionElement = document.createElement('div');
         evolutionElement.classList.add('evolution-detail');
         evolutionElement.dataset.evolutionId = evolution.evolution_id;
-
+        
         const descriptionInput = `
             <div class="pb-2  w-[100%]" style=" display:flex; justify-content:space-between; ">
                 <div>
-                    <label><strong>
-                        ${evolution.evolution_id}
-                    </strong></label>
+                    <label>
+                        <strong>
+                    
+                        </strong>
+                    </label>
                 </div>
                 <div id="${evolution.startup_id}"  type="button" class="edit-button btn btn-warning float-right " style="width:5%">
                     <i class="fas fa-edit"></i>
