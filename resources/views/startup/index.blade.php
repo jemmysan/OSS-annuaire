@@ -361,15 +361,25 @@
                                             <img class="img-responsive"  style="width:280px;height:230px; " src="{{asset('img/'.$startup->logo)}}" alt="LOGO">
                                         </div>
                                         <div class="ribbon ribbon-top-left">
-                                            <span>
-                                              @if(isset($startup->phase->phase))
+                                            @php
+                                                $statutStartup = DB::table('statut_startups')
+                                                                    ->where('startup_id', $startup->id)
+                                                                    ->first()->statut_id ?? null;
 
-                                                    {{$startup->phase->phase}}
+                                                $statutLibelle = $statutStartup 
+                                                    ? DB::table('statuts')->where('id', $statutStartup)->first()->libelle 
+                                                    : null;
+                                            @endphp
+                                            <span>
+                                                @if(isset($statutLibelle))
+                                                    {{$statutLibelle}}
                                                 @else
-                                                    <b> Aucun phase</b>
+                                                    <b>Aucun phase</b>
                                                 @endif
                                             </span>
                                         </div>
+
+
                                         <div class="card-body">
                                             <div class="pw_content" >
 

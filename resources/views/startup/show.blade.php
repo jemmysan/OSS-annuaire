@@ -414,13 +414,28 @@
                                     <span>
                                                Phase: <span class="badge badge-dark">
 
-                                             @if(isset($startup->phase->phase))
-                                               <p style="text-transform: capitalize">{{$startup->phase->phase}}</p>
-                                            @else
-                                                <p> </p>
-                                            @endif
+                                               @php
+                                                $statutStartup = DB::table('statut_startups')
+                                                                    ->where('startup_id', $startup->id)
+                                                                    ->first()->statut_id ?? null;
 
-                                             </span>
+                                                $statutLibelle = $statutStartup 
+                                                    ? DB::table('statuts')->where('id', $statutStartup)->first()->libelle 
+                                                    : null;
+                                            @endphp
+                                            
+                                            
+                                                @if(isset($statutLibelle))
+                                                    <p style="text-transform: capitalize">
+                                                        
+                                                        {{$statutLibelle}}
+                                                    </p>
+                                                @else
+                                                    <p> 
+                                                        Aucune phase
+                                                    </p>
+                                                @endif
+   
                                     </span>
                                 </li>
                                 <li><i class="fas fa-map-marker-alt "></i><span style="align-content:center "> {{$startup->adresses}}</span></li>
@@ -607,7 +622,21 @@
                             <div class="tab-pane fade" id="pills-phase" role="tabpanel" aria-labelledby="pills-phase-tab">
                                            <div class="col-auto">
 
-                                                   @include('startup.save')
+                                           <form method="POST" action="{{route('statut.startup', $startup->id)}}" class="d-flex">
+                                                @csrf
+
+                                                        @php
+                                                            $statuts = DB::table('statuts')->orderBy('ordre')->get();
+                                                        @endphp
+                                                        <select  name="statut" id="statut"  class="form-control bi-align-center ">
+                                                            <option selected="selected" disabled>Selectionnez</option>
+                                                            @foreach ($statuts as $statut )
+                                                                <option  value="{{$statut->libelle}}">{{$statut->libelle}}</option>  
+                                                            @endforeach
+                                                            
+                                                        </select>
+                                                <input type="submit" class="btn btn-info float-right"  value="Ajouter">
+                                            </form>
 
                                            </div>
 

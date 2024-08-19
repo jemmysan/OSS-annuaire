@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Statut;
 use App\Contrats\Likeable;
+use App\Models\StatutStartup;
 use App\Models\Concerns\Likes;
 use App\Models\EvolutionStartup;
 use Illuminate\Database\Eloquent\Model;
@@ -78,6 +80,10 @@ class Startup extends Model implements Likeable
 
     public function evolutionStartup(){
         return $this->hasMany(EvolutionStartup::class);
+    }
+
+    public function statutStartup(){
+        return $this->hasOne(StatutStartup::class);
     }
 
    

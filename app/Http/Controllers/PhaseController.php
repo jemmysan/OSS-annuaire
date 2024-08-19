@@ -40,7 +40,7 @@ class PhaseController extends Controller
         $startup->phase()->save($phase);
 
 
-        return redirect()->back()->with('success','Phase mis à jour!');
+        return redirect()->back()->with('success','Phase créée!');
 
     }
 

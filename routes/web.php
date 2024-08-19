@@ -143,6 +143,7 @@ Route::group(['middleware' => ['auth']], function(){
             Route::put('/update/{id}',[StatutController::class,'update'])->name('statut.update');
             Route::get('/delete/{id}',[StatutController::class,'delete'])->name('statut.delete');
             Route::post('/search',[StatutController::class,'search'])->name('statut.search');
+            Route::post('/startup/statut/add/{idStartup}',[StatutController::class,'saveStatutStartup'])->name('statut.startup');
         });
 
         Route::prefix('secteur')->group(function (){

@@ -22,13 +22,7 @@ Voir-cours
         <!-- Content Header (Page header) -->
         
         
-        <div class="card-header d-flex justify-content-between align-items-center ">
-            <a href="{{ route('formation.index') }}"  class="nav-link">
-                <i class="fas fa-undo-alt"></i>
-                Retour
-            </a>
-
-        </div>
+          
         <div>
            
 
@@ -97,7 +91,7 @@ Voir-cours
        const frameVid = document.querySelector('.frame-video');
        const coursContent = document.querySelector('.cours-content');
 
-    //    frameVid.style.display = 'none';
+       frameVid.style.display = 'none';
 
             viewVid.addEventListener('click', () => {
                 frameVid.style.display = 'block';

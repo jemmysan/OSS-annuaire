@@ -11,6 +11,7 @@ use App\Models\Commentaire;
 use App\Models\Financement;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Excel;
+use App\Models\StatutStartup;
 use App\Exports\StartupsExport;
 use App\Imports\StartupsImport;
 use App\Models\EvolutionStartup;
@@ -253,25 +254,30 @@ class StartupController extends Controller
      */
     public function destroy($id)
     {
-        
         $startup = Startup::findOrFail($id);
         try {
-        
+            // Supprimer les enregistrements associés dans les autres tables
             Commentaire::where('startup_id', $id)->delete();
             Financement::where('startup_id', $id)->delete();
-            Phase::where('startup_id', $id)->delete(); 
-            EvolutionStartup::where('startup_id',$id)->delete();
-
+            Phase::where('startup_id', $id)->delete();
+            EvolutionStartup::where('startup_id', $id)->delete();
+    
+            // Supprimer les enregistrements dans la table statut_startups
+            StatutStartup::where('startup_id', $id)->delete();
+    
+            // Détacher les relations
             $startup->secteur()->detach();
             $startup->tag()->detach();
             
+            // Supprimer la start-up
             $startup->delete();
-
+    
             return redirect()->back()->with('success', 'Start-up supprimée avec succès');
         } catch (\Exception $e) {
             return back()->withError('Une erreur est survenue lors de la suppression de la start-up : ' . $e->getMessage());
         }
     }
+    
 
 
     //enregistrer  phase
@@ -322,7 +328,7 @@ class StartupController extends Controller
     return view('startup.index', compact('startups'));
 }
 
-
+    
 
    
     

@@ -66,7 +66,7 @@
                             <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                                 <a class="btn btn-sm bg-primary mx-1" data-toggle="modal" data-target="#viewphase{{$statut->id}}"> <i class="fas fa-eye"></i></a>
                                 <a class="btn btn-sm bg-teal mx-1" data-toggle="modal" data-target="#editphase{{$statut->id}}"> <i class="fas fa-edit"></i></a>
-                                <a class="btn btn-sm btn-danger mx-1" href="" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
+                                <a class="btn btn-sm btn-danger mx-1" href="{{ route('statut.delete',$statut->id)}}" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
                             </div>
                         </td>
                     </tr>
@@ -107,7 +107,7 @@
                 </div>
             
                 <div class="modal-footer">
-                    <a class="btn btn-sm bg-teal mx-1" data-toggle="modal" data-target="#editphase"> <i class="fas fa-edit"></i>
+                    <a class="btn btn-sm bg-teal mx-1" data-toggle="modal" data-target="#editphase{{$statut->id}}"> <i class="fas fa-edit"></i>
                         Modifier
                     </a>
                     <button type="button" class="btn btn-primary mx-1 btn-sm" data-dismiss="modal">
