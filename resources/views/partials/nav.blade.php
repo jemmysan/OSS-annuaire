@@ -31,11 +31,11 @@
                 </li>
 
 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                    <a href="{{ route('teams.index') }}" class="nav-link">
                         <i class="fas fa-project-diagram"></i>                                <p>Equipes</p>
                     </a>
-                </li>
+                </li> -->
 
 
                 @can('voir_journal')

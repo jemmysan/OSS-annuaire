@@ -150,7 +150,7 @@ Route::group(['middleware' => ['auth']], function(){
             Route::get('/list',[SecteurController::class,'index'])->name('secteur.index');
             Route::post('/store',[SecteurController::class,'store'])->name('secteur.store');
             Route::put('/update/{id}',[SecteurController::class,'update'])->name('secteur.update');
-            Route::get('/delete/{id}',[SecteurController::class,'destroy'])->name('secteur.delete');
+            Route::post('/delete/{id}',[SecteurController::class,'destroy'])->name('secteur.delete');
             Route::post('/search',[SecteurController::class,'search'])->name('secteur.search');
         });
 

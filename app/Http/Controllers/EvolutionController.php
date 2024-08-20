@@ -8,9 +8,8 @@ use Illuminate\Http\Request;
 class EvolutionController extends Controller
 {
     public function index(){
-        $evolutions = Evolution::orderBy('ordre')->get();
-        return view('evolution.index', compact('evolutions'))
-                ->with('i',(request()->input('page',1)-1)*10);
+        $evolutions = Evolution::orderBy('ordre')->paginate(10);
+        return view('evolution.index', ['evolutions'=>$evolutions]);
     }
 
     public function create(){
@@ -37,12 +36,11 @@ class EvolutionController extends Controller
             'user_id'=>auth()->user()->id
         ]);
 
-        $reupdateEvolutions = Evolution::orderBy('ordre')->get();
+        $reupdateEvolutions = Evolution::orderBy('ordre')->paginate(10);
         foreach ($reupdateEvolutions as $index => $evolution) {
             $evolution->update(['ordre' => $index + 1]);
         }
-        return redirect()->route('evolution')
-            ->with('success','Evolution créée avec succès');
+        return redirect()->back()->with('success','Evolution créée avec succès');
     }
 
     public function edit($id)
@@ -73,7 +71,7 @@ class EvolutionController extends Controller
                     'user_id'=>auth()->user()->id
                 ]);
 
-                $reupdateEvolutions = Evolution::orderBy('ordre')->get();
+                $reupdateEvolutions = Evolution::orderBy('ordre')->paginate(10);
                 foreach ($reupdateEvolutions as $index => $evolution) {
                     $evolution->update(['ordre' => $index + 1]);
                 }
@@ -89,7 +87,7 @@ class EvolutionController extends Controller
        });
        $evolution->delete();
 
-       $reupdateEvolutions = Evolution::orderBy('ordre')->get();
+       $reupdateEvolutions = Evolution::orderBy('ordre')->paginate(10);
         foreach ($reupdateEvolutions as $index => $evolution) {
             $evolution->update(['ordre' => $index + 1]);
         }
@@ -101,10 +99,9 @@ class EvolutionController extends Controller
     {
         $inputValue = $request->input('search');
         $evolutions = Evolution::where('libelle', 'like', '%' . $inputValue . '%')
-                                ->orderBy('ordre')->get();
+                                ->orderBy('ordre')->paginate(10);
                                 
-        return view('evolution.index', compact('evolutions'))
-                    ->with('i',(request()->input('page',1)-1)*10);
+        return view('evolution.index', ['evolutions'=>$evolutions]);
     }
 
     
