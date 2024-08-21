@@ -165,6 +165,19 @@
                         <p>Secteur</p>
                     </a>
 
+                    @can('ajout_mesure')  
+                        <a href="{{ route('mesure.index') }}" class="nav-link">
+                            <i class="fas fa-ruler"></i> 
+                            <p>Unité de Mesure</p>
+                        </a>
+                    @endcan
+                    
+                    <a href="{{ route('indicateur.index') }}" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <p>Indicateur</p>
+                    </a>
+
+
                 </li>   
             </ul>
         </li>

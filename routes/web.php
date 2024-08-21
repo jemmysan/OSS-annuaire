@@ -19,9 +19,11 @@ use App\Http\Controllers\EvolutionController;
 use App\Http\Controllers\FormationController;
 use App\Http\Controllers\StartStatController;
 use App\Http\Controllers\FinanciereController;
+use App\Http\Controllers\IndicateurController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\FinancementController;
 use App\Http\Controllers\StatistiqueController;
+use App\Http\Controllers\UniteMesureController;
 use App\Http\Controllers\ImportExportController;
 use App\Http\Controllers\StartRegistreController;
 use App\Http\Controllers\AccompagnementController;
@@ -175,6 +177,25 @@ Route::group(['middleware' => ['auth']], function(){
 
         });
 
+        Route::prefix('/unite-mesure')->group(function (){
+            Route::get('/index',[UniteMesureController::class,'index'])->name('mesure.index');
+            Route::post('/create',[UniteMesureController::class,'store'])->name('mesure.store');
+            Route::post('/store',[UniteMesureController::class,'store'])->name('mesure.store');
+            Route::put('/update/{id}',[UniteMesureController::class,'update'])->name('mesure.update');
+            Route::get('/delete/{id}',[UniteMesureController::class,'delete'])->name('mesure.delete');
+            Route::post('/search',[UniteMesureController::class,'search'])->name('mesure.search');
+           
+        });
+
+        Route::prefix('/indicateur')->group(function (){
+            Route::get('/index',[IndicateurController::class,'index'])->name('indicateur.index');
+            Route::post('/create',[IndicateurController::class,'store'])->name('indicateur.store');
+            Route::post('/store',[IndicateurController::class,'store'])->name('indicateur.store');
+            Route::put('/update/{id}',[IndicateurController::class,'update'])->name('indicateur.update');
+            Route::get('/delete/{id}',[IndicateurController::class,'delete'])->name('indicateur.delete');
+            Route::post('/search',[IndicateurController::class,'search'])->name('indicateur.search');
+        });
+
 
 
         // STATISTIC ROUTES
@@ -217,7 +238,8 @@ Route::group(['middleware' => ['auth']], function(){
 
             });
         });
-    
+        
+       
         
         Route::get('/owner', function(){
             return "Owner of current team.";
