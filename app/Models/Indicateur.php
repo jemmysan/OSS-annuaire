@@ -20,7 +20,5 @@ class Indicateur extends Model
         'deleted_at'
     ];
 
-    public function unitemesure(){
-        return $this->hasOne(UniteMesure::class);
-    }
+    
 }

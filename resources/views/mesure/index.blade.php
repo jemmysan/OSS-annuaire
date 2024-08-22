@@ -59,7 +59,7 @@
                             {{$mesure->libelle}}
                         </td>
                         <td>
-                            {{$mesure->symbole}}
+                           ( {{$mesure->symbole}})
 
                         </td>
                         <td>

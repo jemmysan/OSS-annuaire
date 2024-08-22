@@ -53,20 +53,12 @@ class IndicateurController extends Controller
 
     }
 
-    public function destroy($id){
-       $evolution = Evolution::findOrFail($id);
-       $evolution->evolutionStartup()->each(function ($evolutionStartup){
-            $evolutionStartup->delete();
-       });
-       $evolution->delete();
 
-       $reupdateEvolutions = Evolution::orderBy('ordre')->paginate(10);
-        foreach ($reupdateEvolutions as $index => $evolution) {
-            $evolution->update(['ordre' => $index + 1]);
-        }
-       return redirect()->route('evolution')
-                        ->with('success','evolution supprimer avec success');
+    public function delete($id){
+        Indicateur::find($id)->delete();
+        return redirect()->back()->with('success','Indicateur supprimé avec succès !');
     }
+    
 
     public function search(Request $request)
     {

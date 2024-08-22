@@ -179,7 +179,6 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::prefix('/unite-mesure')->group(function (){
             Route::get('/index',[UniteMesureController::class,'index'])->name('mesure.index');
-            Route::post('/create',[UniteMesureController::class,'store'])->name('mesure.store');
             Route::post('/store',[UniteMesureController::class,'store'])->name('mesure.store');
             Route::put('/update/{id}',[UniteMesureController::class,'update'])->name('mesure.update');
             Route::get('/delete/{id}',[UniteMesureController::class,'delete'])->name('mesure.delete');
@@ -189,7 +188,6 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::prefix('/indicateur')->group(function (){
             Route::get('/index',[IndicateurController::class,'index'])->name('indicateur.index');
-            Route::post('/create',[IndicateurController::class,'store'])->name('indicateur.store');
             Route::post('/store',[IndicateurController::class,'store'])->name('indicateur.store');
             Route::put('/update/{id}',[IndicateurController::class,'update'])->name('indicateur.update');
             Route::get('/delete/{id}',[IndicateurController::class,'delete'])->name('indicateur.delete');

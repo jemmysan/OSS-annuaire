@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Indicateur;
 use App\Models\UniteMesure;
 use Illuminate\Http\Request;
 
@@ -43,19 +44,9 @@ class UniteMesureController extends Controller
 
     public function delete($id)
     {
+        Indicateur::where('mesure_id',$id)->update(['mesure_id'=>null]);
         $mesure = UniteMesure::find($id);
-        
-        // Dissocier ou supprimer les indicateurs associés avant de supprimer l'unité de mesure
-        foreach ($mesure->indicateur as $indicateur) {
-            // Vous pouvez soit les dissocier (mettre à jour la mesure_id à null par exemple)
-            $indicateur->mesure_id = null;
-            $indicateur->save();
-            
-            // Ou vous pouvez les supprimer
-            // $indicateur->delete();
-        }
         $mesure->delete();
-
         return redirect()->back()->with('success', 'Unité de mesure supprimée avec succès !');
     }
 

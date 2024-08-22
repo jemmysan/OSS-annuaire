@@ -64,12 +64,17 @@
                         @php
                             $uniteMesure =  $mesures->where('id',$indicateur->mesure_id)->first()
                         @endphp
-                        {{
-                            $uniteMesure->libelle 
-                         }} <span>({{$uniteMesure->symbole}})</span>
+                        @if ($uniteMesure)
+                            {{
+                                $uniteMesure->libelle 
+                            }} <span>({{$uniteMesure->symbole}})</span>
+                            
+                        @else
+                            <span>Unité non précise</span>
+                        @endif
                     </td>
                     <td>
-                        {{ substr($indicateur->description, 0, 100) }} ....
+                        {{ substr($indicateur->description, 0, 40) }} ....
                     </td>
                     <td>
                         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
@@ -109,12 +114,14 @@
                     <label for="mesure">Unité de mesure</label>
                     <div class="shadow-none p-3 bg-light rounded">
                        
-                        @php
-                            $uniteMesure =  $mesures->where('id',$indicateur->mesure_id)->first()
-                        @endphp
-                        {{
-                            $uniteMesure->libelle 
-                         }} <span>({{$uniteMesure->symbole}})</span>
+                        @if ($uniteMesure)
+                                {{
+                                    $uniteMesure->libelle 
+                                }} <span>({{$uniteMesure->symbole}})</span>
+                                
+                            @else
+                                <span>Unité non précise</span>
+                            @endif
                     </div>
                 </div>
                 <div class="modal-body">

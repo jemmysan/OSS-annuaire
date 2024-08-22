@@ -21,8 +21,4 @@ class UniteMesure extends Model
     ];
 
     
-
-    public function indicateur(){
-        return $this->belongsToMany(Indicateur::class,'indicateurs');
-    }
 }
