@@ -177,6 +177,11 @@
                         <p>Indicateur</p>
                     </a>
 
+                    <a href="{{ route('startup-indicateurs.index')}}" class="nav-link">
+                        <i class="fas fa-eye"></i>
+                        <p>Suivi</p>
+                    </a>
+
 
                 </li>   
             </ul>

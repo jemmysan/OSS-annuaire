@@ -29,6 +29,7 @@ use App\Http\Controllers\StartRegistreController;
 use App\Http\Controllers\AccompagnementController;
 use App\Http\Controllers\EvolutionStartupController;
 use App\Http\Controllers\PhaseFinancementController;
+use App\Http\Controllers\StartupIndicateurController;
 
 
 
@@ -192,6 +193,14 @@ Route::group(['middleware' => ['auth']], function(){
             Route::put('/update/{id}',[IndicateurController::class,'update'])->name('indicateur.update');
             Route::get('/delete/{id}',[IndicateurController::class,'delete'])->name('indicateur.delete');
             Route::post('/search',[IndicateurController::class,'search'])->name('indicateur.search');
+        });
+
+        Route::prefix('startup/indicateur')->group(function (){
+            Route::get('/index',[StartupIndicateurController::class,'index'])->name('startup-indicateurs.index');
+            Route::get('/show',[StartupIndicateurController::class,'show'])->name('startup-indicateurs.show');
+            Route::post('/add',[StartupIndicateurController::class,'store'])->name('startup-indicateurs.add');
+
+
         });
 
 
