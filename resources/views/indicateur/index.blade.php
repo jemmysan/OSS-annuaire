@@ -53,22 +53,15 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($indicateurs as $key => $indicateur)
+                @forelse ($indicateurs as $indicateur)
                 <tr>
-                   
                     <td>
                         {{ $indicateur->libelle }}
                     </td>
 
                     <td>
-                        @php
-                            $uniteMesure =  $mesures->where('id',$indicateur->mesure_id)->first()
-                        @endphp
-                        @if ($uniteMesure)
-                            {{
-                                $uniteMesure->libelle 
-                            }} <span>({{$uniteMesure->symbole}})</span>
-                            
+                        @if ($indicateur->mesure)
+                            {{ $indicateur->mesure->libelle }} <span>({{ $indicateur->mesure->symbole }})</span>
                         @else
                             <span>Unité non précise</span>
                         @endif
@@ -80,7 +73,7 @@
                         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                             <a class="btn btn-sm bg-primary mx-1" data-toggle="modal" data-target="#viewindicateur{{ $indicateur->id }}"> <i class="fas fa-eye"></i></a>
                             <a class="btn btn-sm bg-teal mx-1" data-toggle="modal" data-target="#editindicateur{{ $indicateur->id }}"> <i class="fas fa-edit"></i></a>
-                            <a class="btn btn-sm btn-danger mx-1" href="{{ route('indicateur.delete', $indicateur->id) }}" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
+                            <a class="btn btn-sm btn-danger mx-1" href="{{ route('indicateur.delete', $indicateur->id) }}" onclick="return confirm('Etes-vous sûr de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
                         </div>
                     </td>
                 </tr>
@@ -90,10 +83,11 @@
                 </tr>
                 @endforelse
             </tbody>
+
         </table>
     </div>
 </div>
-{!! $indicateurs->links() !!}
+
 <!-- Modals Section -->
 @foreach ($indicateurs as $indicateur)
     <!-- Modal view indicateur -->
@@ -114,14 +108,14 @@
                     <label for="mesure">Unité de mesure</label>
                     <div class="shadow-none p-3 bg-light rounded">
                        
-                        @if ($uniteMesure)
-                                {{
-                                    $uniteMesure->libelle 
-                                }} <span>({{$uniteMesure->symbole}})</span>
-                                
-                            @else
-                                <span>Unité non précise</span>
-                            @endif
+                     @if ($indicateur->mesure)
+                            {{ $indicateur->mesure->libelle }} 
+                                <span>
+                                    ({{ $indicateur->mesure->symbole }})
+                                </span>
+                        @else
+                            <span>Unité non précise</span>
+                        @endif
                     </div>
                 </div>
                 <div class="modal-body">
@@ -152,7 +146,7 @@
                 </div>
                 <form method="POST" action="{{ route('indicateur.update', $indicateur->id) }}">
                     @csrf
-                    @method('PUT')
+                    @method('POST')
                     <div class="modal-body">
                         <label for="libelle">Libelle</label>
                         <input type="text" name="libelle" value="{{ $indicateur->libelle }}" id="libelle" class="form-control @error('libelle') is-invalid @enderror">

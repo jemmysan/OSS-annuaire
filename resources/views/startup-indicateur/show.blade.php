@@ -1,4 +1,10 @@
 @extends('layouts.admin')
+@section('retour')
+<button class="btn btn-sm " style="background : white; border : 1px solid #D3D3D3">                
+    <i class="bi bi-arrow-left-circle-fill text-gray"></i>
+        <a class="text-gray" href="{{route('startup-indicateurs.index')}}">Retour</a>
+</button>
+@endsection
 @section('pageName')
     <a href="">  Startup-Indicateur</a>
 @endsection
@@ -12,7 +18,7 @@
         
         
     <div class="d-flex justify-content-between">
-        <h2>Karaange</h2>
+        <h2>{{$indicateurs['nom_startup']}}</h2>
         <!-- <a class="btn btn-sm btn-primary mt-2" data-toggle="modal" data-target="#createstartupIndicateur">
                 <i class="fas fa-plus-circle"></i>
                 Ajouter
@@ -32,45 +38,32 @@
         <table class="table table-hover w-75">
            
             <tbody>
-                <tr>
-                   
-                    <td>
-                        Indicateur A
-                    </td>
-
+                @foreach ($indicateurs['indicateurs'] as $indicateur )
                     
-                    <td>
-                        15 (%)
-                    </td>
+                    <tr style="padding : 5px">
+                    
+                        <td>
+                            {{ $indicateur['libelle']}}
+                        </td>
 
-                    <td>
-                        <a class="btn btn-sm bg-teal mx-1" data-toggle="modal" data-target="#editrubrique"> <i class="fas fa-edit"></i></a>
-                            <a class="btn btn-sm btn-danger mx-1" href="" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
+                        <td>
+                           <span style="border-left : 2px solid black;border-bottom : 2px solid black;border-right : 2px solid black;
+                            padding-left :  10px ;
+                            padding-left :  15px ; 
+                            padding-bottom :  15px ;
+                            padding-right :  10px ;
+                            margin-top : 10px">{{ $indicateur['value']}}</span>  <span>{{ $indicateur['unite_mesure']}}</span>
+                        </td>
                         
-                    </td>
-                   
-                    
-                </tr>
 
-                <tr>
-                   
-                <td>
-                        Indicateur B
-                    </td>
-
-                    
-                    <td>
-                        15 (m)
-                    </td>
-
-                    <td>
-                        <a class="btn btn-sm bg-teal mx-1" data-toggle="modal" data-target="#editrubrique"> <i class="fas fa-edit"></i></a>
+                        <td>
+                            <!-- <a class="btn btn-sm bg-teal mx-1" data-toggle="modal" data-target="#editrubrique"> <i class="fas fa-edit"></i></a> -->
                             <a class="btn btn-sm btn-danger mx-1" href="" onclick="return confirm('Etes-vous sur de vouloir supprimer?')"> <i class="fa fa-trash"></i></a>
+                        </td>
+                    
                         
-                    </td>
-                   
-                </tr>
-             
+                    </tr>
+                @endforeach         
             </tbody>
         </table>
     </div>

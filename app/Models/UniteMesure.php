@@ -20,5 +20,7 @@ class UniteMesure extends Model
         'created_at'
     ];
 
-    
+    public function indicateur(){
+        return $this->hasOne(Indicateur::class);
+    }
 }

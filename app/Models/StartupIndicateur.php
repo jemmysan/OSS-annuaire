@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Startup;
+use App\Models\UniteMesure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -13,12 +14,14 @@ class StartupIndicateur extends Model
     protected $fillable = [
         'startup_id',
         'indicateur_id',
-        'date'
+        'date',
+        'value'
     ];
 
     protected $hidden = [
         'created_at',
-        'deleted_at'
+        'updated_at',
+        'deleted_at',
     ];
 
     public function startup(){
@@ -27,4 +30,6 @@ class StartupIndicateur extends Model
     public function indicateur(){
         return $this->belongsTo(Indicateur::class,'indicateur_id');
     }
+
+    
 }

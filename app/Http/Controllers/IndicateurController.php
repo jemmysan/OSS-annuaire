@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Indicateur;
 use Illuminate\Http\Request;
+use App\Http\Resources\Resources\IndicateurResource;
+use App\Http\Resources\Collections\IndicateurCollection;
 
 class IndicateurController extends Controller
 {
     public function index(){
-        $indicateurs = Indicateur::paginate(10);
+        $models = Indicateur::with('mesure')->get();
+        $indicateurs = IndicateurResource::collection($models);
         return view('indicateur.index', ['indicateurs'=>$indicateurs]);
     }
 

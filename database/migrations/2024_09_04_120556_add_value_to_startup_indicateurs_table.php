@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ModifyDescriptionInIndicateursTable extends Migration
+class AddValueToStartupIndicateursTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class ModifyDescriptionInIndicateursTable extends Migration
      */
     public function up()
     {
-        Schema::table('indicateurs', function (Blueprint $table) {
-            $table->text('description')->nullable()->change();
+        Schema::table('startup_indicateurs', function (Blueprint $table) {
+            $table->integer('value');
         });
     }
 
@@ -25,7 +25,7 @@ class ModifyDescriptionInIndicateursTable extends Migration
      */
     public function down()
     {
-        Schema::table('indicateurs', function (Blueprint $table) {
+        Schema::table('startup_indicateurs', function (Blueprint $table) {
             //
         });
     }

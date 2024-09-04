@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('pageName')
-    <a href="">  Startup-Indicateur</a>
+    <a href="{{ route('startup-indicateurs.index') }}">  Startup-Indicateur</a>
 @endsection
 @section('title')
     Liste
@@ -12,16 +12,16 @@
         
         
     <div class="card-header d-flex justify-content-between">
-        <form action="" method="POST" role="search"  style="width : 94%">
+        <form action="" method="POST" role="search"  style="width : 92%">
                 @csrf <!-- Include this line to add the CSRF token -->
                 <div class="input-group bg-color-red">
-                    <div id="custom-search-input" style="width : 12%">
+                    <div id="custom-search-input" style="width : 16%">
                         <div class="col-sm-12">
                             <input type="text" class="form-control" name="search" placeholder="Search" id="nom">
                         </div>
                     </div>
 
-                    <div id="custom-search-input" style="width : 12%">
+                    <div id="custom-search-input" style="width : 14%">
                         <div class="">
                             <select type="text" class="form-control" name="search"  id="date">
                                 <option>frfhri</option>
@@ -49,40 +49,37 @@
     </div>
   
     <div class="card-body table-responsive p-0">
-        @php
-            $startup = DB::table('startups');
-            $indicateurLib = DB::table('indicateurs');
-            
-        @endphp
-        <table class="table table-hover">
+       
+        <table class="table table-hover" style="--bs-table-hover-color: #fff; --bs-table-hover-bg: #007bff;">
             <thead>
                 <hr>
+                
                 <tr>
                     <th>Start-up</th>
-                    <th>Indicateur</th>
+                    <th>Dernier Indicateur</th>
                     <th>Date</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($startupIndicateurs as $indicateur)
-                    <tr>
-                        @php
-                            $startupLib =  $startup->find($indicateur->startup_id)->nom_startup
+                <tr onclick="window.location.href='{{ route('startup-indicateurs.show',$indicateur['startup_id']) }}'" style="cursor: pointer;">
+                    
+                    <td>
                             
-                        @endphp
-                        <td>
-                            {{$startupLib}}
-                        </td>
-
-                        
-                        <td>
-                            {{$indicateur->indicateur_id}}
-                        </td>
-
-                        <td>
-                            {{$indicateur->date}}
-                        </td>
-                        
+                                {{$indicateur['nom_startup']}}
+                            
+                    </td>
+    
+                            
+                            <td>
+                                {{$indicateur['libelle_indicateur']}}
+                                
+                            </td>
+    
+                            <td>
+                                {{$indicateur['date']}}
+                            </td>
+                            
                     </tr>
                 @empty
                     <tr>
@@ -96,7 +93,7 @@
         </table>
     </div>
 </div>
-{!! $startupIndicateurs->links() !!}
+
 
 <!-- Modal create indicateur startup  -->
 <div class="modal fade" id="createstartupIndicateur" tabindex="-1" role="dialog" aria-labelledby="createstartupIndicateur" aria-hidden="true">

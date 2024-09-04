@@ -190,17 +190,15 @@ Route::group(['middleware' => ['auth']], function(){
         Route::prefix('/indicateur')->group(function (){
             Route::get('/index',[IndicateurController::class,'index'])->name('indicateur.index');
             Route::post('/store',[IndicateurController::class,'store'])->name('indicateur.store');
-            Route::put('/update/{id}',[IndicateurController::class,'update'])->name('indicateur.update');
+            Route::post('/update/{id}',[IndicateurController::class,'update'])->name('indicateur.update');
             Route::get('/delete/{id}',[IndicateurController::class,'delete'])->name('indicateur.delete');
             Route::post('/search',[IndicateurController::class,'search'])->name('indicateur.search');
         });
 
         Route::prefix('startup/indicateur')->group(function (){
             Route::get('/index',[StartupIndicateurController::class,'index'])->name('startup-indicateurs.index');
-            Route::get('/show',[StartupIndicateurController::class,'show'])->name('startup-indicateurs.show');
+            Route::get('/show/{id}',[StartupIndicateurController::class,'show'])->name('startup-indicateurs.show');
             Route::post('/add',[StartupIndicateurController::class,'store'])->name('startup-indicateurs.add');
-
-
         });
 
 
