@@ -24,7 +24,11 @@
                     <div id="custom-search-input" style="width : 14%">
                         <div class="">
                             <select type="text" class="form-control" name="search"  id="date">
-                                <option>frfhri</option>
+                            <option>Toute</option>   
+                                @foreach ($startupIndicateurs as $indicateur)
+                                    <option>{{$indicateur['date']}}</option>
+                                
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -56,7 +60,8 @@
                 
                 <tr>
                     <th>Start-up</th>
-                    <th>Dernier Indicateur</th>
+                    <th>Indicateur</th>
+                    <th>&nbsp;</th>
                     <th>Date</th>
                 </tr>
             </thead>
@@ -73,6 +78,10 @@
                             
                             <td>
                                 {{$indicateur['libelle_indicateur']}}
+                                
+                            </td>
+                            <td style="border-bottom :  2px solid; display : flex; justify-content : center">
+                                {{$indicateur['value']}} <span style='padding-left : 10px'>  {{$indicateur['symbole_mesure']}} </span>
                                 
                             </td>
     
@@ -109,7 +118,14 @@
                 @csrf
                 <div class="modal-body">
                     <label for="startup_id">Startup</label>
-                    <input type="number" value="{{ old('startup_id') }}" name="startup_id" id="startup_id" class="form-control @error('startup_id') is-invalid @enderror">
+                    <select class="custom-select @error('startup_id') is-invalid @enderror" id="startup_id" name="startup_id">
+                        <option value="" selected disabled>Choose...</option>
+                        @foreach($startups as $startup)
+                            <option value="{{ $startup['id'] }}" >
+                                {{ $startup['nom'] }}
+                            </option>
+                        @endforeach
+                    </select>
                     @error('startup')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -134,7 +150,25 @@
                     @enderror
                 </div>
                
+                <div class="modal-body">
+                    <label for="value">Valeur</label>
+                    <input type="number" value="{{ old('value') }}" name="value" id="value" class="form-control @error('value') is-invalid @enderror">
+                    @error('value')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
 
+                <div class="modal-body">
+                    <label for="date">Valeur</label>
+                    <input type="date" value="{{ old('date') }}" name="date" id="date" class="form-control @error('date') is-invalid @enderror">
+                    @error('date')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
                
                 <div class="modal-body">
                     <button class="btn btn-warning" data-dismiss="modal">

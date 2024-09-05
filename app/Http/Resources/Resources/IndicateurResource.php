@@ -19,6 +19,7 @@ class IndicateurResource extends JsonResource
             "libelle"=>$this->libelle,
             "description"=>$this->description,
             "mesure_id"=>$this->mesure,
+            "value"=>$this->value,
             "links"=>$this->links
         ];
     }
