@@ -12,26 +12,16 @@
         
         
     <div class="card-header d-flex justify-content-between">
-        <form action="" method="POST" role="search"  style="width : 92%">
+        <form method="POST" action="{{ route('startup-indicateurs.searchStartup') }}"  role="search"  style="width : 92%">
                 @csrf <!-- Include this line to add the CSRF token -->
                 <div class="input-group bg-color-red">
                     <div id="custom-search-input" style="width : 16%">
-                        <div class="col-sm-12">
+                        <div class="">
                             <input type="text" class="form-control" name="search" placeholder="Search" id="nom">
                         </div>
                     </div>
 
-                    <div id="custom-search-input" style="width : 14%">
-                        <div class="">
-                            <select type="text" class="form-control" name="search"  id="date">
-                            <option>Toute</option>   
-                                @foreach ($startupIndicateurs as $indicateur)
-                                    <option>{{$indicateur['date']}}</option>
-                                
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+                    
 
                     <div class="">
                         <a class="mt-1">

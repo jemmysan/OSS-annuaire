@@ -12,6 +12,10 @@ use App\Http\Resources\Resources\StartupIndicateurResource;
 class StartupIndicateurController extends Controller
 {
     public $suivies; 
+    public $indicateurs;
+    public $startups;
+    public $indicOfStartup;
+   
 
     public function __construct(){
 
@@ -33,30 +37,33 @@ class StartupIndicateurController extends Controller
                 'date' => $item->date,
             ];
         })->values(); 
-    }
 
-
-    public function index(){
-        // return $this->suivies;
-        $indicateurs = Indicateur::all();
-        $startups = Startup::get()->map(function ($item){
+        /*************** For index *******/
+        $this->indicateurs = Indicateur::all();
+        $this->startups = Startup::get()->map(function ($item){
                     return [
                         'id'=>$item->id,
                         'nom'=>$item->nom_startup
-                    ];
-                });
-        
+                    ];});  
+        }
+    
+
+    public function indexView($indicateurs,$suivies,$startups){
         return view('startup-indicateur.index',
         [
             "indicateurs"=>$indicateurs,
-            "startupIndicateurs"=>$this->suivies,
+            "startupIndicateurs"=>$suivies,
             "startups"=>$startups
         ]);
     }
+    
+    public function index(){
+        
+        return $this->indexView($this->indicateurs,$this->suivies,$this->startups);
+    }
 
-    public function show($id)
-    {
-         $startupIndicateurs = StartupIndicateur::with(['startup', 'indicateur.mesure'])
+    public function handleDataBeforeShow($id,$indicOfStartup){
+        $startupIndicateurs = StartupIndicateur::with(['startup', 'indicateur.mesure'])
             ->where('startup_id', $id)
             ->get();
 
@@ -77,18 +84,21 @@ class StartupIndicateurController extends Controller
             });
 
             // Retourne les informations de la startup avec ses indicateurs
-         $indicOfStartup = [
-                
+           $indicOfStartup = [
+                'id'=> $startup->id,
                 'nom_startup' => $startup->nom_startup,
                 'indicateurs' => $indicateurs,
-            
             ];
             
-            return view('startup-indicateur.show', ["indicateurs" => $indicOfStartup]);
+            return $indicOfStartup;
         }
-
-        // Si aucune startup n'a été trouvée
-        return redirect()->back()->with('error', 'Startup non trouvée.');
+        // return redirect()->back()->with('error', 'Startup non trouvée.');
+    }
+    
+    public function show($id)
+    {
+        $data = $this->handleDataBeforeShow($id,$this->indicOfStartup);
+        return view('startup-indicateur.show', ["indicateurs" => $data]);
     }
 
 
@@ -131,6 +141,38 @@ class StartupIndicateurController extends Controller
         $startupIndicateur->delete();
         return redirect()->back()->with('success','Indicateur supprimé avec succès !');
 
+    }
+
+    public function searchStartUp(Request $request)
+    { 
+        $keyword = $request->input('search');
+        if (!is_null($keyword)) {
+            $this->suivies = collect($this->suivies)->filter(function ($item) use ($keyword) {
+                return stripos($item['nom_startup'], $keyword) !== false || 
+                stripos($item['libelle_indicateur'], $keyword) !== false;
+            })->values();
+        } 
+        return $this->index();
+    }
+
+
+    public function searchIndicateurStartup(Request $request, $id){
+        $keyword = $request->input('search');
+        if (!is_null($keyword)) {
+           $data = $this->handleDataBeforeShow($id,$this->indicOfStartup);
+
+            $this->indicOfStartup['indicateurs'] = collect($data['indicateurs'])->filter(function ($indicateur) use ($keyword) {
+                return stripos($indicateur['libelle'], $keyword) !== false;
+            })->values();
+
+            $this->indicOfStartup = [
+                'id'=>  $data['id'],
+                'nom_startup' => $data['nom_startup'],
+                'indicateurs' => $this->indicOfStartup['indicateurs'],
+            ];
+            return view('startup-indicateur.show', ["indicateurs" => $this->indicOfStartup]);
+        } 
+        return $this->show($id);
     }
     
 }

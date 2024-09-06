@@ -23,14 +23,31 @@
                 <i class="fas fa-plus-circle"></i>
                 Ajouter
         </a> -->
-        <div  class=" d-flex justify-content-between align-items-center" style="float: right; width : 15%">
-            <span class="mx-2"> Filtrer </span>
-            <select class="custom-select @error('mesure_id') is-invalid @enderror" id="mesure_id" name="mesure_id" >
-                <option value="All" >All</option>            
-                @foreach ($indicateurs['indicateurs'] as $indicateur )
-                <option value="{{ $indicateur['date']}}" >{{ $indicateur['date']}}</option>   
-                @endforeach
-            </select>
+        <div  class=" d-flex justify-content-between align-items-center" style="float: right; width : 20%">
+        <form action="{{ route('startup-indicateurs.searchIndicateurStartup',$indicateurs['id']) }}" method="POST" role="search"  style="width : 100%">
+                @csrf <!-- Include this line to add the CSRF token -->
+                <div class="input-group bg-color-red">
+                    <div id="custom-search-input" style="width : 76%">
+                        <div class="">
+                            <input type="text" class="form-control" name="search" placeholder="Search" id="search">
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="">
+                        <a class="mt-1">
+                            <span class="input-group-btn">
+                                <button class="btn btn-danger" type="submit" title="Refraichir">
+                                    <span class="fas fa-sync-alt"></span>
+                                </button>
+                            </span>
+                        </a>
+                    </div>
+                    <br>
+                </div>
+        </form>
+        
                
         </div>
     </div>

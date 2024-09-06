@@ -201,6 +201,10 @@ Route::group(['middleware' => ['auth']], function(){
             Route::post('/add',[StartupIndicateurController::class,'store'])->name('startup-indicateurs.add');
             Route::post('/update/{id}',[StartupIndicateurController::class,'update'])->name('startup-indicateurs.update');
             Route::get('/delete/{id}',[StartupIndicateurController::class,'delete'])->name('startup-indicateurs.delete');
+            Route::post('/search',[StartupIndicateurController::class,'searchStartUp'])->name('startup-indicateurs.searchStartup');
+            Route::post('/search/{id}',[StartupIndicateurController::class,'searchIndicateurStartup'])->name('startup-indicateurs.searchIndicateurStartup');
+
+
         });
 
 
